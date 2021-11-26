@@ -5619,6 +5619,11 @@ react-native-size-matters@^0.3.1:
   resolved "https://registry.yarnpkg.com/react-native-size-matters/-/react-native-size-matters-0.3.1.tgz#24d0cfc335a2c730f6d58bd7b43ea5a41be4b49f"
   integrity sha512-mKOfBLIBFBcs9br1rlZDvxD5+mAl8Gfr5CounwJtxI6Z82rGrMO+Kgl9EIg3RMVf3G855a85YVqHJL2f5EDRlw==
 
+react-native-tab-view@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.1.1.tgz#1f8d7a835ab4f5b1b1407ec8dddc1053b53fa3c6"
+  integrity sha512-M5pRN6utQfytKWoKlKVzg5NbkYu308qNoW1khGTtEOTs1k14p2dHJ/BWOJoJYHKbPVUyZldbG9MFT7gUl4YHnw==
+
 react-native-template-typescript@^6.8.3:
   version "6.8.3"
   resolved "https://registry.yarnpkg.com/react-native-template-typescript/-/react-native-template-typescript-6.8.3.tgz#a84648bbe36089859f2150eb6f953ead78cb41f0"

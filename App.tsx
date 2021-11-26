@@ -5,6 +5,9 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import Intro from './src/screens/Intro';
 import Signup from './src/screens/Signup';
 import SocialMedia from './src/screens/SocialMedia';
+import CriticsSuggestion from './src/screens/CriticsSuggestion';
+import Fingerprint from './src/screens/Fingerprint';
+import ServiceCenter from './src/screens/ServiceCenter';
 import { ImageBackground, StyleSheet, View } from 'react-native';
 import {
   configureFonts,
@@ -108,11 +111,11 @@ const MainStackNavigator = () => {
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator
-        initialRouteName="SocialMedia"
+        initialRouteName="Fingerprint"
         screenOptions={{
           headerShown: false,
         }}>
-        <Stack.Screen name="SocialMedia" component={SocialMedia} />
+        <Stack.Screen name="Fingerprint" component={Fingerprint} />
         <Stack.Screen name="Intro" component={Intro} />
         <Stack.Screen name="Signup" component={Signup} />
       </Stack.Navigator>
