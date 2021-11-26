@@ -1,6 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import { StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 const styles = StyleSheet.create({

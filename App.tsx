@@ -14,6 +14,7 @@ import {
   DefaultTheme as PaperDefaultTheme,
   Provider as PaperProvider,
 } from 'react-native-paper';
+import Dashboard from './src/screens/Dashboard';
 const BgImage = './assets/images/Layer.png';
 
 const styles = StyleSheet.create({
@@ -111,13 +112,15 @@ const MainStackNavigator = () => {
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator
-        initialRouteName="Fingerprint"
+        initialRouteName="Dashboard"
         screenOptions={{
           headerShown: false,
         }}>
         <Stack.Screen name="Fingerprint" component={Fingerprint} />
         <Stack.Screen name="Intro" component={Intro} />
         <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="Dashboard" component={Dashboard} />
+        <Stack.Screen name="SocialMedia" component={SocialMedia} />
       </Stack.Navigator>
     </NavigationContainer>
   );
