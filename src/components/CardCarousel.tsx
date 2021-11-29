@@ -1,18 +1,24 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { SafeAreaView, Text, View } from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  View,
+  ImageBackground,
+  StyleSheet,
+  Image,
+} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
+const BgImage = '../../assets/images/Group_35card.png';
+const plusImg = '../../assets/images/Plusmini.png';
 
 const styles = StyleSheet.create({
   carouselBox: {
-    backgroundColor: '#936ee3',
-    borderRadius: 30,
-    height: 220,
-    width: 306,
-    paddingHorizontal: 40,
-    marginRight: 20,
+    height: 240,
+    width: 320,
+    marginLeft: -10,
+    paddingHorizontal: 50,
     flexDirection: 'column',
-    justifyContent: 'center',
+    paddingTop: 45,
   },
   carouselText: {
     fontSize: 24,
@@ -25,7 +31,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#363853',
     padding: 17,
     position: 'absolute',
-    bottom: -12,
+    bottom: 25,
     right: 4,
     borderRadius: 20,
   },
@@ -55,11 +61,13 @@ const CardCarousel = () => {
 
   const _renderItem = ({ item }: any) => {
     return (
-      <View style={styles.carouselBox}>
+      <ImageBackground source={require(BgImage)} style={styles.carouselBox}>
         <Text style={styles.carouselText}>{item.title}</Text>
         <Text style={styles.carouselText}>{item.text}</Text>
-        <View style={styles.addBtn} />
-      </View>
+        <View style={styles.addBtn}>
+          <Image source={require(plusImg)} style={{ width: 20, height: 20 }} />
+        </View>
+      </ImageBackground>
     );
   };
 

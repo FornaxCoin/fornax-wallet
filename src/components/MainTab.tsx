@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { View, useWindowDimensions, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  useWindowDimensions,
+  Text,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
 const styles = StyleSheet.create({
@@ -13,8 +19,8 @@ const styles = StyleSheet.create({
     width: 60,
     backgroundColor: '#936ee3',
     borderRadius: 30,
-    marginLeft: 15,
-    marginRight: 30,
+    marginLeft: 5,
+    marginRight: 20,
   },
   symbolText: {
     fontFamily: 'Quicksand-Medium',
@@ -40,71 +46,104 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingTop: 5,
   },
+  scrollTable: {
+    flex: 1,
+  },
 });
 
 const FirstRoute = () => (
-  <View style={{ flex: 1, backgroundColor: 'transparent' }}>
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 30,
-        marginBottom: 20,
-      }}>
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.roundIcon} />
-        <View>
-          <Text style={styles.symbolText}>FRX</Text>
-          <Text style={styles.descriptionText}>Top up</Text>
+  <ScrollView style={styles.scrollTable}>
+    <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginTop: 30,
+          marginBottom: 20,
+        }}>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={styles.roundIcon} />
+          <View>
+            <Text style={styles.symbolText}>FRX</Text>
+            <Text style={styles.descriptionText}>Top up</Text>
+          </View>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignSelf: 'center',
+            width: 130,
+          }}>
+          <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
+          <Text style={styles.amountText}> FRX 200.000</Text>
         </View>
       </View>
       <View
         style={{
           flexDirection: 'row',
-          alignSelf: 'center',
-          width: 120,
+          justifyContent: 'space-between',
+          marginBottom: 20,
         }}>
-        <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
-        <Text style={styles.amountText}> FRX 200.000</Text>
-      </View>
-    </View>
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 20,
-      }}>
-      <View style={{ flexDirection: 'row' }}>
-        <View style={[styles.roundIcon, { backgroundColor: '#4368c7' }]} />
-        <View>
-          <Text style={styles.symbolText}>C-Wallet</Text>
-          <Text style={styles.descriptionText}>Income</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={[styles.roundIcon, { backgroundColor: '#4368c7' }]} />
+          <View>
+            <Text style={styles.symbolText}>C-Wallet</Text>
+            <Text style={styles.descriptionText}>Income</Text>
+          </View>
+        </View>
+        <View style={{ flexDirection: 'row', alignSelf: 'center', width: 120 }}>
+          <Text style={[styles.minusIcon, { color: '#52e34f' }]}>+</Text>
+          <Text style={styles.amountText}> $ 980.000</Text>
         </View>
       </View>
-      <View style={{ flexDirection: 'row', alignSelf: 'center', width: 120 }}>
-        <Text style={[styles.minusIcon, { color: '#52e34f' }]}>+</Text>
-        <Text style={styles.amountText}> $ 980.000</Text>
-      </View>
-    </View>
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 20,
-      }}>
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.roundIcon} />
-        <View>
-          <Text style={styles.symbolText}>FRX</Text>
-          <Text style={styles.descriptionText}>Top up</Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginBottom: 20,
+        }}>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={styles.roundIcon} />
+          <View>
+            <Text style={styles.symbolText}>FRX</Text>
+            <Text style={styles.descriptionText}>Top up</Text>
+          </View>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignSelf: 'center',
+            width: 130,
+          }}>
+          <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
+          <Text style={styles.amountText}> FRX 200.000</Text>
         </View>
       </View>
-      <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-        <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
-        <Text style={styles.amountText}> FRX 200.000</Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginBottom: 20,
+        }}>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={styles.roundIcon} />
+          <View>
+            <Text style={styles.symbolText}>FRX</Text>
+            <Text style={styles.descriptionText}>Top up</Text>
+          </View>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignSelf: 'center',
+            width: 130,
+          }}>
+          <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
+          <Text style={styles.amountText}> FRX 200.000</Text>
+        </View>
       </View>
     </View>
-  </View>
+  </ScrollView>
 );
 
 const SecondRoute = () => (

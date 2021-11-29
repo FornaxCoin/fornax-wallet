@@ -1,7 +1,8 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
 import CardCarousel from '../components/CardCarousel';
 import MainTab from '../components/MainTab';
+import NavTab from '../components/navTab';
 
 const BellIcon = '../../assets/images/bell.png';
 const SettingIcon = '../../assets/images/setting.png';
@@ -10,16 +11,17 @@ const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
     flexDirection: 'column',
-    marginVertical: 30,
+    marginTop: 30,
     marginHorizontal: 20,
   },
   navBar: {
     flexDirection: 'row',
     alignContent: 'flex-end',
     alignSelf: 'flex-end',
+    position: 'relative',
   },
   bellImg: {
-    width: 26,
+    width: 24,
     height: 26,
     marginHorizontal: 27,
   },
@@ -32,8 +34,8 @@ const styles = StyleSheet.create({
     color: '#b27f29',
     textAlign: 'left',
     fontFamily: 'Quicksand-Bold',
-    marginTop: 25,
-    marginBottom: 20,
+    marginTop: 5,
+    marginBottom: 5,
   },
   txnText: {
     fontSize: 16,
@@ -63,17 +65,29 @@ const styles = StyleSheet.create({
     width: 450,
   },
   tabBox: {
-    height: 240,
+    height: 320,
+    marginBottom: 30,
+  },
+  navTabBox: {
+    height: 70,
+  },
+  badge: {
+    width: 7,
+    height: 7,
+    borderRadius: 20,
+    backgroundColor: '#ff3333',
+    position: 'absolute',
+    right: 40,
+    top: 0,
   },
 });
 
-const Dashboard = (props: any) => {
-  const navigate = props.navigation.navigate;
-
+const Dashboard = () => {
   return (
     <>
       <View style={styles.fornaxBox}>
         <View style={styles.navBar}>
+          <View style={styles.badge} />
           <Image source={require(BellIcon)} style={styles.bellImg} />
           <Image source={require(SettingIcon)} style={styles.settingImg} />
         </View>
@@ -84,8 +98,8 @@ const Dashboard = (props: any) => {
         <View style={styles.tabBox}>
           <MainTab />
         </View>
-        <View>
-          <MainTab />
+        <View style={styles.navTabBox}>
+          <NavTab />
         </View>
       </View>
     </>

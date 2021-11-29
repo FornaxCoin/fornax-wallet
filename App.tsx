@@ -5,9 +5,7 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import Intro from './src/screens/Intro';
 import Signup from './src/screens/Signup';
 import SocialMedia from './src/screens/SocialMedia';
-import CriticsSuggestion from './src/screens/CriticsSuggestion';
 import Fingerprint from './src/screens/Fingerprint';
-import ServiceCenter from './src/screens/ServiceCenter';
 import { ImageBackground, StyleSheet, View } from 'react-native';
 import {
   configureFonts,
