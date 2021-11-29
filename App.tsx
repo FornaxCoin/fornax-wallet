@@ -6,6 +6,7 @@ import Intro from './src/screens/Intro';
 import Signup from './src/screens/Signup';
 import SocialMedia from './src/screens/SocialMedia';
 import Fingerprint from './src/screens/Fingerprint';
+import FaceId from './src/screens/FaceId';
 import { ImageBackground, StyleSheet, View } from 'react-native';
 import {
   configureFonts,
@@ -110,7 +111,7 @@ const MainStackNavigator = () => {
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator
-        initialRouteName="Dashboard"
+        initialRouteName="FaceId"
         screenOptions={{
           headerShown: false,
         }}>
@@ -119,6 +120,7 @@ const MainStackNavigator = () => {
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="SocialMedia" component={SocialMedia} />
+        <Stack.Screen name="FaceId" component={FaceId} />
       </Stack.Navigator>
     </NavigationContainer>
   );
