@@ -73,9 +73,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    backgroundColor: 'green',
+    // backgroundColor: 'green',
     // marginTop: 120,
     marginTop: hp('10'),
+    marginBottom: hp('4'),
   },
   fornaxMiniText: {
     // marginLeft: 17,

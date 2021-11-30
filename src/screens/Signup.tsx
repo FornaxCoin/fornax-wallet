@@ -143,8 +143,9 @@ const VerifyModal = ({ isModalVisible, setModalVisible }: any) => {
   );
 };
 
-const SignUp = () => {
-  const [isModalVisible, setModalVisible] = useState(true);
+const SignUp = (props: any) => {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const navigate = props.navigation.navigate;
   const [user, setUser] = useState({
     username: '',
     email: '',
@@ -154,12 +155,14 @@ const SignUp = () => {
   return (
     <>
       <View style={styles.fornaxBox}>
-        <PhoneModal isModalVisible={isModalVisible}>
-          <VerifyModal
-            isModalVisible={isModalVisible}
-            setModalVisible={setModalVisible}
-          />
-        </PhoneModal>
+        {isModalVisible && (
+          <PhoneModal isModalVisible={isModalVisible}>
+            <VerifyModal
+              isModalVisible={isModalVisible}
+              setModalVisible={setModalVisible}
+            />
+          </PhoneModal>
+        )}
         <View style={{ marginBottom: 50 }}>
           <Text style={styles.createAccText}>Create an account,</Text>
           <Text style={styles.createAccText}>
@@ -203,7 +206,7 @@ const SignUp = () => {
         </Pressable>
         <Text style={styles.loginTextbox}>
           You have account?
-          <Pressable style={{ paddingTop: 6 }}>
+          <Pressable onPress={() => navigate('Login')} style={{ paddingTop: 6 }}>
             <Text style={styles.loginText}> Login</Text>
           </Pressable>
         </Text>

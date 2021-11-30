@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import {heightPercentageToDP as hp} from "react-native-responsive-screen";
 const CocoLineMessageImage = '../../assets/images/COCO_Line_Message.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const ArrowRightIcon = '../../assets/images/arrow-right.png';
@@ -9,7 +10,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 165,
   },
   fornaxIcon: {
     marginBottom: 44,
@@ -29,11 +29,9 @@ const styles = StyleSheet.create({
     marginTop: -5,
   },
   buttonClose: {
-    // flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: '#b27f29',
     width: 240,
     alignSelf: 'center',
     marginBottom: 43,
@@ -48,7 +46,6 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     fontFamily: 'Quicksand-Bold',
     textAlign: 'center',
-    marginBottom: 100,
   },
   backIcon: {
     marginLeft: 26,
@@ -62,6 +59,16 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignSelf: 'center',
   },
+  fornaxInnerBox: {
+    flex: 0,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    // backgroundColor: 'green',
+    // marginTop: 120,
+    marginTop: hp('10'),
+    marginBottom: hp('4'),
+  },
 });
 
 const CriticsSuggestion = (props: any) => {
@@ -72,13 +79,14 @@ const CriticsSuggestion = (props: any) => {
       <View>
         <Image style={styles.backIcon} source={require(BackIcon)} />
       </View>
-      <View style={styles.fornaxBox}>
+      <View style={styles.fornaxInnerBox}>
         <Image
           style={styles.fornaxIcon}
           source={require(CocoLineMessageImage)}
         />
         <Text style={styles.textStyle}>Critics & Suggestion</Text>
       </View>
+      <View style={styles.fornaxBox} />
     </>
   );
 };

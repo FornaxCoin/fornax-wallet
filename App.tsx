@@ -7,6 +7,8 @@ import Signup from './src/screens/Signup';
 import SocialMedia from './src/screens/SocialMedia';
 import Fingerprint from './src/screens/Fingerprint';
 import FaceId from './src/screens/FaceId';
+import ServiceCenter from './src/screens/ServiceCenter';
+import CriticsSuggestion from './src/screens/CriticsSuggestion';
 import { ImageBackground, StyleSheet, View } from 'react-native';
 import {
   configureFonts,
@@ -111,15 +113,17 @@ const MainStackNavigator = () => {
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator
-        initialRouteName="FaceId"
+        initialRouteName="SocialMedia"
         screenOptions={{
           headerShown: false,
         }}>
-        <Stack.Screen name="Fingerprint" component={Fingerprint} />
         <Stack.Screen name="Intro" component={Intro} />
+        <Stack.Screen name="Fingerprint" component={Fingerprint} />
+        <Stack.Screen name="CriticsSuggestion" component={CriticsSuggestion} />
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="SocialMedia" component={SocialMedia} />
+        <Stack.Screen name="ServiceCenter" component={ServiceCenter} />
         <Stack.Screen name="FaceId" component={FaceId} />
       </Stack.Navigator>
     </NavigationContainer>

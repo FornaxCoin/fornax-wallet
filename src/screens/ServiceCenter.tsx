@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import {heightPercentageToDP as hp} from "react-native-responsive-screen";
 const CocoLineCallImage = '../../assets/images/COCO_Line_Call.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const CriticsIcon = '../../assets/images/critics.png';
@@ -12,7 +13,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 165,
   },
   fornaxText: {
     fontSize: 48,
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     fontFamily: 'Quicksand-Bold',
     textAlign: 'center',
-    marginBottom: 100,
   },
   backIcon: {
     marginLeft: 26,
@@ -63,8 +62,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   fornaxIcon: {
-    marginTop: -119,
     marginBottom: 44,
+  },
+  fornaxInnerBox: {
+    flex: 0,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    // backgroundColor: 'green',
+    // marginTop: 120,
+    marginTop: hp('10'),
+    marginBottom: hp('4'),
   },
 });
 
@@ -76,9 +84,11 @@ const ServiceCenter = (props: any) => {
       <View>
         <Image style={styles.backIcon} source={require(BackIcon)} />
       </View>
-      <View style={styles.fornaxBox}>
+      <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(CocoLineCallImage)} />
         <Text style={styles.textStyle}>Help</Text>
+      </View>
+      <View style={styles.fornaxBox}>
         <Pressable
           onPress={() => navigate('Signup')}
           style={[styles.button, styles.buttonClose]}>
