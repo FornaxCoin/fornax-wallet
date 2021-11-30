@@ -9,6 +9,7 @@ import Fingerprint from './src/screens/Fingerprint';
 import FaceId from './src/screens/FaceId';
 import ServiceCenter from './src/screens/ServiceCenter';
 import CriticsSuggestion from './src/screens/CriticsSuggestion';
+import SetPin from './src/screens/SetPin';
 import { ImageBackground, StyleSheet, View } from 'react-native';
 import {
   configureFonts,
@@ -113,11 +114,12 @@ const MainStackNavigator = () => {
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator
-        initialRouteName="SocialMedia"
+        initialRouteName="SetPin"
         screenOptions={{
           headerShown: false,
         }}>
         <Stack.Screen name="Intro" component={Intro} />
+        <Stack.Screen name="SetPin" component={SetPin} />
         <Stack.Screen name="Fingerprint" component={Fingerprint} />
         <Stack.Screen name="CriticsSuggestion" component={CriticsSuggestion} />
         <Stack.Screen name="Signup" component={Signup} />
