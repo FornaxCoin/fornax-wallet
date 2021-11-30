@@ -24,8 +24,9 @@ import Dashboard from './src/screens/Dashboard';
 import ImportWallet from './src/screens/ImportWallet';
 import store from './src/redux/index';
 import { Provider } from 'react-redux';
-import Login from './src/screens/Login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {fontConfig} from "./assets/styles/fontConfig";
+import Login from './src/screens/Login/Login';
 const BgImage = './assets/images/Layer.png';
 
 const styles = StyleSheet.create({
@@ -43,68 +44,7 @@ const styles = StyleSheet.create({
 
 const Stack = createStackNavigator();
 
-const fontConfig = {
-  web: {
-    regular: {
-      fontFamily: 'Quicksand',
-    },
-    medium: {
-      fontFamily: 'Quicksand-Medium',
-    },
-    light: {
-      fontFamily: 'Quicksand-Light',
-    },
-    thin: {
-      fontFamily: 'Quicksand',
-    },
-    bold: {
-      fontFamily: 'Quicksand-Bold',
-    },
-    semiBold: {
-      fontFamily: 'Quicksand-SemiBold',
-    },
-  },
-  ios: {
-    regular: {
-      fontFamily: 'Quicksand',
-    },
-    medium: {
-      fontFamily: 'Quicksand-Medium',
-    },
-    light: {
-      fontFamily: 'Quicksand-Light',
-    },
-    thin: {
-      fontFamily: 'Quicksand',
-    },
-    bold: {
-      fontFamily: 'Quicksand-Bold',
-    },
-    semiBold: {
-      fontFamily: 'Quicksand-SemiBold',
-    },
-  },
-  android: {
-    regular: {
-      fontFamily: 'Quicksand',
-    },
-    medium: {
-      fontFamily: 'Quicksand-Medium',
-    },
-    light: {
-      fontFamily: 'Quicksand-Light',
-    },
-    thin: {
-      fontFamily: 'Quicksand',
-    },
-    bold: {
-      fontFamily: 'Quicksand-Bold',
-    },
-    semiBold: {
-      fontFamily: 'Quicksand-SemiBold',
-    },
-  },
-};
+
 
 const theme = {
   ...PaperDefaultTheme,
@@ -139,6 +79,7 @@ const MainStackNavigator = ({ initRoute }: any) => {
         <Stack.Screen name="Fingerprint" component={Fingerprint} />
         <Stack.Screen name="CriticsSuggestion" component={CriticsSuggestion} />
         <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="SocialMedia" component={SocialMedia} />
         <Stack.Screen name="ServiceCenter" component={ServiceCenter} />
