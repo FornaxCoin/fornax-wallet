@@ -1,11 +1,12 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 const CocoFaceImage = '../../assets/images/COCO_Line_Scan-maga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-const FingerprintScanIcon = '../../assets/images/Fingerprint-scan.png';
-const ArrowRightIcon = '../../assets/images/arrow-right.png';
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
@@ -108,7 +109,7 @@ const FaceId = (props: any) => {
         <Text style={styles.fornaxMiniText}>Verify it's you</Text>
       </View>
       <View style={styles.fornaxBox}>
-        <View style={styles.camera}></View>
+        <View style={styles.camera} />
         <Text style={styles.txnText}>Turn your face to the camera</Text>
       </View>
     </>

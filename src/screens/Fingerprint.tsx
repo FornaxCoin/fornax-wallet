@@ -1,10 +1,9 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import {heightPercentageToDP as hp} from "react-native-responsive-screen";
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const CocoFingerprintImage = '../../assets/images/coco-fingerprint.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const FingerprintScanIcon = '../../assets/images/Fingerprint-scan.png';
-const ArrowRightIcon = '../../assets/images/arrow-right.png';
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
@@ -86,7 +85,10 @@ const Fingerprint = (props: any) => {
         <Image style={styles.backIcon} source={require(BackIcon)} />
       </View>
       <View style={styles.fornaxInnerBox}>
-        <Image style={styles.fornaxIcon} source={require(CocoFingerprintImage)} />
+        <Image
+          style={styles.fornaxIcon}
+          source={require(CocoFingerprintImage)}
+        />
         <Text style={styles.textStyle}>Fingerprint</Text>
       </View>
       <View style={styles.fornaxBox}>

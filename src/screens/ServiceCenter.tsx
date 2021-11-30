@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import {heightPercentageToDP as hp} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const CocoLineCallImage = '../../assets/images/COCO_Line_Call.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const CriticsIcon = '../../assets/images/critics.png';

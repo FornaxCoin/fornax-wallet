@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Animated, View, Text, StyleSheet, Image } from 'react-native';
-import { useState } from 'react';
 const HomeImg = require('../../assets/images/Homemini.png');
 const TransferImg = require('../../assets/images/transfer.png');
 const ScanImg = require('../../assets/images/Scan.png');

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import CardCarousel from '../components/CardCarousel';
 import MainTab from '../components/MainTab';
 import NavTab from '../components/navTab';
