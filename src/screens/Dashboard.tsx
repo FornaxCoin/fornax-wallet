@@ -161,8 +161,8 @@ const Dashboard = () => {
       <View style={styles.fornaxBox}>
         <View style={styles.navBar}>
           <View style={styles.badge} />
-          <Image source={require(BellIcon)} style={styles.bellImg} />
-          <Image source={require(SettingIcon)} style={styles.settingImg} />
+          <Image source={require('../../assets/images/bell.png')} style={styles.bellImg} />
+          <Image source={require('../../assets/images/setting.png')} style={styles.settingImg} />
         </View>
         <Text style={styles.fornaxText}>Dashboard</Text>
         <View style={styles.cardCarousel}>

@@ -82,19 +82,19 @@ const Fingerprint = (props: any) => {
   return (
     <>
       <View>
-        <Image style={styles.backIcon} source={require(BackIcon)} />
+        <Image style={styles.backIcon} source={require('../../assets/images/Iconly_Curved_Arrow.png')} />
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image
           style={styles.fornaxIcon}
-          source={require(CocoFingerprintImage)}
+          source={require('../../assets/images/Fingerprint-scan.png')}
         />
         <Text style={styles.textStyle}>Fingerprint</Text>
       </View>
       <View style={styles.fornaxBox}>
         <Image
           style={styles.fornaxCenterIcon}
-          source={require(FingerprintScanIcon)}
+          source={require('../../assets/images/Fingerprint-scan.png')}
         />
         <Text style={styles.txnText}>Put your finger</Text>
         <Text style={styles.txnText}>on the fingerprint scanner</Text>

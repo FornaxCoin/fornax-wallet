@@ -5,8 +5,6 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-const CocoFaceImage = '../../assets/images/COCO_Line_Scan-maga.png';
-const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
@@ -101,10 +99,16 @@ const FaceId = (props: any) => {
   return (
     <>
       <View>
-        <Image style={styles.backIcon} source={require(BackIcon)} />
+        <Image
+          style={styles.backIcon}
+          source={require('../../assets/images/Iconly_Curved_Arrow.png')}
+        />
       </View>
       <View style={styles.fornaxInnerBox}>
-        <Image style={styles.fornaxIcon} source={require(CocoFaceImage)} />
+        <Image
+          style={styles.fornaxIcon}
+          source={require('../../assets/images/COCO_Line_Scan-maga.png')}
+        />
         <Text style={styles.textStyle}>Face ID</Text>
         <Text style={styles.fornaxMiniText}>Verify it's you</Text>
       </View>

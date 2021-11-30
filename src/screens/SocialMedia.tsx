@@ -81,7 +81,7 @@ const SocialMedia = (props: any) => {
   return (
     <>
       <View>
-        <Image style={styles.backIcon} source={require(BackIcon)} />
+        <Image style={styles.backIcon} source={require('../../assets/images/Iconly_Curved_Arrow.png')} />
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image
@@ -94,28 +94,28 @@ const SocialMedia = (props: any) => {
         <Pressable
           onPress={() => navigate('Signup')}
           style={[styles.button, styles.buttonClose]}>
-          <Image source={require(FacebookImage)} />
+          <Image source={require('../../assets/images/facebook.png')} />
           <Text style={styles.txnText}>Facebook</Text>
           <View style={styles.arrowRightIcon}>
-            <Image source={require(ArrowRightIcon)} />
+            <Image source={require('../../assets/images/arrow-right.png')} />
           </View>
         </Pressable>
         <Pressable
           onPress={() => navigate('Signup')}
           style={[styles.button, styles.buttonClose]}>
-          <Image source={require(TwitterImage)} />
+          <Image source={require('../../assets/images/twitter.png')} />
           <Text style={styles.txnText}>Twitter</Text>
           <View style={styles.arrowRightIcon}>
-            <Image source={require(ArrowRightIcon)} />
+            <Image source={require('../../assets/images/arrow-right.png')} />
           </View>
         </Pressable>
         <Pressable
           onPress={() => navigate('Signup')}
           style={[styles.button, styles.buttonClose]}>
-          <Image source={require(InstagramImage)} />
+          <Image source={require('../../assets/images/instagram.png')} />
           <Text style={styles.txnText}>Instagram</Text>
           <View style={styles.arrowRightIcon}>
-            <Image source={require(ArrowRightIcon)} />
+            <Image source={require('../../assets/images/arrow-right.png')} />
           </View>
         </Pressable>
       </View>

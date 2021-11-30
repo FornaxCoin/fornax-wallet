@@ -129,7 +129,7 @@ const VerifyModal = ({ isModalVisible, setModalVisible }: any) => {
   return (
     <>
       <View style={styles.verifyModalBox}>
-        <Image source={require(sendImg)} style={styles.topImg} />
+        <Image source={require('../../assets/images/Iconly_Curved_Send.png')} style={styles.topImg} />
         <Text style={styles.verifyText}>
           Verify your account, we have sent a verification code to your mobile
           number
