@@ -15,7 +15,7 @@ import {
 const CocoPinImage = '../../assets/images/Iconly_Curved_Passwordmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const EyeSlashIcon = '../../assets/images/Eye-slashmini.png';
-const ArrowRightIcon = '../../assets/images/arrow-right.png';
+const CloseIcon = '../../assets/images/Closemini.png';
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
@@ -113,8 +113,9 @@ const styles = StyleSheet.create({
   NumPad: {
     width: 240,
     // height: 10,
-    marginTop: 10,
-    backgroundColor: '#afa2ff',
+    marginTop: 20,
+    marginBottom: 30,
+    // backgroundColor: '#afa2ff',
   },
   NumRow: {
     flexDirection: 'row',
@@ -123,12 +124,17 @@ const styles = StyleSheet.create({
     // alignSelf: 'center',
   },
   numClose: {
-    backgroundColor: '#b27f29',
+    // backgroundColor: '#b27f29',
     width: 50,
     alignSelf: 'center',
   },
   num: {
     paddingVertical: 20,
+  },
+  crossIcon: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
 });
 
@@ -196,13 +202,13 @@ const SetPin = (props: any) => {
             <Pressable style={[styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>0</Text>
             </Pressable>
-            <Pressable style={[styles.num, styles.numClose]}>
-              <Text style={styles.textStyle}>9</Text>
+            <Pressable style={[styles.num, styles.numClose, styles.crossIcon]}>
+              <Image style={styles.crossIcon} source={require(CloseIcon)} />
             </Pressable>
           </View>
         </View>
         <Pressable style={[styles.button, styles.buttonClose]}>
-          <Text style={styles.textStyle}>Get Started</Text>
+          <Text style={styles.textStyle}>Set PIN</Text>
         </Pressable>
       </View>
     </>
