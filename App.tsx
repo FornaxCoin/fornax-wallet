@@ -22,6 +22,7 @@ import {
   Provider as PaperProvider,
 } from 'react-native-paper';
 import Dashboard from './src/screens/Dashboard';
+import ConnectWallet from './src/screens/ConnectWallet';
 const BgImage = './assets/images/Layer.png';
 
 const styles = StyleSheet.create({
@@ -123,6 +124,7 @@ const MainStackNavigator = () => {
         screenOptions={{
           headerShown: false,
         }}>
+        <Stack.Screen name="Connect" component={ConnectWallet} />
         <Stack.Screen name="Intro" component={Intro} />
         <Stack.Screen name="WalletSetup" component={WalletSetup} />
         <Stack.Screen name="SetPin" component={SetPin} />
