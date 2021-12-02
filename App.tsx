@@ -23,6 +23,10 @@ import {
 } from 'react-native-paper';
 import Dashboard from './src/screens/Dashboard';
 import ConnectWallet from './src/screens/ConnectWallet';
+import ImportWallet from './src/screens/ImportWallet';
+import store from './src/redux/index';
+import { Provider } from 'react-redux';
+
 const BgImage = './assets/images/Layer.png';
 
 const styles = StyleSheet.create({
@@ -124,6 +128,7 @@ const MainStackNavigator = () => {
         screenOptions={{
           headerShown: false,
         }}>
+        <Stack.Screen name="Import" component={ImportWallet} />
         <Stack.Screen name="Connect" component={ConnectWallet} />
         <Stack.Screen name="Intro" component={Intro} />
         <Stack.Screen name="WalletSetup" component={WalletSetup} />
@@ -146,16 +151,18 @@ const MainStackNavigator = () => {
 
 const App = () => {
   return (
-    <ImageBackground
-      source={require(BgImage)}
-      resizeMode="cover"
-      style={styles.image}>
-      <PaperProvider theme={theme}>
-        <View style={styles.container}>
-          <MainStackNavigator />
-        </View>
-      </PaperProvider>
-    </ImageBackground>
+    <Provider store={store}>
+      <ImageBackground
+        source={require(BgImage)}
+        resizeMode="cover"
+        style={styles.image}>
+        <PaperProvider theme={theme}>
+          <View style={styles.container}>
+            <MainStackNavigator />
+          </View>
+        </PaperProvider>
+      </ImageBackground>
+    </Provider>
   );
 };
 

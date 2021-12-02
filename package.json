@@ -10,14 +10,19 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.15.14",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/stack": "^6.0.11",
+    "@reduxjs/toolkit": "^1.6.2",
+    "@truffle/hdwallet-provider": "^1.7.0",
+    "@types/lodash": "^4.14.177",
     "@types/react-native-elements": "^0.18.0",
     "@types/react-native-snap-carousel": "^3.8.5",
     "base-64": "1.0.0",
     "bip39": "^3.0.4",
     "buffer": "6.0.3",
+    "ethereumjs-wallet": "^1.0.2",
     "node-libs-browser": "2.2.1",
     "path-browserify": "0.0.0",
     "react": "17.0.2",
@@ -40,6 +45,7 @@
     "react-native-tab-view": "^3.1.1",
     "react-native-template-typescript": "^6.8.3",
     "react-native-vector-icons": "^9.0.0",
+    "react-redux": "^7.2.6",
     "web3": "^1.6.0"
   },
   "devDependencies": {

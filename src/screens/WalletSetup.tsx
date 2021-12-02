@@ -3,14 +3,7 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const SettingImage = '../../assets/images/Settingmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-const ProfileIcon = '../../assets/images/Iconly_Curved_Profilemini.png';
-const NotificationIcon =
-  '../../assets/images/Iconly_Curved_Notificationmini.png';
-const WalletIcon = '../../assets/images/Iconly_Curved_Walletmini.png';
-const LoginIcon = '../../assets/images/Iconly_Curved_Unlockmini.png';
-const CallingIcon = '../../assets/images/Iconly_Curved_Callingmini.png';
-const LogoutIcon = '../../assets/images/Iconly_Curved_Logoutmini.png';
-const ArrowRightIcon = '../../assets/images/arrow-right.png';
+
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
@@ -102,14 +95,21 @@ const WalletSetup = (props: any) => {
       <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(SettingImage)} />
         <Text style={styles.textStyle}>Wallet Setup</Text>
-        <Text style={styles.fornaxMiniText}>Import an existing wallet or create a new one</Text>
+        <Text style={styles.fornaxMiniText}>
+          Import an existing wallet or create a new one
+        </Text>
       </View>
       <View style={styles.fornaxBox}>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Import')}
           style={[styles.button, styles.buttonClose, styles.secondaryButton]}>
-          <Text style={[styles.txnText, styles.secondaryTxnText]}>Import using Secret</Text>
-          <Text style={[styles.txnText, styles.secondaryTxnText, {marginTop: 5}]}>Recovery Phrase</Text>
+          <Text style={[styles.txnText, styles.secondaryTxnText]}>
+            Import using Secret
+          </Text>
+          <Text
+            style={[styles.txnText, styles.secondaryTxnText, { marginTop: 5 }]}>
+            Recovery Phrase
+          </Text>
         </Pressable>
         <Pressable
           onPress={() => navigate('Signup')}

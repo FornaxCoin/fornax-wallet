@@ -206,7 +206,9 @@ const SignUp = (props: any) => {
         </Pressable>
         <Text style={styles.loginTextbox}>
           You have account?
-          <Pressable onPress={() => navigate('Login')} style={{ paddingTop: 6 }}>
+          <Pressable
+            onPress={() => navigate('Login')}
+            style={{ paddingTop: 6 }}>
             <Text style={styles.loginText}> Login</Text>
           </Pressable>
         </Text>

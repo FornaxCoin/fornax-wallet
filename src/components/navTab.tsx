@@ -73,8 +73,8 @@ const NavTab = () => {
       <View style={styles.tab}>
         <View style={styles.scanTab} />
         {routes.length > 0 &&
-          routes.map(route => (
-            <Animated.View style={[styles.item]}>
+          routes.map((route, index) => (
+            <Animated.View key={index} style={[styles.item]}>
               <Image
                 source={route.icon}
                 style={[styles.icon, route.key === 'scan' && styles.scanIcon]}
