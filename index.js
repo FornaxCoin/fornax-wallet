@@ -16,4 +16,14 @@ global.atob = global.atob || require('base-64').decode;
 
 process.version = 'v9.40';
 
+const backup = console.warn;
+
+console.warn = function filterWarnings(msg) {
+  const supressedWarnings = ['warning text', 'Require cycles are allowed'];
+
+  if (!supressedWarnings.some(entry => msg.includes(entry))) {
+    backup.apply(console, arguments);
+  }
+};
+
 AppRegistry.registerComponent(appName, () => App);

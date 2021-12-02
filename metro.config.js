@@ -9,7 +9,7 @@ const extraNodeModules = require('node-libs-browser');
 module.exports = {
   resolver: {
     extraNodeModules: {
-      extraNodeModules,
+      ...extraNodeModules,
       crypto: './node_modules/react-native-crypto',
       stream: './node_modules/react-native-stream',
       https: './node_modules/react-native-http',

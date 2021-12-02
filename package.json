@@ -16,6 +16,7 @@
     "@types/react-native-elements": "^0.18.0",
     "@types/react-native-snap-carousel": "^3.8.5",
     "base-64": "1.0.0",
+    "bip39": "^3.0.4",
     "buffer": "6.0.3",
     "node-libs-browser": "2.2.1",
     "path-browserify": "0.0.0",
@@ -75,12 +76,5 @@
     "web3",
     "starter",
     "react-native-web"
-  ],
-  "react-native": {
-    "stream": "react-native-stream",
-    "crypto": "react-native-crypto",
-    "path": "path-browserify",
-    "https": "react-native-https",
-    "process": "node-libs-browser/mock/process"
-  }
+  ]
 }
