@@ -1,24 +1,31 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-
-const CocoFaceImage = '../../assets/images/COCO_Line_Scan-maga.png';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+const SettingImage = '../../assets/images/Settingmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-const FingerprintScanIcon = '../../assets/images/Fingerprint-scan.png';
+const ProfileIcon = '../../assets/images/Iconly_Curved_Profilemini.png';
+const NotificationIcon =
+  '../../assets/images/Iconly_Curved_Notificationmini.png';
+const WalletIcon = '../../assets/images/Iconly_Curved_Walletmini.png';
+const LoginIcon = '../../assets/images/Iconly_Curved_Unlockmini.png';
+const CallingIcon = '../../assets/images/Iconly_Curved_Callingmini.png';
+const LogoutIcon = '../../assets/images/Iconly_Curved_Logoutmini.png';
 const ArrowRightIcon = '../../assets/images/arrow-right.png';
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    // marginTop: 165,
+    justifyContent: 'center',
   },
   fornaxText: {
     fontSize: 48,
     color: '#b27f29',
     textAlign: 'center',
     fontFamily: 'Quicksand-Bold',
+  },
+  secondaryTxnText: {
+    color: '#363853',
   },
   txnText: {
     marginLeft: 17,
@@ -29,18 +36,19 @@ const styles = StyleSheet.create({
     marginTop: -5,
   },
   buttonClose: {
-    // flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    // backgroundColor: '#b27f29',
+    backgroundColor: '#b27f29',
     width: 240,
     alignSelf: 'center',
-    marginBottom: 43,
+    marginTop: 25,
   },
   button: {
     borderRadius: 20,
-    paddingVertical: 0,
+    paddingVertical: 18,
+  },
+  secondaryButton: {
+    backgroundColor: '#fff',
+    color: '#b27f29',
+    marginTop: 185,
   },
   textStyle: {
     fontSize: 20,
@@ -62,11 +70,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   fornaxIcon: {
-    // marginTop: -119,
     marginBottom: 44,
-  },
-  fornaxCenterIcon: {
-    marginBottom: 142,
   },
   fornaxInnerBox: {
     flex: 0,
@@ -85,17 +89,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Quicksand-Medium',
   },
-  camera: {
-    height: 288,
-    width: 288,
-    borderRadius: 120,
-    backgroundColor: '#afa2ff',
-    marginBottom: 48,
-  },
 });
 
-const FaceId = (props: any) => {
-  // const navigate = props.navigation.navigate;
+const WalletSetup = (props: any) => {
+  const navigate = props.navigation.navigate;
 
   return (
     <>
@@ -103,16 +100,25 @@ const FaceId = (props: any) => {
         <Image style={styles.backIcon} source={require(BackIcon)} />
       </View>
       <View style={styles.fornaxInnerBox}>
-        <Image style={styles.fornaxIcon} source={require(CocoFaceImage)} />
-        <Text style={styles.textStyle}>Face ID</Text>
-        <Text style={styles.fornaxMiniText}>Verify it's you</Text>
+        <Image style={styles.fornaxIcon} source={require(SettingImage)} />
+        <Text style={styles.textStyle}>Wallet Setup</Text>
+        <Text style={styles.fornaxMiniText}>Import an existing wallet or create a new one</Text>
       </View>
       <View style={styles.fornaxBox}>
-        <View style={styles.camera}></View>
-        <Text style={styles.txnText}>Turn your face to the camera</Text>
+        <Pressable
+          onPress={() => navigate('Signup')}
+          style={[styles.button, styles.buttonClose, styles.secondaryButton]}>
+          <Text style={[styles.txnText, styles.secondaryTxnText]}>Import using Secret</Text>
+          <Text style={[styles.txnText, styles.secondaryTxnText, {marginTop: 5}]}>Recovery Phrase</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => navigate('Signup')}
+          style={[styles.button, styles.buttonClose]}>
+          <Text style={styles.txnText}>Create a new Wallet</Text>
+        </Pressable>
       </View>
     </>
   );
 };
 
-export default FaceId;
+export default WalletSetup;

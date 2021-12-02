@@ -9,7 +9,12 @@ import Fingerprint from './src/screens/Fingerprint';
 import FaceId from './src/screens/FaceId';
 import ServiceCenter from './src/screens/ServiceCenter';
 import CriticsSuggestion from './src/screens/CriticsSuggestion';
+import LoginSetting from './src/screens/LoginSetting';
 import SetPin from './src/screens/SetPin';
+import Settings from './src/screens/Settings';
+import Wallet from './src/screens/Wallet';
+import Notifications from './src/screens/Notifications';
+import WalletSetup from './src/screens/WalletSetup';
 import { ImageBackground, StyleSheet, View } from 'react-native';
 import {
   configureFonts,
@@ -114,12 +119,17 @@ const MainStackNavigator = () => {
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator
-        initialRouteName="SetPin"
+        initialRouteName="WalletSetup"
         screenOptions={{
           headerShown: false,
         }}>
         <Stack.Screen name="Intro" component={Intro} />
+        <Stack.Screen name="WalletSetup" component={WalletSetup} />
         <Stack.Screen name="SetPin" component={SetPin} />
+        <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen name="Wallet" component={Wallet} />
+        <Stack.Screen name="Notifications" component={Notifications} />
+        <Stack.Screen name="LoginSetting" component={LoginSetting} />
         <Stack.Screen name="Fingerprint" component={Fingerprint} />
         <Stack.Screen name="CriticsSuggestion" component={CriticsSuggestion} />
         <Stack.Screen name="Signup" component={Signup} />

@@ -2,7 +2,8 @@ import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-const CocoFaceImage = '../../assets/images/COCO_Line_Scan-maga.png';
+const NotificationImage = '../../assets/images/Notificationmaga.png';
+const NotificationDotImage = '../../assets/images/NotificationDotmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const FingerprintScanIcon = '../../assets/images/Fingerprint-scan.png';
 const ArrowRightIcon = '../../assets/images/arrow-right.png';
@@ -65,6 +66,11 @@ const styles = StyleSheet.create({
     // marginTop: -119,
     marginBottom: 44,
   },
+  fornaxIconExtra: {
+    marginTop: -65,
+    marginBottom: 56,
+    marginLeft: 40,
+  },
   fornaxCenterIcon: {
     marginBottom: 142,
   },
@@ -94,7 +100,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const FaceId = (props: any) => {
+const Notifications = (props: any) => {
   // const navigate = props.navigation.navigate;
 
   return (
@@ -103,16 +109,18 @@ const FaceId = (props: any) => {
         <Image style={styles.backIcon} source={require(BackIcon)} />
       </View>
       <View style={styles.fornaxInnerBox}>
-        <Image style={styles.fornaxIcon} source={require(CocoFaceImage)} />
-        <Text style={styles.textStyle}>Face ID</Text>
-        <Text style={styles.fornaxMiniText}>Verify it's you</Text>
+        <View style={styles.fornaxIcon}>
+          <Image source={require(NotificationImage)} />
+          <Image style={styles.fornaxIconExtra} source={require(NotificationDotImage)} />
+        </View>
+        <Text style={styles.textStyle}>Notifications</Text>
+        <Text style={styles.fornaxMiniText}>You have a new notification</Text>
       </View>
       <View style={styles.fornaxBox}>
-        <View style={styles.camera}></View>
-        <Text style={styles.txnText}>Turn your face to the camera</Text>
+
       </View>
     </>
   );
 };
 
-export default FaceId;
+export default Notifications;
