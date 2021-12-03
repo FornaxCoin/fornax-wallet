@@ -144,21 +144,25 @@ const VerifyModal = ({ isModalVisible, setModalVisible }: any) => {
   );
 };
 
-const SignUp = (props: any) => {
+const Login = (props: any) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const navigate = props.navigation.navigate;
   const [user, setUser] = useState({
-    username: '',
     email: '',
     password: '',
   });
 
-  const handleSignup = async () => {
+  const handleLogin = async () => {
     try {
-      await AsyncStorage.setItem('registerUser', JSON.stringify(user));
+      await AsyncStorage.setItem('loginUser', JSON.stringify(user));
+      const value = await AsyncStorage.getItem('accountList');
+      if (value) {
+        navigate('Dashboard');
+        return;
+      }
       navigate('WalletSetup');
     } catch (err) {
-      console.log('Signup Error', err);
+      console.log('Login Error', err);
     }
   };
 
@@ -174,20 +178,7 @@ const SignUp = (props: any) => {
           </PhoneModal>
         )}
         <View style={{ marginBottom: 50 }}>
-          <Text style={styles.createAccText}>Create an account,</Text>
-          <Text style={styles.createAccText}>
-            and enjoy transactions in an easier way
-          </Text>
-        </View>
-        <View style={styles.inputBox}>
-          <Text style={styles.inputLabel}>Username</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="username"
-            placeholderTextColor="#bdbdbd"
-            onChangeText={e => setUser({ ...user, username: e })}
-            value={user.username}
-          />
+          <Text style={styles.createAccText}>Login to your Account</Text>
         </View>
         <View style={styles.inputBox}>
           <Text style={styles.inputLabel}>Email</Text>
@@ -211,16 +202,23 @@ const SignUp = (props: any) => {
           />
         </View>
         <Pressable
-          onPress={handleSignup}
+          onPress={handleLogin}
           style={[styles.button, styles.buttonClose]}>
-          <Text style={styles.textStyle}>Register</Text>
+          <Text style={styles.textStyle}>Login</Text>
         </Pressable>
         <Text style={styles.loginTextbox}>
-          You have account?
+          You don't have account?
           <Pressable
-            onPress={() => navigate('Login')}
+            onPress={() => navigate('SignUp')}
             style={{ paddingTop: 6 }}>
-            <Text style={styles.loginText}> Login</Text>
+            <Text style={styles.loginText}> SignUp</Text>
+          </Pressable>
+        </Text>
+        <Text style={styles.loginTextbox}>
+          <Pressable
+            onPress={() => navigate('SignUp')}
+            style={{ paddingTop: 6 }}>
+            <Text style={styles.loginText}> Forgot Password?</Text>
           </Pressable>
         </Text>
       </View>
@@ -228,4 +226,4 @@ const SignUp = (props: any) => {
   );
 };
 
-export default SignUp;
+export default Login;

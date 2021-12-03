@@ -1,18 +1,15 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const WalletImage = '../../assets/images/Walletmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-const FingerprintScanIcon = '../../assets/images/Fingerprint-scan.png';
-const ArrowRightIcon = '../../assets/images/arrow-right.png';
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // marginTop: 165,
   },
   fornaxText: {
     fontSize: 48,
@@ -29,11 +26,9 @@ const styles = StyleSheet.create({
     marginTop: -5,
   },
   buttonClose: {
-    // flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: '#b27f29',
     width: 240,
     alignSelf: 'center',
     marginBottom: 43,
@@ -55,14 +50,12 @@ const styles = StyleSheet.create({
   },
   arrowRightIcon: {
     flex: 1,
-    // backgroundColor: 'red',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
     alignSelf: 'center',
   },
   fornaxIcon: {
-    // marginTop: -119,
     marginBottom: 44,
   },
   fornaxCenterIcon: {
@@ -73,13 +66,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: 'green',
-    // marginTop: 120,
     marginTop: hp('10'),
     marginBottom: hp('4'),
   },
   fornaxMiniText: {
-    // marginLeft: 17,
     fontSize: 16,
     color: '#bdbdbd',
     textAlign: 'center',
@@ -94,7 +84,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Wallet = (props: any) => {
+const Wallet = () => {
   // const navigate = props.navigation.navigate;
 
   return (
@@ -107,9 +97,9 @@ const Wallet = (props: any) => {
         <Text style={styles.textStyle}>Your Wallet</Text>
         <Text style={styles.fornaxMiniText}>6 Accounts Connected</Text>
       </View>
-      <View style={styles.fornaxBox}>
+      {/* <View style={styles.fornaxBox}>
 
-      </View>
+      </View> */}
     </>
   );
 };

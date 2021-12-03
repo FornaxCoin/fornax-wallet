@@ -1,8 +1,17 @@
-import React from 'react';
+/* eslint-disable no-unused-expressions */
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import CardCarousel from '../components/CardCarousel';
 import MainTab from '../components/MainTab';
 import NavTab from '../components/navTab';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import Web3 from 'web3';
+import {
+  setAccounts as setWeb3Accounts,
+  setWeb3,
+} from '../redux/reducers/Wallet';
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 const BellIcon = '../../assets/images/bell.png';
 const SettingIcon = '../../assets/images/setting.png';
@@ -83,6 +92,70 @@ const styles = StyleSheet.create({
 });
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+  // const navigate = props.navigation.navigate;
+  const [accounts, setAccounts] = useState<any>([]);
+
+  const checkAccount = async (web3: any) => {
+    try {
+      const value = await AsyncStorage.getItem('accountList');
+      if (value != null) {
+        const data = [JSON.parse(value)];
+        setAccounts([]);
+        data.length > 0 &&
+          data.map(async (acc: any) => {
+            try {
+              const balance =
+                web3 &&
+                acc?.address &&
+                (await web3?.eth?.getBalance(acc?.address));
+              balance && Object.assign(acc, { balance });
+              accounts.findIndex((ac: any) => ac.address === acc.address) ===
+                -1 && accounts.push(acc);
+              setAccounts([...accounts]);
+              dispatch(setWeb3Accounts(accounts));
+            } catch (err) {
+              console.log(err);
+              return;
+            }
+            return acc;
+          });
+
+        return;
+      }
+    } catch (err) {
+      console.log('Accoun Error', err);
+    }
+  };
+
+  const connectWallet = async () => {
+    try {
+      const mnemonicPhrase = await AsyncStorage.getItem('mnemonicPhrase');
+      const provider = new HDWalletProvider({
+        mnemonic: {
+          phrase: mnemonicPhrase,
+        },
+        providerOrUrl: 'wss://node.watchfornax.com/ws',
+        network_id: 13936,
+        confirmations: 10,
+        timeoutBlocks: 200,
+        skipDryRun: true,
+      });
+      const web3 = new Web3(provider);
+      if (web3) {
+        checkAccount(web3);
+        dispatch(setWeb3(web3));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    connectWallet();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <View style={styles.fornaxBox}>

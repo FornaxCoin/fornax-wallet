@@ -153,7 +153,6 @@ const SecondRoute = () => (
 const renderScene = SceneMap({
   transaction: FirstRoute,
   savings: SecondRoute,
-  bill: SecondRoute,
 });
 
 const MainTab = () => {
@@ -163,7 +162,6 @@ const MainTab = () => {
   const [routes] = React.useState([
     { key: 'transaction', title: 'Transactions' },
     { key: 'savings', title: 'Savings' },
-    { key: 'bill', title: 'Bill' },
   ]);
 
   const renderTabBar = (props: any) => (

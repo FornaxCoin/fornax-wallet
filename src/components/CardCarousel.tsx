@@ -8,6 +8,7 @@ import {
   Image,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
+import { useSelector } from 'react-redux';
 const BgImage = '../../assets/images/Group_35card.png';
 const plusImg = '../../assets/images/Plusmini.png';
 
@@ -29,10 +30,10 @@ const styles = StyleSheet.create({
   },
   addBtn: {
     backgroundColor: '#363853',
-    padding: 17,
+    padding: 13,
     position: 'absolute',
-    bottom: 25,
-    right: 4,
+    bottom: 5,
+    right: 12,
     borderRadius: 20,
   },
 });
@@ -40,32 +41,23 @@ const styles = StyleSheet.create({
 const CardCarousel = () => {
   const carouselRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const carouselItems = [
-    {
-      title: 'FRX Balance',
-      text: 7430,
-    },
-    {
-      title: 'FRX Balance',
-      text: 7430,
-    },
-    {
-      title: 'FRX Balance',
-      text: 7430,
-    },
-    {
-      title: 'FRX Balance',
-      text: 7430,
-    },
-  ];
+  // console.log(activeIndex);
 
-  const _renderItem = ({ item }: any) => {
+  const { accounts } = useSelector(({ wallet }: any) => {
+    return {
+      accounts: wallet?.accounts,
+    };
+  });
+
+  const _renderItem = ({ item, index }: any) => {
     return (
       <ImageBackground source={require(BgImage)} style={styles.carouselBox}>
-        <Text style={styles.carouselText}>{item.title}</Text>
-        <Text style={styles.carouselText}>{item.text}</Text>
+        <Text style={styles.carouselText}>
+          {item?.title || `Wallet ${index + 1}`}
+        </Text>
+        <Text style={styles.carouselText}>{item?.balance}</Text>
         <View style={styles.addBtn}>
-          <Image source={require(plusImg)} style={{ width: 20, height: 20 }} />
+          <Image source={require(plusImg)} style={{ width: 30, height: 30 }} />
         </View>
       </ImageBackground>
     );
@@ -83,7 +75,7 @@ const CardCarousel = () => {
           <Carousel
             layout={'default'}
             ref={carouselRef}
-            data={carouselItems}
+            data={accounts}
             sliderWidth={300}
             itemWidth={300}
             renderItem={_renderItem}

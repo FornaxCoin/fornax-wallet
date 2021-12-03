@@ -10,8 +10,10 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import _join from 'lodash/join';
-const HDWalletProvider = require('@truffle/hdwallet-provider');
 import Web3 from 'web3';
+import { setWeb3 } from '../redux/reducers/Wallet';
+import { useDispatch } from 'react-redux';
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 const SettingImage = '../../assets/images/Settingmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 
@@ -110,21 +112,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 });
-const seedArray = [
-  'twenty',
-  'fruit',
-  'robot',
-  'used',
-  'surround',
-  'ladder',
-  'priority',
-  'own',
-  'industry',
-  'share',
-  'pyramid',
-  'snap',
-];
+const seedArray = ['', '', '', '', '', '', '', '', '', '', '', ''];
+
 const ImportWallet = (props: any) => {
+  const dispatch = useDispatch();
   const navigate = props.navigation.navigate;
   const [seed, setSeed] = useState<any>(seedArray);
 
@@ -133,17 +124,21 @@ const ImportWallet = (props: any) => {
     setSeed([...seed]);
   };
 
-  const storeDataAsync = async (account: any) => {
+  const storeDataAsync = async (account: any, mnemonicPhrase: string) => {
     try {
-      const value = await AsyncStorage.getItem('accountList');
-      if (value) {
-        navigate('Dashboard');
-        return;
-        // We have data!!
-        // const data: any = JSON.parse(value);
-        // newAccounts.push(data[0]);
-      }
-      await AsyncStorage.setItem('accountList', JSON.stringify(account));
+      // const value = await AsyncStorage.getItem('accountList');
+      // if (value) {
+      //   return;
+      //   // We have data!!
+      //   // const data: any = JSON.parse(value);
+      //   // newAccounts.push(data[0]);
+      // }
+      await AsyncStorage.multiRemove(['accountList', 'mnemonicPhrase']);
+      await AsyncStorage.multiSet([
+        ['accountList', JSON.stringify(account)],
+        ['mnemonicPhrase', mnemonicPhrase],
+      ]);
+      navigate('Dashboard');
     } catch (error) {
       // Error saving data
     }
@@ -165,8 +160,9 @@ const ImportWallet = (props: any) => {
       });
       const web3 = new Web3(provider);
       if (web3) {
+        dispatch(setWeb3(web3));
         const account = await web3.eth.accounts.create();
-        storeDataAsync(account);
+        storeDataAsync(account, mnemonicPhrase);
       }
     } catch (err) {
       console.log(err);
@@ -198,6 +194,7 @@ const ImportWallet = (props: any) => {
                       placeholderTextColor="#bdbdbd"
                       onChangeText={e => handleSeeds(e, index)}
                       value={seed[index]}
+                      autoCapitalize={'none'}
                     />
                   </View>
                 );
@@ -215,6 +212,7 @@ const ImportWallet = (props: any) => {
                       placeholderTextColor="#bdbdbd"
                       onChangeText={e => handleSeeds(e, index + 6)}
                       value={seed[index + 6]}
+                      autoCapitalize={'none'}
                     />
                   </View>
                 );
