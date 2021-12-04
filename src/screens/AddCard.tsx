@@ -1,19 +1,13 @@
-import React, { useState } from 'react';
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React from 'react';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import _join from 'lodash/join';
+import { generateMnemonic } from 'bip39';
 import Web3 from 'web3';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setWeb3 } from '../redux/reducers/Wallet';
 import { useDispatch } from 'react-redux';
 const HDWalletProvider = require('@truffle/hdwallet-provider');
+
 const SettingImage = '../../assets/images/Settingmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 
@@ -30,6 +24,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Quicksand-Bold',
   },
+  secondaryTxnText: {
+    color: '#363853',
+  },
   txnText: {
     marginLeft: 17,
     fontSize: 16,
@@ -42,12 +39,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#b27f29',
     width: 240,
     alignSelf: 'center',
+    marginTop: 25,
   },
   button: {
     borderRadius: 20,
     paddingVertical: 18,
-    marginTop: hp('5'),
-    marginBottom: hp('10'),
+  },
+  secondaryButton: {
+    backgroundColor: '#fff',
+    color: '#b27f29',
+    marginTop: 185,
   },
   textStyle: {
     fontSize: 20,
@@ -55,7 +56,6 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     fontFamily: 'Quicksand-Bold',
     textAlign: 'center',
-    marginBottom: 10,
   },
   backIcon: {
     marginLeft: 26,
@@ -63,67 +63,37 @@ const styles = StyleSheet.create({
   },
   arrowRightIcon: {
     flex: 1,
+    // backgroundColor: 'red',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
     alignSelf: 'center',
   },
   fornaxIcon: {
-    marginBottom: 30,
+    marginBottom: 44,
   },
   fornaxInnerBox: {
     flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('5'),
-    marginBottom: hp('1'),
+    // backgroundColor: 'green',
+    // marginTop: 120,
+    marginTop: hp('10'),
+    marginBottom: hp('4'),
   },
   fornaxMiniText: {
-    fontSize: 18,
+    // marginLeft: 17,
+    fontSize: 16,
     color: '#bdbdbd',
     textAlign: 'center',
     fontFamily: 'Quicksand-Medium',
-    width: 300,
-  },
-  seedBox: {
-    borderWidth: 2,
-    borderRadius: 20,
-    borderStyle: 'dotted',
-    borderColor: '#b27f29',
-    marginVertical: 10,
-    marginRight: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    width: 125,
-  },
-  seedText: {
-    color: '#ffffff',
-    textAlign: 'center',
-    width: 80,
-  },
-  seedList: {
-    flexDirection: 'column',
-    marginBottom: 10,
-  },
-  seedListBox: {
-    width: 280,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
 });
-const seedArray = ['', '', '', '', '', '', '', '', '', '', '', ''];
 
-const ImportWallet = (props: any) => {
+const AddCard = (props: any) => {
   const dispatch = useDispatch();
   const navigate = props.navigation.navigate;
-  const [seed, setSeed] = useState<any>(seedArray);
-
-  const handleSeeds = (e: any, index: number) => {
-    seed[index] = e;
-    setSeed([...seed]);
-    console.log(seed);
-  };
 
   const storeDataAsync = async (account: any, mnemonicPhrase: string) => {
     try {
@@ -138,13 +108,12 @@ const ImportWallet = (props: any) => {
     }
   };
 
-  const handleImport = async () => {
-    const mnemonicPhrase = _join(seed, ' ');
-    console.log(mnemonicPhrase.trim(), 'mnemonicPhrase');
+  const handleCreateWallet = async () => {
+    const mnemonicPhrase = await generateMnemonic();
     try {
       const provider = new HDWalletProvider({
         mnemonic: {
-          phrase: mnemonicPhrase.trim(),
+          phrase: mnemonicPhrase,
         },
         providerOrUrl: 'wss://node.watchfornax.com/ws',
         network_id: 13936,
@@ -170,58 +139,27 @@ const ImportWallet = (props: any) => {
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(SettingImage)} />
-        <Text style={styles.textStyle}>Import Wallet</Text>
+        <Text style={styles.textStyle}>Wallet Setup</Text>
         <Text style={styles.fornaxMiniText}>
-          Write down your Secret Recovery Phrase
+          Import an existing wallet or create a new one
         </Text>
       </View>
       <View style={styles.fornaxBox}>
-        <View style={styles.seedListBox}>
-          <View style={styles.seedList}>
-            {seedArray.map((sed: any, index: any) => {
-              if (index <= 5) {
-                return (
-                  <View key={index} style={styles.seedBox}>
-                    <TextInput
-                      style={styles.seedText}
-                      placeholder={sed}
-                      placeholderTextColor="#bdbdbd"
-                      onChangeText={e => handleSeeds(e, index)}
-                      value={seed[index]}
-                      autoCapitalize={'none'}
-                    />
-                  </View>
-                );
-              }
-            })}
-          </View>
-          <View style={styles.seedList}>
-            {seedArray.map((sed: any, index: any) => {
-              if (index >= 6) {
-                return (
-                  <View key={index} style={styles.seedBox}>
-                    <TextInput
-                      style={styles.seedText}
-                      placeholder={sed}
-                      placeholderTextColor="#bdbdbd"
-                      onChangeText={e => handleSeeds(e, index)}
-                      value={seed[index]}
-                      autoCapitalize={'none'}
-                    />
-                  </View>
-                );
-              }
-            })}
-          </View>
-        </View>
         <Pressable
-          onPress={handleImport}
+          onPress={() => navigate('Import')}
+          style={[styles.button, styles.buttonClose, styles.secondaryButton]}>
+          <Text style={[styles.txnText, styles.secondaryTxnText]}>
+            Import new Card
+          </Text>
+        </Pressable>
+        <Pressable
+          onPress={handleCreateWallet}
           style={[styles.button, styles.buttonClose]}>
-          <Text style={styles.txnText}>Continue</Text>
+          <Text style={styles.txnText}>Create a new Card</Text>
         </Pressable>
       </View>
     </>
   );
 };
 
-export default ImportWallet;
+export default AddCard;

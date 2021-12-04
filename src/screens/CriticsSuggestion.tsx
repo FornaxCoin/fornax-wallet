@@ -1,9 +1,9 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import {heightPercentageToDP as hp} from "react-native-responsive-screen";
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const CocoLineMessageImage = '../../assets/images/COCO_Line_Message.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-const ArrowRightIcon = '../../assets/images/arrow-right.png';
+
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
