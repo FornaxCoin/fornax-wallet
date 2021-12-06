@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setAccounts } from '../redux/reducers/Wallet';
 import { useDispatch, useSelector } from 'react-redux';
+import RNPickerSelect from 'react-native-picker-select';
+import { Icon } from 'react-native-simple-icons';
 
 const SendImage = '../../assets/images/Sendmini.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
+const DownArrow = '../../assets/images/Vector-arrow.png';
 
 const styles = StyleSheet.create({
   fornaxBox: {
@@ -82,12 +85,45 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Quicksand-Medium',
   },
+  inputBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: 60,
+    borderRadius: 15,
+    fontFamily: 'Quicksand-Medium',
+    backgroundColor: '#ffffff',
+    color: '#bdbdbd',
+    fontSize: 16,
+    width: 340,
+    marginBottom: 20,
+  },
+  inputImg: {
+    height: 10,
+    width: 20,
+    marginTop: 6,
+    position: 'absolute',
+    right: 15,
+    top: 20,
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    width: 340,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+  inputAndroid: {
+    width: 340,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
 });
 
 const Transfer = (props: any) => {
   const dispatch = useDispatch();
   const navigate = props.navigation.navigate;
-
+  const [walletAddres, setWalletAddress] = useState('');
   const { web3 } = useSelector(({ wallet }: any) => {
     return {
       web3: wallet?.web3,
@@ -134,18 +170,30 @@ const Transfer = (props: any) => {
         </Text>
       </View>
       <View style={styles.fornaxBox}>
-        <Pressable
-          onPress={() => navigate('ImportCard')}
-          style={[styles.button, styles.buttonClose, styles.secondaryButton]}>
-          <Text style={[styles.txnText, styles.secondaryTxnText]}>
-            Import new Card
-          </Text>
-        </Pressable>
-        <Pressable
-          onPress={handleCreateWallet}
-          style={[styles.button, styles.buttonClose]}>
-          <Text style={styles.txnText}>Create a new Card</Text>
-        </Pressable>
+        <View style={styles.inputBox}>
+          <RNPickerSelect
+            onValueChange={value => console.log(value)}
+            style={pickerSelectStyles}
+            items={[
+              { label: 'Football', value: 'football' },
+              { label: 'Baseball', value: 'baseball' },
+              { label: 'Hockey', value: 'hockey' },
+            ]}
+          />
+          {/* <Icon name="ei-chevron-down" type="evilicon" color="#000000" /> */}
+          {/* <Icon name="sc-telegram" type="evilicon" color="#517fa4" /> */}
+        </View>
+        <View style={styles.inputBox}>
+          <RNPickerSelect
+            onValueChange={value => console.log(value)}
+            style={pickerSelectStyles}
+            items={[
+              { label: 'Football', value: 'football' },
+              { label: 'Baseball', value: 'baseball' },
+              { label: 'Hockey', value: 'hockey' },
+            ]}
+          />
+        </View>
       </View>
     </>
   );

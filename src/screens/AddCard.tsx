@@ -114,11 +114,25 @@ const AddCard = (props: any) => {
     }
   };
 
+  const getBalance = async (account: any) => {
+    web3.eth.getBalance(account?.address).then(
+      async (bal: any) => {
+        if (bal >= 0) {
+          const balance = await web3.utils.fromWei(bal, 'ether');
+          storeDataAsync({ ...account, balance });
+        }
+      },
+      (error: any) => {
+        console.log(error, 'getBalance');
+      },
+    );
+  };
+
   const handleCreateWallet = async () => {
     try {
       if (web3) {
         const account = await web3.eth.accounts.create();
-        storeDataAsync(account);
+        getBalance(account);
       }
     } catch (err) {
       console.log(err);

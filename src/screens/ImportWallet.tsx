@@ -137,6 +137,20 @@ const ImportWallet = (props: any) => {
     }
   };
 
+  const getBalance = (web3: any, account: any, mnemonicPhrase: any) => {
+    web3.eth.getBalance(account?.address).then(
+      async (bal: any) => {
+        if (bal >= 0) {
+          const balance = await web3.utils.fromWei(bal, 'ether');
+          storeDataAsync({ ...account, balance }, mnemonicPhrase);
+        }
+      },
+      (error: any) => {
+        console.log(error, 'getBalance');
+      },
+    );
+  };
+
   const handleImport = async () => {
     const mnemonicPhrase = _join(seed, ' ');
     try {
@@ -154,7 +168,7 @@ const ImportWallet = (props: any) => {
       if (web3) {
         dispatch(setWeb3(web3));
         const account = await web3.eth.accounts.create();
-        storeDataAsync(account, mnemonicPhrase);
+        getBalance(web3, account, mnemonicPhrase);
       }
     } catch (err) {
       console.log(err);
