@@ -178,7 +178,9 @@ const ImportWallet = (props: any) => {
   return (
     <>
       <View>
-        <Image style={styles.backIcon} source={require(BackIcon)} />
+        <Pressable onPress={() => navigate('WalletSetup')}>
+          <Image style={styles.backIcon} source={require(BackIcon)} />
+        </Pressable>
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(SettingImage)} />

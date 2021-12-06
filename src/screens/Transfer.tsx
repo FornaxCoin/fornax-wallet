@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setAccounts } from '../redux/reducers/Wallet';
+import { setTxnsInfo } from '../redux/reducers/Wallet';
 import { useDispatch, useSelector } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
-import { Icon } from 'react-native-simple-icons';
 
 const SendImage = '../../assets/images/Sendmini.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-const DownArrow = '../../assets/images/Vector-arrow.png';
+// const DownArrow = '../../assets/images/Vector-arrow.png';
 
 const styles = StyleSheet.create({
   fornaxBox: {
@@ -105,16 +110,24 @@ const styles = StyleSheet.create({
     right: 15,
     top: 20,
   },
+  input: {
+    fontFamily: 'Quicksand-Medium',
+    fontSize: 16,
+    width: 340,
+    paddingHorizontal: 20,
+  },
 });
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     width: 340,
+    fontSize: 16,
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
   inputAndroid: {
     width: 340,
+    fontSize: 16,
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
@@ -123,44 +136,56 @@ const pickerSelectStyles = StyleSheet.create({
 const Transfer = (props: any) => {
   const dispatch = useDispatch();
   const navigate = props.navigation.navigate;
-  const [walletAddres, setWalletAddress] = useState('');
-  const { web3 } = useSelector(({ wallet }: any) => {
+  const [accountOpt, setAccountOpt] = useState<any>([]);
+  const [txnData, setTxnData] = useState({
+    to: '',
+    from: {} as any,
+  });
+
+  const { web3, accounts } = useSelector(({ wallet }: any) => {
     return {
       web3: wallet?.web3,
+      accounts: wallet?.accounts,
     };
   });
 
-  const storeDataAsync = async (account: any) => {
-    try {
-      const accounts: any = [];
-      const accountList = await AsyncStorage.getItem('accountList');
-      if (accountList !== null) {
-        accounts.push(...JSON.parse(accountList));
-        accounts.push(account);
-      }
-      await AsyncStorage.setItem('accountList', JSON.stringify(accounts));
-      dispatch(setAccounts(accounts));
-      navigate('Dashboard');
-    } catch (error) {
-      // Error saving data
+  useEffect(() => {
+    const options =
+      accounts.length > 0 &&
+      accounts.reduce((newAcc: any, acc: any) => {
+        newAcc.push({ label: acc?.address, value: acc });
+        return newAcc;
+      }, []);
+    setAccountOpt(options);
+  }, [accounts]);
+
+  const handleValue = (value: string, key: string) => {
+    setTxnData({ ...txnData, [key]: value });
+  };
+
+  const handleSend = async () => {
+    const isValid = await web3.utils.isAddress(txnData.to);
+    if (txnData.from?.address && isValid) {
+      dispatch(setTxnsInfo(txnData));
+      navigate('SetAmount');
+    } else {
+      console.log('adress is invalid');
     }
   };
 
-  const handleCreateWallet = async () => {
-    try {
-      if (web3) {
-        const account = await web3.eth.accounts.create();
-        storeDataAsync(account);
-      }
-    } catch (err) {
-      console.log(err);
+  useEffect(() => {
+    if (txnData.to) {
+      handleSend();
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [txnData]);
 
   return (
     <>
       <View>
-        <Image style={styles.backIcon} source={require(BackIcon)} />
+        <Pressable onPress={() => navigate('Dashboard')}>
+          <Image style={styles.backIcon} source={require(BackIcon)} />
+        </Pressable>
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(SendImage)} />
@@ -172,26 +197,18 @@ const Transfer = (props: any) => {
       <View style={styles.fornaxBox}>
         <View style={styles.inputBox}>
           <RNPickerSelect
-            onValueChange={value => console.log(value)}
+            onValueChange={value => handleValue(value, 'from')}
             style={pickerSelectStyles}
-            items={[
-              { label: 'Football', value: 'football' },
-              { label: 'Baseball', value: 'baseball' },
-              { label: 'Hockey', value: 'hockey' },
-            ]}
+            items={accountOpt}
           />
-          {/* <Icon name="ei-chevron-down" type="evilicon" color="#000000" /> */}
-          {/* <Icon name="sc-telegram" type="evilicon" color="#517fa4" /> */}
         </View>
         <View style={styles.inputBox}>
-          <RNPickerSelect
-            onValueChange={value => console.log(value)}
-            style={pickerSelectStyles}
-            items={[
-              { label: 'Football', value: 'football' },
-              { label: 'Baseball', value: 'baseball' },
-              { label: 'Hockey', value: 'hockey' },
-            ]}
+          <TextInput
+            style={styles.input}
+            placeholder="Send Address"
+            placeholderTextColor="#bdbdbd"
+            onChangeText={e => handleValue(e, 'to')}
+            value={txnData.to}
           />
         </View>
       </View>

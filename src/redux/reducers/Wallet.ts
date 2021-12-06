@@ -6,6 +6,7 @@ interface WalletState {
   ethAddress: string;
   web3: any;
   accounts: any;
+  txnInfo: any;
 }
 
 const initialState = {
@@ -14,6 +15,7 @@ const initialState = {
   ethAddress: '',
   web3: null,
   accounts: [],
+  txnInfo: null,
 } as WalletState;
 
 const walletSlice = createSlice({
@@ -33,9 +35,12 @@ const walletSlice = createSlice({
     setAccounts(state, action) {
       state.accounts = action.payload;
     },
+    setTxnsInfo(state, action) {
+      state.txnInfo = action.payload;
+    },
   },
 });
 
-export const { setMnemonic, initWallet, setWeb3, setAccounts } =
+export const { setMnemonic, initWallet, setWeb3, setAccounts, setTxnsInfo } =
   walletSlice.actions;
 export default walletSlice.reducer;

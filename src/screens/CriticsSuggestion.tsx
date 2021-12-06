@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const CocoLineMessageImage = '../../assets/images/COCO_Line_Message.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
@@ -71,13 +71,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const CriticsSuggestion = () => {
-  // const navigate = props.navigation.navigate;
+const CriticsSuggestion = (props: any) => {
+  const navigate = props.navigation.navigate;
 
   return (
     <>
       <View>
-        <Image style={styles.backIcon} source={require(BackIcon)} />
+        <Pressable onPress={() => navigate('Dashboard')}>
+          <Image style={styles.backIcon} source={require(BackIcon)} />
+        </Pressable>
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image

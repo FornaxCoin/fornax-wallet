@@ -98,7 +98,7 @@ const Dashboard = (props: any) => {
   //       (balance: any) => {
   //         if (balance >= 0) {
   //           data[index] = Object.assign({ balance }, data[index]);
-  //           dispatch(setAccounts(data));
+  //           // dispatch(setAccounts(data));
   //           console.log(balance, data[index], index, "balance");
   //         }
   //       },

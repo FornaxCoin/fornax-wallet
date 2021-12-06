@@ -29,6 +29,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddCard from './src/screens/AddCard';
 import ImportCard from './src/screens/ImportCard';
 import Transfer from './src/screens/Transfer';
+import SetAmount from './src/screens/SetAmount';
 const BgImage = './assets/images/Layer.png';
 
 const styles = StyleSheet.create({
@@ -149,6 +150,7 @@ const MainStackNavigator = ({ initRoute }: any) => {
         <Stack.Screen name="AddCard" component={AddCard} />
         <Stack.Screen name="ImportCard" component={ImportCard} />
         <Stack.Screen name="Transfer" component={Transfer} />
+        <Stack.Screen name="SetAmount" component={SetAmount} />
       </Stack.Navigator>
     </NavigationContainer>
   );
