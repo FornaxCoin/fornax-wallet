@@ -7,10 +7,8 @@ import NavTab from '../components/navTab';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import Web3 from 'web3';
-import {
-  setAccounts as setWeb3Accounts,
-  setWeb3,
-} from '../redux/reducers/Wallet';
+import _ from 'lodash';
+import { setAccounts, setWeb3 } from '../redux/reducers/Wallet';
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 const BellIcon = '../../assets/images/bell.png';
@@ -91,40 +89,38 @@ const styles = StyleSheet.create({
   },
 });
 
-const Dashboard = () => {
+const Dashboard = (props: any) => {
   const dispatch = useDispatch();
-  // const navigate = props.navigation.navigate;
-  const [accounts, setAccounts] = useState<any>([]);
+  const navigate = props.navigation.navigate;
+
+  const getBalances = async (data: any, web3: any) => {
+    return data.map(async (account: any, index: any) => {
+      web3.eth.getBalance(account?.address).then(
+        (balance: any) => {
+          if (balance >= 0) {
+            data[index] = Object.assign({ balance }, data[index]);
+            dispatch(setAccounts(data));
+          }
+        },
+        (error: any) => {
+          console.log(error, 'getallBalance');
+        },
+      );
+    });
+  };
 
   const checkAccount = async (web3: any) => {
     try {
       const value = await AsyncStorage.getItem('accountList');
       if (value != null) {
-        const data = [JSON.parse(value)];
-        setAccounts([]);
-        data.length > 0 &&
-          data.map(async (acc: any) => {
-            try {
-              const balance =
-                web3 &&
-                acc?.address &&
-                (await web3?.eth?.getBalance(acc?.address));
-              balance && Object.assign(acc, { balance });
-              accounts.findIndex((ac: any) => ac.address === acc.address) ===
-                -1 && accounts.push(acc);
-              setAccounts([...accounts]);
-              dispatch(setWeb3Accounts(accounts));
-            } catch (err) {
-              console.log(err);
-              return;
-            }
-            return acc;
-          });
-
-        return;
+        const data = JSON.parse(value);
+        const _bal =
+          data?.length > 0 && (await web3.eth.getBalance(data[0]?.address));
+        console.log(_bal);
+        await getBalances(data, web3);
       }
     } catch (err) {
-      console.log('Accoun Error', err);
+      console.log('Account Error', err);
     }
   };
 
@@ -166,7 +162,7 @@ const Dashboard = () => {
         </View>
         <Text style={styles.fornaxText}>Dashboard</Text>
         <View style={styles.cardCarousel}>
-          <CardCarousel />
+          <CardCarousel navigate={navigate} />
         </View>
         <View style={styles.tabBox}>
           <MainTab />

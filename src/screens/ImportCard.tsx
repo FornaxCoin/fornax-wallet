@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { generateMnemonic } from 'bip39';
-import Web3 from 'web3';
+import React, { useState } from 'react';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setAccounts, setWeb3 } from '../redux/reducers/Wallet';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
-const HDWalletProvider = require('@truffle/hdwallet-provider');
-
+import { setAccounts } from '../redux/reducers/Wallet';
 const SettingImage = '../../assets/images/Settingmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 
@@ -24,9 +27,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Quicksand-Bold',
   },
-  secondaryTxnText: {
-    color: '#363853',
-  },
   txnText: {
     marginLeft: 17,
     fontSize: 16,
@@ -39,16 +39,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#b27f29',
     width: 240,
     alignSelf: 'center',
-    marginTop: 25,
   },
   button: {
     borderRadius: 20,
     paddingVertical: 18,
-  },
-  secondaryButton: {
-    backgroundColor: '#fff',
-    color: '#b27f29',
-    marginTop: 185,
+    marginTop: hp('5'),
+    marginBottom: hp('10'),
   },
   textStyle: {
     fontSize: 20,
@@ -56,6 +52,7 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     fontFamily: 'Quicksand-Bold',
     textAlign: 'center',
+    marginBottom: 10,
   },
   backIcon: {
     marginLeft: 26,
@@ -63,37 +60,55 @@ const styles = StyleSheet.create({
   },
   arrowRightIcon: {
     flex: 1,
-    // backgroundColor: 'red',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
     alignSelf: 'center',
   },
   fornaxIcon: {
-    marginBottom: 44,
+    marginBottom: 30,
   },
   fornaxInnerBox: {
     flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: 'green',
-    // marginTop: 120,
-    marginTop: hp('10'),
-    marginBottom: hp('4'),
+    marginTop: hp('5'),
+    marginBottom: hp('1'),
   },
   fornaxMiniText: {
-    // marginLeft: 17,
-    fontSize: 16,
+    fontSize: 18,
     color: '#bdbdbd',
     textAlign: 'center',
     fontFamily: 'Quicksand-Medium',
+    width: 300,
+  },
+  inputBox: {
+    width: 340,
+    marginVertical: 13,
+  },
+  inputLabel: {
+    fontSize: 16,
+    color: '#b27f29',
+    marginTop: 8,
+    marginBottom: 10,
+    fontFamily: 'Quicksand-Medium',
+  },
+  input: {
+    height: 40,
+    borderBottomWidth: 2,
+    borderBottomColor: '#ffffff',
+    fontFamily: 'Quicksand-Medium',
+    color: '#ffffff',
+    paddingHorizontal: 10,
+    fontSize: 16,
   },
 });
 
-const AddCard = (props: any) => {
+const ImportCard = (props: any) => {
   const dispatch = useDispatch();
   const navigate = props.navigation.navigate;
+  const [privateKey, setPrivateKey] = useState('');
 
   const { web3 } = useSelector(({ wallet }: any) => {
     return {
@@ -113,14 +128,19 @@ const AddCard = (props: any) => {
       dispatch(setAccounts(accounts));
       navigate('Dashboard');
     } catch (error) {
-      // Error saving data
+      // Error saving data 0xde863f561914f42e185fa0dff531c5bb5ae35423bd3fea130493545df324e533
     }
   };
 
-  const handleCreateWallet = async () => {
+  const ignoreLength: any = false;
+
+  const handleImport = async () => {
     try {
       if (web3) {
-        const account = await web3.eth.accounts.create();
+        const account = await web3.eth.accounts.privateKeyToAccount(
+          privateKey,
+          [ignoreLength],
+        );
         storeDataAsync(account);
       }
     } catch (err) {
@@ -135,27 +155,27 @@ const AddCard = (props: any) => {
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(SettingImage)} />
-        <Text style={styles.textStyle}>Add Card</Text>
-        <Text style={styles.fornaxMiniText}>
-          Import an existing wallet or create a new one
-        </Text>
+        <Text style={styles.textStyle}>Import Card</Text>
       </View>
       <View style={styles.fornaxBox}>
+        <View style={styles.inputBox}>
+          <Text style={styles.inputLabel}>Private Key</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Private Key"
+            placeholderTextColor="#bdbdbd"
+            onChangeText={e => setPrivateKey(e)}
+            value={privateKey}
+          />
+        </View>
         <Pressable
-          onPress={() => navigate('ImportCard')}
-          style={[styles.button, styles.buttonClose, styles.secondaryButton]}>
-          <Text style={[styles.txnText, styles.secondaryTxnText]}>
-            Import new Card
-          </Text>
-        </Pressable>
-        <Pressable
-          onPress={handleCreateWallet}
+          onPress={handleImport}
           style={[styles.button, styles.buttonClose]}>
-          <Text style={styles.txnText}>Create a new Card</Text>
+          <Text style={styles.txnText}>Continue</Text>
         </Pressable>
       </View>
     </>
   );
 };
 
-export default AddCard;
+export default ImportCard;

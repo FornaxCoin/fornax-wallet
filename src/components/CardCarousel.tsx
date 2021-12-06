@@ -6,6 +6,7 @@ import {
   ImageBackground,
   StyleSheet,
   Image,
+  Pressable,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { useSelector } from 'react-redux';
@@ -15,8 +16,8 @@ const plusImg = '../../assets/images/Plusmini.png';
 const styles = StyleSheet.create({
   carouselBox: {
     height: 240,
-    width: 320,
-    marginLeft: -10,
+    marginLeft: -40,
+    marginRight: 50,
     paddingHorizontal: 50,
     flexDirection: 'column',
     paddingTop: 45,
@@ -38,10 +39,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const CardCarousel = () => {
+const CardCarousel = (props: any) => {
   const carouselRef = useRef(null);
+  const navigate = props.navigate;
   const [activeIndex, setActiveIndex] = useState(0);
-  // console.log(activeIndex);
 
   const { accounts } = useSelector(({ wallet }: any) => {
     return {
@@ -55,9 +56,14 @@ const CardCarousel = () => {
         <Text style={styles.carouselText}>
           {item?.title || `Wallet ${index + 1}`}
         </Text>
-        <Text style={styles.carouselText}>{item?.balance}</Text>
+        <Text style={styles.carouselText}>{item?.balance || 0}</Text>
         <View style={styles.addBtn}>
-          <Image source={require(plusImg)} style={{ width: 30, height: 30 }} />
+          <Pressable onPress={() => navigate('AddCard')}>
+            <Image
+              source={require(plusImg)}
+              style={{ width: 30, height: 30 }}
+            />
+          </Pressable>
         </View>
       </ImageBackground>
     );
@@ -76,7 +82,8 @@ const CardCarousel = () => {
             layout={'default'}
             ref={carouselRef}
             data={accounts}
-            sliderWidth={300}
+            sliderWidth={410}
+            removeClippedSubviews={false}
             itemWidth={300}
             renderItem={_renderItem}
             onSnapToItem={index => setActiveIndex(index)}

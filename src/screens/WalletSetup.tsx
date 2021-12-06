@@ -99,7 +99,7 @@ const WalletSetup = (props: any) => {
     try {
       await AsyncStorage.multiRemove(['accountList', 'mnemonicPhrase']);
       await AsyncStorage.multiSet([
-        ['accountList', JSON.stringify(account)],
+        ['accountList', JSON.stringify([account])],
         ['mnemonicPhrase', mnemonicPhrase],
       ]);
       navigate('Dashboard');

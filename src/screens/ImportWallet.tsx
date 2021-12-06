@@ -122,14 +122,13 @@ const ImportWallet = (props: any) => {
   const handleSeeds = (e: any, index: number) => {
     seed[index] = e;
     setSeed([...seed]);
-    console.log(seed);
   };
 
   const storeDataAsync = async (account: any, mnemonicPhrase: string) => {
     try {
       await AsyncStorage.multiRemove(['accountList', 'mnemonicPhrase']);
       await AsyncStorage.multiSet([
-        ['accountList', JSON.stringify(account)],
+        ['accountList', JSON.stringify([account])],
         ['mnemonicPhrase', mnemonicPhrase],
       ]);
       navigate('Dashboard');
@@ -140,7 +139,6 @@ const ImportWallet = (props: any) => {
 
   const handleImport = async () => {
     const mnemonicPhrase = _join(seed, ' ');
-    console.log(mnemonicPhrase.trim(), 'mnemonicPhrase');
     try {
       const provider = new HDWalletProvider({
         mnemonic: {
