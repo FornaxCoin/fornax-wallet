@@ -6,6 +6,8 @@ import { setAccounts } from '../redux/reducers/Wallet';
 import { useDispatch, useSelector } from 'react-redux';
 
 const SettingImage = '../../assets/images/Settingmaga.png';
+const backLines = '../../assets/images/Group_37background.png';
+const backCard = '../../assets/images/Group_36card.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 
 const styles = StyleSheet.create({
@@ -86,6 +88,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Quicksand-Medium',
   },
+  centerContainer: {
+    position: 'absolute',
+  },
+  center: {
+    // flexDirection: 'column',
+    top: hp(-5),
+    zIndex: -99,
+    position: 'absolute',
+    alignSelf: 'center',
+  },
 });
 
 const AddCard = (props: any) => {
@@ -131,11 +143,12 @@ const AddCard = (props: any) => {
         <Image style={styles.backIcon} source={require(BackIcon)} />
       </View>
       <View style={styles.fornaxInnerBox}>
-        <Image style={styles.fornaxIcon} source={require(SettingImage)} />
+        {/*<Image style={styles.fornaxIcon} source={require(SettingImage)} />*/}
+        <View style={styles.centerContainer}>
+          <Image style={styles.center} source={require(backLines)} />
+          <Image style={styles.center} source={require(backCard)} />
+        </View>
         <Text style={styles.textStyle}>Add Card</Text>
-        <Text style={styles.fornaxMiniText}>
-          Import an existing wallet or create a new one
-        </Text>
       </View>
       <View style={styles.fornaxBox}>
         <Pressable

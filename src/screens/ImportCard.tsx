@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAccounts } from '../redux/reducers/Wallet';
 const SettingImage = '../../assets/images/Settingmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
+const backLines = '../../assets/images/Group_37background.png';
+const backCard = '../../assets/images/Group_36card.png';
 
 const styles = StyleSheet.create({
   fornaxBox: {
@@ -73,8 +75,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('5'),
-    marginBottom: hp('1'),
+    // backgroundColor: 'green',
+    // marginTop: 120,
+    marginTop: hp('10'),
+    marginBottom: hp('4'),
   },
   fornaxMiniText: {
     fontSize: 18,
@@ -84,8 +88,9 @@ const styles = StyleSheet.create({
     width: 300,
   },
   inputBox: {
-    width: 340,
+    width: 300,
     marginVertical: 13,
+    marginTop: 300,
   },
   inputLabel: {
     fontSize: 16,
@@ -102,6 +107,16 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     paddingHorizontal: 10,
     fontSize: 16,
+  },
+  centerContainer: {
+    position: 'absolute',
+  },
+  center: {
+    // flexDirection: 'column',
+    top: hp(-5),
+    zIndex: -99,
+    position: 'absolute',
+    alignSelf: 'center',
   },
 });
 
@@ -154,7 +169,11 @@ const ImportCard = (props: any) => {
         <Image style={styles.backIcon} source={require(BackIcon)} />
       </View>
       <View style={styles.fornaxInnerBox}>
-        <Image style={styles.fornaxIcon} source={require(SettingImage)} />
+        {/*<Image style={styles.fornaxIcon} source={require(SettingImage)} />*/}
+        <View>
+          <Image style={styles.center} source={require(backLines)} />
+          <Image style={styles.center} source={require(backCard)} />
+        </View>
         <Text style={styles.textStyle}>Import Card</Text>
       </View>
       <View style={styles.fornaxBox}>

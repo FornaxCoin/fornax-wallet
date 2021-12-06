@@ -113,10 +113,9 @@ const Dashboard = (props: any) => {
       const value = await AsyncStorage.getItem('accountList');
       if (value != null) {
         const data = JSON.parse(value);
-        const _bal =
-          data?.length > 0 && (await web3.eth.getBalance(data[0]?.address));
-        console.log(_bal);
         await getBalances(data, web3);
+        const _bal = data?.length > 0 && (await web3.eth.getBalance(data[0]?.address));
+        console.log(_bal);
       }
     } catch (err) {
       console.log('Account Error', err);
@@ -125,6 +124,7 @@ const Dashboard = (props: any) => {
 
   const connectWallet = async () => {
     try {
+      // const remove = await AsyncStorage.removeItem('accountList');
       const mnemonicPhrase = await AsyncStorage.getItem('mnemonicPhrase');
       const provider = new HDWalletProvider({
         mnemonic: {
