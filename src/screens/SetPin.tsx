@@ -135,13 +135,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const SetPin = () => {
-  // const navigate = props.navigation.navigate;
+const SetPin = (props: any) => {
+  const navigate = props.navigation.navigate;
 
   return (
     <>
       <View>
-        <Image style={styles.backIcon} source={require(BackIcon)} />
+        <Pressable onPress={() => navigate('Dashboard')}>
+          <Image style={styles.backIcon} source={require(BackIcon)} />
+        </Pressable>
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(CocoPinImage)} />

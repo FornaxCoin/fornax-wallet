@@ -104,6 +104,20 @@ const WalletSetup = (props: any) => {
     }
   };
 
+  const getBalance = async (web3: any, account: any, mnemonicPhrase: any) => {
+    web3.eth.getBalance(account?.address).then(
+      async (bal: any) => {
+        if (bal >= 0) {
+          const balance = await web3.utils.fromWei(bal, 'ether');
+          storeDataAsync({ ...account, balance }, mnemonicPhrase);
+        }
+      },
+      (error: any) => {
+        console.log(error, 'getBalance');
+      },
+    );
+  };
+
   const handleCreateWallet = async () => {
     const mnemonicPhrase = await generateMnemonic();
     try {
@@ -121,7 +135,7 @@ const WalletSetup = (props: any) => {
       if (web3) {
         dispatch(setWeb3(web3));
         const account = await web3.eth.accounts.create();
-        storeDataAsync(account, mnemonicPhrase);
+        getBalance(web3, account, mnemonicPhrase);
       }
     } catch (err) {
       console.log(err);
@@ -131,7 +145,9 @@ const WalletSetup = (props: any) => {
   return (
     <>
       <View>
-        <Image style={styles.backIcon} source={require(BackIcon)} />
+        <Pressable onPress={() => navigate('Dashboard')}>
+          <Image style={styles.backIcon} source={require(BackIcon)} />
+        </Pressable>
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(SettingImage)} />

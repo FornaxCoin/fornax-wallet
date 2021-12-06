@@ -147,6 +147,20 @@ const ImportCard = (props: any) => {
     }
   };
 
+  const getBalance = async (account: any) => {
+    web3.eth.getBalance(account?.address).then(
+      async (bal: any) => {
+        if (bal >= 0) {
+          const balance = await web3.utils.fromWei(bal, 'ether');
+          storeDataAsync({ ...account, balance });
+        }
+      },
+      (error: any) => {
+        console.log(error, 'getBalance');
+      },
+    );
+  };
+
   const ignoreLength: any = false;
 
   const handleImport = async () => {
@@ -156,7 +170,7 @@ const ImportCard = (props: any) => {
           privateKey,
           [ignoreLength],
         );
-        storeDataAsync(account);
+        getBalance(account);
       }
     } catch (err) {
       console.log(err);
@@ -166,7 +180,9 @@ const ImportCard = (props: any) => {
   return (
     <>
       <View>
-        <Image style={styles.backIcon} source={require(BackIcon)} />
+        <Pressable onPress={() => navigate('AddCard')}>
+          <Image style={styles.backIcon} source={require(BackIcon)} />
+        </Pressable>
       </View>
       <View style={styles.fornaxInnerBox}>
         {/*<Image style={styles.fornaxIcon} source={require(SettingImage)} />*/}

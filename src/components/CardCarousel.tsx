@@ -54,9 +54,13 @@ const CardCarousel = (props: any) => {
     return (
       <ImageBackground source={require(BgImage)} style={styles.carouselBox}>
         <Text style={styles.carouselText}>
-          {item?.title || `Wallet ${index + 1}`}
+          {item?.title || `Account ${index + 1}`}
         </Text>
-        <Text style={styles.carouselText}>{item?.balance || 0}</Text>
+        <Text style={styles.carouselText}>
+          {(parseInt(item?.balance, 10) === 0.0
+            ? 0
+            : parseInt(item?.balance, 10)?.toFixed(2)) || 0}
+        </Text>
         <View style={styles.addBtn}>
           <Pressable onPress={() => navigate('AddCard')}>
             <Image

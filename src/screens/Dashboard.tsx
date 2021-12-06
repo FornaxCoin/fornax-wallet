@@ -92,30 +92,33 @@ const Dashboard = (props: any) => {
   const dispatch = useDispatch();
   const navigate = props.navigation.navigate;
 
-  const getBalances = async (data: any, web3: any) => {
-    return data.map(async (account: any, index: any) => {
-      web3.eth.getBalance(account?.address).then(
-        (balance: any) => {
-          if (balance >= 0) {
-            data[index] = Object.assign({ balance }, data[index]);
-            dispatch(setAccounts(data));
-          }
-        },
-        (error: any) => {
-          console.log(error, 'getallBalance');
-        },
-      );
-    });
-  };
+  // const getBalances = async (data: any, web3: any) => {
+  //   return data.map(async (account: any, index: any) => {
+  //     web3.eth.getBalance(account?.address).then(
+  //       (balance: any) => {
+  //         if (balance >= 0) {
+  //           data[index] = Object.assign({ balance }, data[index]);
+  //           // dispatch(setAccounts(data));
+  //           console.log(balance, data[index], index, "balance");
+  //         }
+  //       },
+  //       (error: any) => {
+  //         console.log(error, 'getallBalance');
+  //       },
+  //     );
+  //   });
+  // };
 
-  const checkAccount = async (web3: any) => {
+  const checkAccount = async () => {
     try {
       const value = await AsyncStorage.getItem('accountList');
       if (value != null) {
         const data = JSON.parse(value);
-        await getBalances(data, web3);
-        const _bal = data?.length > 0 && (await web3.eth.getBalance(data[0]?.address));
-        console.log(_bal);
+        dispatch(setAccounts(data));
+        // const _bal =
+        //   data?.length > 0 && (await web3.eth.getBalance(data[0]?.address));
+        // console.log(_bal);
+        // await getBalances(data, web3);
       }
     } catch (err) {
       console.log('Account Error', err);
@@ -138,7 +141,9 @@ const Dashboard = (props: any) => {
       });
       const web3 = new Web3(provider);
       if (web3) {
-        checkAccount(web3);
+        checkAccount();
+        // await web3.eth.accounts.wallet.clear();
+        // await AsyncStorage.removeItem('accountList');
         dispatch(setWeb3(web3));
       }
     } catch (err) {
