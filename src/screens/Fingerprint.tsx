@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Fingerprint = (props: any) => {
+const Fingerprint = () => {
   // const navigate = props.navigation.navigate;
 
   return (

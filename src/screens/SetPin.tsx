@@ -7,10 +7,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const CocoPinImage = '../../assets/images/Iconly_Curved_Passwordmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
@@ -138,7 +135,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const SetPin = (props: any) => {
+const SetPin = () => {
   // const navigate = props.navigation.navigate;
 
   return (
@@ -197,7 +194,7 @@ const SetPin = (props: any) => {
           </View>
           <View style={styles.NumRow}>
             <Pressable style={[styles.num, styles.numClose]}>
-              <Text style={styles.textStyle}></Text>
+              <Text style={styles.textStyle} />
             </Pressable>
             <Pressable style={[styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>0</Text>

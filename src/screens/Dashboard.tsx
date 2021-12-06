@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import CardCarousel from '../components/CardCarousel';
 import MainTab from '../components/MainTab';
@@ -7,7 +7,6 @@ import NavTab from '../components/navTab';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import Web3 from 'web3';
-import _ from 'lodash';
 import { setAccounts, setWeb3 } from '../redux/reducers/Wallet';
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
@@ -168,7 +167,7 @@ const Dashboard = (props: any) => {
           <MainTab />
         </View>
         <View style={styles.navTabBox}>
-          <NavTab />
+          <NavTab navigate={navigate} />
         </View>
       </View>
     </>

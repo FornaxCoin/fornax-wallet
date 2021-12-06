@@ -1,12 +1,10 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const NotificationImage = '../../assets/images/Notificationmaga.png';
 const NotificationDotImage = '../../assets/images/NotificationDotmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-const FingerprintScanIcon = '../../assets/images/Fingerprint-scan.png';
-const ArrowRightIcon = '../../assets/images/arrow-right.png';
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
@@ -100,7 +98,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Notifications = (props: any) => {
+const Notifications = () => {
   // const navigate = props.navigation.navigate;
 
   return (
@@ -111,14 +109,15 @@ const Notifications = (props: any) => {
       <View style={styles.fornaxInnerBox}>
         <View style={styles.fornaxIcon}>
           <Image source={require(NotificationImage)} />
-          <Image style={styles.fornaxIconExtra} source={require(NotificationDotImage)} />
+          <Image
+            style={styles.fornaxIconExtra}
+            source={require(NotificationDotImage)}
+          />
         </View>
         <Text style={styles.textStyle}>Notifications</Text>
         <Text style={styles.fornaxMiniText}>You have a new notification</Text>
       </View>
-      <View style={styles.fornaxBox}>
-
-      </View>
+      <View style={styles.fornaxBox} />
     </>
   );
 };

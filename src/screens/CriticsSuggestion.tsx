@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const CriticsSuggestion = (props: any) => {
+const CriticsSuggestion = () => {
   // const navigate = props.navigation.navigate;
 
   return (

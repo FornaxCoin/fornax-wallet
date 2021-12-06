@@ -1,10 +1,11 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import {heightPercentageToDP as hp} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const SettingImage = '../../assets/images/Settingmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const ProfileIcon = '../../assets/images/Iconly_Curved_Profilemini.png';
-const NotificationIcon = '../../assets/images/Iconly_Curved_Notificationmini.png';
+const NotificationIcon =
+  '../../assets/images/Iconly_Curved_Notificationmini.png';
 const WalletIcon = '../../assets/images/Iconly_Curved_Walletmini.png';
 const LoginIcon = '../../assets/images/Iconly_Curved_Unlockmini.png';
 const CallingIcon = '../../assets/images/Iconly_Curved_Callingmini.png';

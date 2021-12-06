@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Animated, View, Text, StyleSheet, Image } from 'react-native';
+import {
+  Animated,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+} from 'react-native';
 const HomeImg = require('../../assets/images/Homemini.png');
 const TransferImg = require('../../assets/images/transfer.png');
 const ScanImg = require('../../assets/images/Scan.png');
@@ -55,15 +62,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const NavTab = () => {
+const NavTab = ({ navigate }: any) => {
   const routes = [
-    { key: 'home', title: 'Home', icon: HomeImg },
+    { key: 'home', title: 'Home', icon: HomeImg, navigate: 'Dashboard' },
     {
       key: 'transfer',
       title: 'Transfer',
       icon: TransferImg,
+      navigate: 'Transfer',
     },
-    { key: 'scan', title: 'Scan', icon: ScanImg },
+    { key: 'scan', title: 'Scan', icon: ScanImg, navigate: 'Scan' },
     { key: 'pay', title: 'Pay', icon: PayImg },
     { key: 'topUp', title: 'Top up', icon: TopupImg },
   ];
@@ -75,11 +83,13 @@ const NavTab = () => {
         {routes.length > 0 &&
           routes.map((route, index) => (
             <Animated.View key={index} style={[styles.item]}>
-              <Image
-                source={route.icon}
-                style={[styles.icon, route.key === 'scan' && styles.scanIcon]}
-              />
-              <Text style={[styles.label]}>{route.title}</Text>
+              <Pressable onPress={() => navigate(route.navigate)}>
+                <Image
+                  source={route.icon}
+                  style={[styles.icon, route.key === 'scan' && styles.scanIcon]}
+                />
+                <Text style={[styles.label]}>{route.title}</Text>
+              </Pressable>
             </Animated.View>
           ))}
       </View>

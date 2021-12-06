@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import {heightPercentageToDP as hp} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const FacebookImage = '../../assets/images/facebook.png';
 const CocoLineInstaImage = '../../assets/images/COCO_Line_Instagrammaga.png';
 const TwitterImage = '../../assets/images/twitter.png';
@@ -84,10 +84,7 @@ const SocialMedia = (props: any) => {
         <Image style={styles.backIcon} source={require(BackIcon)} />
       </View>
       <View style={styles.fornaxInnerBox}>
-        <Image
-            style={styles.fornaxIcon}
-            source={require(CocoLineInstaImage)}
-        />
+        <Image style={styles.fornaxIcon} source={require(CocoLineInstaImage)} />
         <Text style={styles.textStyle}>Our Social Media</Text>
       </View>
       <View style={styles.fornaxBox}>

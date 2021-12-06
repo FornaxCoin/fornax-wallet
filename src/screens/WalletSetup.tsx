@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
   },
   arrowRightIcon: {
     flex: 1,
-    // backgroundColor: 'red',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -77,13 +76,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: 'green',
-    // marginTop: 120,
     marginTop: hp('10'),
     marginBottom: hp('4'),
   },
   fornaxMiniText: {
-    // marginLeft: 17,
     fontSize: 16,
     color: '#bdbdbd',
     textAlign: 'center',

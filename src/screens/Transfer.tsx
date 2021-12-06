@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setAccounts } from '../redux/reducers/Wallet';
 import { useDispatch, useSelector } from 'react-redux';
 
-const SettingImage = '../../assets/images/Settingmaga.png';
+const SendImage = '../../assets/images/Sendmini.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 
 const styles = StyleSheet.create({
@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
   },
   arrowRightIcon: {
     flex: 1,
-    // backgroundColor: 'red',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -74,13 +73,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: 'green',
-    // marginTop: 120,
     marginTop: hp('10'),
     marginBottom: hp('4'),
   },
   fornaxMiniText: {
-    // marginLeft: 17,
     fontSize: 16,
     color: '#bdbdbd',
     textAlign: 'center',
@@ -88,7 +84,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const AddCard = (props: any) => {
+const Transfer = (props: any) => {
   const dispatch = useDispatch();
   const navigate = props.navigation.navigate;
 
@@ -131,8 +127,8 @@ const AddCard = (props: any) => {
         <Image style={styles.backIcon} source={require(BackIcon)} />
       </View>
       <View style={styles.fornaxInnerBox}>
-        <Image style={styles.fornaxIcon} source={require(SettingImage)} />
-        <Text style={styles.textStyle}>Add Card</Text>
+        <Image style={styles.fornaxIcon} source={require(SendImage)} />
+        <Text style={styles.textStyle}>Transfer</Text>
         <Text style={styles.fornaxMiniText}>
           Import an existing wallet or create a new one
         </Text>
@@ -155,4 +151,4 @@ const AddCard = (props: any) => {
   );
 };
 
-export default AddCard;
+export default Transfer;

@@ -28,6 +28,7 @@ import Login from './src/screens/Login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddCard from './src/screens/AddCard';
 import ImportCard from './src/screens/ImportCard';
+import Transfer from './src/screens/Transfer';
 const BgImage = './assets/images/Layer.png';
 
 const styles = StyleSheet.create({
@@ -147,6 +148,7 @@ const MainStackNavigator = ({ initRoute }: any) => {
         <Stack.Screen name="FaceId" component={FaceId} />
         <Stack.Screen name="AddCard" component={AddCard} />
         <Stack.Screen name="ImportCard" component={ImportCard} />
+        <Stack.Screen name="Transfer" component={Transfer} />
       </Stack.Navigator>
     </NavigationContainer>
   );

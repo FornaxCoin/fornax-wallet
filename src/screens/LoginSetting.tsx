@@ -3,9 +3,7 @@ import { Image, Pressable, Switch, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const CocoLockImage = '../../assets/images/lockmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-const CriticsIcon = '../../assets/images/critics.png';
-const InstagramIcon = '../../assets/images/COCO_Line_Instagram.png';
-const CallingIcon = '../../assets/images/COCO-Calling.png';
+
 const ArrowRightIcon = '../../assets/images/arrow-right.png';
 const styles = StyleSheet.create({
   fornaxBox: {
