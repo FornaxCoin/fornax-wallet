@@ -16,12 +16,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  fornaxText: {
-    fontSize: 48,
-    color: '#b27f29',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Bold',
-  },
   secondaryTxnText: {
     color: '#363853',
   },
@@ -59,14 +53,6 @@ const styles = StyleSheet.create({
     marginLeft: 26,
     marginTop: 32,
   },
-  arrowRightIcon: {
-    flex: 1,
-    // backgroundColor: 'red',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    alignSelf: 'center',
-  },
   fornaxIcon: {
     marginBottom: 44,
   },
@@ -75,23 +61,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: 'green',
-    // marginTop: 120,
     marginTop: hp('10'),
     marginBottom: hp('4'),
-  },
-  fornaxMiniText: {
-    // marginLeft: 17,
-    fontSize: 16,
-    color: '#bdbdbd',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Medium',
   },
   centerContainer: {
     position: 'absolute',
   },
   center: {
-    // flexDirection: 'column',
     top: hp(-5),
     zIndex: -99,
     position: 'absolute',

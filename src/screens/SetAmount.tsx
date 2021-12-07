@@ -22,12 +22,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
-  fornaxText: {
-    fontSize: 48,
-    color: '#b27f29',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Bold',
-  },
   buttonClose: {
     backgroundColor: '#b27f29',
     width: 240,

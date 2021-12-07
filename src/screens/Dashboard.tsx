@@ -43,29 +43,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
   },
-  txnText: {
-    fontSize: 16,
-    color: '#ffffff',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Medium',
-    marginTop: 4,
-  },
-  buttonClose: {
-    backgroundColor: '#b27f29',
-    width: 240,
-    alignSelf: 'center',
-  },
-  button: {
-    borderRadius: 20,
-    paddingVertical: 18,
-  },
-  textStyle: {
-    fontSize: 20,
-    color: '#ffffff',
-    lineHeight: 23,
-    fontFamily: 'Quicksand-Bold',
-    textAlign: 'center',
-  },
   cardCarousel: {
     height: 260,
     width: 450,

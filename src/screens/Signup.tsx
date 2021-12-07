@@ -48,12 +48,6 @@ const styles = StyleSheet.create({
     width: 200,
     marginLeft: 30,
   },
-  fornaxText: {
-    fontSize: 48,
-    color: '#b27f29',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Bold',
-  },
   loginTextbox: {
     fontSize: 14,
     color: '#bdbdbd',

@@ -26,11 +26,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     maxWidth: 360,
   },
-  loginText: {
-    fontSize: 14,
-    color: '#81c2ff',
-    fontFamily: 'Quicksand-Medium',
-  },
   textStyle: {
     fontSize: 20,
     color: '#ffffff',

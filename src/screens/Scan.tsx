@@ -1,14 +1,12 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { generateMnemonic } from 'bip39';
-import Web3 from 'web3';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setWeb3 } from '../redux/reducers/Wallet';
-import { useDispatch } from 'react-redux';
-const HDWalletProvider = require('@truffle/hdwallet-provider');
+import { setAccounts } from '../redux/reducers/Wallet';
+import { useDispatch, useSelector } from 'react-redux';
 
-const SettingImage = '../../assets/images/Settingmaga.png';
+const backLines = '../../assets/images/Group_37background.png';
+const backCard = '../../assets/images/Group_36card.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 
 const styles = StyleSheet.create({
@@ -66,37 +64,49 @@ const styles = StyleSheet.create({
     marginTop: hp('10'),
     marginBottom: hp('4'),
   },
-  fornaxMiniText: {
-    fontSize: 16,
-    color: '#bdbdbd',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Medium',
+  centerContainer: {
+    position: 'absolute',
+  },
+  center: {
+    top: hp(-5),
+    zIndex: -99,
+    position: 'absolute',
+    alignSelf: 'center',
   },
 });
 
-const WalletSetup = (props: any) => {
+const Scan = (props: any) => {
   const dispatch = useDispatch();
   const navigate = props.navigation.navigate;
 
-  const storeDataAsync = async (account: any, mnemonicPhrase: string) => {
+  const { web3 } = useSelector(({ wallet }: any) => {
+    return {
+      web3: wallet?.web3,
+    };
+  });
+
+  const storeDataAsync = async (account: any) => {
     try {
-      await AsyncStorage.multiRemove(['accountList', 'mnemonicPhrase']);
-      await AsyncStorage.multiSet([
-        ['accountList', JSON.stringify([account])],
-        ['mnemonicPhrase', mnemonicPhrase],
-      ]);
+      const accounts: any = [];
+      const accountList = await AsyncStorage.getItem('accountList');
+      if (accountList !== null) {
+        accounts.push(...JSON.parse(accountList));
+        accounts.push(account);
+      }
+      await AsyncStorage.setItem('accountList', JSON.stringify(accounts));
+      dispatch(setAccounts(accounts));
       navigate('Dashboard');
     } catch (error) {
       // Error saving data
     }
   };
 
-  const getBalance = async (web3: any, account: any, mnemonicPhrase: any) => {
+  const getBalance = async (account: any) => {
     web3.eth.getBalance(account?.address).then(
       async (bal: any) => {
         if (bal >= 0) {
           const balance = await web3.utils.fromWei(bal, 'ether');
-          storeDataAsync({ ...account, balance }, mnemonicPhrase);
+          storeDataAsync({ ...account, balance });
         }
       },
       (error: any) => {
@@ -106,23 +116,10 @@ const WalletSetup = (props: any) => {
   };
 
   const handleCreateWallet = async () => {
-    const mnemonicPhrase = await generateMnemonic();
     try {
-      const provider = new HDWalletProvider({
-        mnemonic: {
-          phrase: mnemonicPhrase,
-        },
-        providerOrUrl: 'wss://node.watchfornax.com/ws',
-        network_id: 13936,
-        confirmations: 10,
-        timeoutBlocks: 200,
-        skipDryRun: true,
-      });
-      const web3 = new Web3(provider);
       if (web3) {
-        dispatch(setWeb3(web3));
         const account = await web3.eth.accounts.create();
-        getBalance(web3, account, mnemonicPhrase);
+        getBalance(account);
       }
     } catch (err) {
       console.log(err);
@@ -137,32 +134,29 @@ const WalletSetup = (props: any) => {
         </Pressable>
       </View>
       <View style={styles.fornaxInnerBox}>
-        <Image style={styles.fornaxIcon} source={require(SettingImage)} />
-        <Text style={styles.textStyle}>Wallet Setup</Text>
-        <Text style={styles.fornaxMiniText}>
-          Import an existing wallet or create a new one
-        </Text>
+        {/*<Image style={styles.fornaxIcon} source={require(SettingImage)} />*/}
+        <View style={styles.centerContainer}>
+          <Image style={styles.center} source={require(backLines)} />
+          <Image style={styles.center} source={require(backCard)} />
+        </View>
+        <Text style={styles.textStyle}>Add Card</Text>
       </View>
       <View style={styles.fornaxBox}>
         <Pressable
-          onPress={() => navigate('Import')}
+          onPress={() => navigate('ImportCard')}
           style={[styles.button, styles.buttonClose, styles.secondaryButton]}>
           <Text style={[styles.txnText, styles.secondaryTxnText]}>
-            Import using Secret
-          </Text>
-          <Text
-            style={[styles.txnText, styles.secondaryTxnText, { marginTop: 5 }]}>
-            Recovery Phrase
+            Import new Card
           </Text>
         </Pressable>
         <Pressable
           onPress={handleCreateWallet}
           style={[styles.button, styles.buttonClose]}>
-          <Text style={styles.txnText}>Create a new Wallet</Text>
+          <Text style={styles.txnText}>Create a new Card</Text>
         </Pressable>
       </View>
     </>
   );
 };
 
-export default WalletSetup;
+export default Scan;

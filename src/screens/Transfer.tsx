@@ -23,38 +23,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  fornaxText: {
-    fontSize: 48,
-    color: '#b27f29',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Bold',
-  },
-  secondaryTxnText: {
-    color: '#363853',
-  },
-  txnText: {
-    marginLeft: 17,
-    fontSize: 16,
-    color: '#ffffff',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Medium',
-    marginTop: -5,
-  },
-  buttonClose: {
-    backgroundColor: '#b27f29',
-    width: 240,
-    alignSelf: 'center',
-    marginTop: 25,
-  },
-  button: {
-    borderRadius: 20,
-    paddingVertical: 18,
-  },
-  secondaryButton: {
-    backgroundColor: '#fff',
-    color: '#b27f29',
-    marginTop: 185,
-  },
   textStyle: {
     fontSize: 20,
     color: '#ffffff',
@@ -65,13 +33,6 @@ const styles = StyleSheet.create({
   backIcon: {
     marginLeft: 26,
     marginTop: 32,
-  },
-  arrowRightIcon: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    alignSelf: 'center',
   },
   fornaxIcon: {
     marginBottom: 44,
@@ -101,14 +62,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     width: 340,
     marginBottom: 20,
-  },
-  inputImg: {
-    height: 10,
-    width: 20,
-    marginTop: 6,
-    position: 'absolute',
-    right: 15,
-    top: 20,
   },
   input: {
     fontFamily: 'Quicksand-Medium',

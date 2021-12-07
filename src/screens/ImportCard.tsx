@@ -22,12 +22,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  fornaxText: {
-    fontSize: 48,
-    color: '#b27f29',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Bold',
-  },
   txnText: {
     marginLeft: 17,
     fontSize: 16,
@@ -59,13 +53,6 @@ const styles = StyleSheet.create({
     marginLeft: 26,
     marginTop: 32,
   },
-  arrowRightIcon: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    alignSelf: 'center',
-  },
   fornaxIcon: {
     marginBottom: 30,
   },
@@ -76,13 +63,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     marginTop: hp('10'),
     marginBottom: hp('4'),
-  },
-  fornaxMiniText: {
-    fontSize: 18,
-    color: '#bdbdbd',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Medium',
-    width: 300,
   },
   inputBox: {
     width: 300,
@@ -104,9 +84,6 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     paddingHorizontal: 10,
     fontSize: 16,
-  },
-  centerContainer: {
-    position: 'absolute',
   },
   center: {
     top: hp(-5),
@@ -181,7 +158,6 @@ const ImportCard = (props: any) => {
         </Pressable>
       </View>
       <View style={styles.fornaxInnerBox}>
-        {/*<Image style={styles.fornaxIcon} source={require(SettingImage)} />*/}
         <View>
           <Image style={styles.center} source={require(backLines)} />
           <Image style={styles.center} source={require(backCard)} />

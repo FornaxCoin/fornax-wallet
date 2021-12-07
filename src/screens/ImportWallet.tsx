@@ -24,12 +24,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  fornaxText: {
-    fontSize: 48,
-    color: '#b27f29',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Bold',
-  },
   txnText: {
     marginLeft: 17,
     fontSize: 16,
@@ -60,13 +54,6 @@ const styles = StyleSheet.create({
   backIcon: {
     marginLeft: 26,
     marginTop: 32,
-  },
-  arrowRightIcon: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    alignSelf: 'center',
   },
   fornaxIcon: {
     marginBottom: 30,

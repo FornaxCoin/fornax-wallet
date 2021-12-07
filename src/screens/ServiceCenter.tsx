@@ -14,12 +14,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  fornaxText: {
-    fontSize: 48,
-    color: '#b27f29',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Bold',
-  },
   txnText: {
     marginLeft: 17,
     fontSize: 16,
@@ -29,11 +23,9 @@ const styles = StyleSheet.create({
     marginTop: -5,
   },
   buttonClose: {
-    // flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: '#b27f29',
     width: 240,
     alignSelf: 'center',
     marginBottom: 43,
@@ -55,7 +47,6 @@ const styles = StyleSheet.create({
   },
   arrowRightIcon: {
     flex: 1,
-    // backgroundColor: 'red',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -69,8 +60,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: 'green',
-    // marginTop: 120,
     marginTop: hp('10'),
     marginBottom: hp('4'),
   },
