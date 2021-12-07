@@ -1,46 +1,20 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setAccounts } from '../redux/reducers/Wallet';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
+import QRCode from 'react-native-qrcode-svg';
+import { useSelector } from 'react-redux';
 
-const backLines = '../../assets/images/Group_37background.png';
-const backCard = '../../assets/images/Group_36card.png';
+const ScanImage = '../../assets/images/Scanmini.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  secondaryTxnText: {
-    color: '#363853',
-  },
-  txnText: {
-    marginLeft: 17,
-    fontSize: 16,
-    color: '#ffffff',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Medium',
-    marginTop: -5,
-  },
-  buttonClose: {
-    backgroundColor: '#b27f29',
-    width: 240,
-    alignSelf: 'center',
-    marginTop: 25,
-  },
-  button: {
-    borderRadius: 20,
-    paddingVertical: 18,
-  },
-  secondaryButton: {
-    backgroundColor: '#fff',
-    color: '#b27f29',
-    marginTop: 185,
+    justifyContent: 'flex-start',
   },
   textStyle: {
     fontSize: 20,
@@ -54,7 +28,9 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   fornaxIcon: {
-    marginBottom: 44,
+    width: 80,
+    height: 80,
+    marginBottom: 30,
   },
   fornaxInnerBox: {
     flex: 0,
@@ -64,67 +40,83 @@ const styles = StyleSheet.create({
     marginTop: hp('10'),
     marginBottom: hp('4'),
   },
-  centerContainer: {
-    position: 'absolute',
+  fornaxMiniText: {
+    fontSize: 16,
+    color: '#bdbdbd',
+    textAlign: 'center',
+    fontFamily: 'Quicksand-Medium',
   },
-  center: {
-    top: hp(-5),
-    zIndex: -99,
-    position: 'absolute',
+  inputBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: 60,
+    borderRadius: 15,
+    fontFamily: 'Quicksand-Medium',
+    backgroundColor: '#ffffff',
+    color: '#bdbdbd',
+    fontSize: 16,
+    width: 340,
+    marginBottom: 20,
+  },
+  input: {
+    fontFamily: 'Quicksand-Medium',
+    fontSize: 16,
+    width: 340,
+    paddingHorizontal: 20,
+  },
+  qrCodeImg: {
+    alignItems: 'center',
     alignSelf: 'center',
+    marginBottom: 20,
+    height: hp('34'),
+    width: wp('73'),
+    borderWidth: 5,
+    borderColor: 'aliceblue',
+    borderRadius: 30,
+    paddingTop: 28,
+    backgroundColor: 'aliceblue',
+  },
+  topLine: {
+    height: 6,
+    backgroundColor: '#021124',
+    width: wp('49'),
+    position: 'absolute',
+    top: -6,
+  },
+  leftLine: {
+    width: 6,
+    backgroundColor: '#021124',
+    height: hp('23'),
+    position: 'absolute',
+    left: -6,
+    top: 40,
+  },
+  rightLine: {
+    width: 6,
+    backgroundColor: '#021124',
+    height: hp('23'),
+    position: 'absolute',
+    right: -6,
+    top: 40,
+  },
+  bottomLine: {
+    height: 6,
+    backgroundColor: '#021124',
+    width: wp('49'),
+    position: 'absolute',
+    bottom: -6,
   },
 });
 
 const Scan = (props: any) => {
-  const dispatch = useDispatch();
   const navigate = props.navigation.navigate;
 
-  const { web3 } = useSelector(({ wallet }: any) => {
+  const { accounts } = useSelector(({ wallet }: any) => {
     return {
       web3: wallet?.web3,
+      accounts: wallet?.accounts,
     };
   });
-
-  const storeDataAsync = async (account: any) => {
-    try {
-      const accounts: any = [];
-      const accountList = await AsyncStorage.getItem('accountList');
-      if (accountList !== null) {
-        accounts.push(...JSON.parse(accountList));
-        accounts.push(account);
-      }
-      await AsyncStorage.setItem('accountList', JSON.stringify(accounts));
-      dispatch(setAccounts(accounts));
-      navigate('Dashboard');
-    } catch (error) {
-      // Error saving data
-    }
-  };
-
-  const getBalance = async (account: any) => {
-    web3.eth.getBalance(account?.address).then(
-      async (bal: any) => {
-        if (bal >= 0) {
-          const balance = await web3.utils.fromWei(bal, 'ether');
-          storeDataAsync({ ...account, balance });
-        }
-      },
-      (error: any) => {
-        console.log(error, 'getBalance');
-      },
-    );
-  };
-
-  const handleCreateWallet = async () => {
-    try {
-      if (web3) {
-        const account = await web3.eth.accounts.create();
-        getBalance(account);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   return (
     <>
@@ -133,27 +125,35 @@ const Scan = (props: any) => {
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>
-      <View style={styles.fornaxInnerBox}>
-        {/*<Image style={styles.fornaxIcon} source={require(SettingImage)} />*/}
-        <View style={styles.centerContainer}>
-          <Image style={styles.center} source={require(backLines)} />
-          <Image style={styles.center} source={require(backCard)} />
-        </View>
-        <Text style={styles.textStyle}>Add Card</Text>
-      </View>
       <View style={styles.fornaxBox}>
-        <Pressable
-          onPress={() => navigate('ImportCard')}
-          style={[styles.button, styles.buttonClose, styles.secondaryButton]}>
-          <Text style={[styles.txnText, styles.secondaryTxnText]}>
-            Import new Card
+        <View style={styles.fornaxInnerBox}>
+          <Image style={styles.fornaxIcon} source={require(ScanImage)} />
+          <Text style={styles.textStyle}>Scan Me</Text>
+          <Text style={styles.fornaxMiniText}>My QR code</Text>
+        </View>
+        <View style={styles.qrCodeImg}>
+          <View style={styles.topLine} />
+          <View style={styles.leftLine} />
+          <QRCode
+            value={accounts.length > 0 && accounts[0]?.address}
+            size={230}
+            color="#363853"
+            backgroundColor="aliceblue"
+          />
+          <View style={styles.rightLine} />
+          <View style={styles.bottomLine} />
+        </View>
+        <View>
+          <Text style={styles.fornaxMiniText}>Scan this to pay</Text>
+          <Text style={styles.fornaxMiniText}>debt to you more easily</Text>
+          <Text
+            style={[
+              styles.fornaxMiniText,
+              { marginTop: 25, color: '#2d9cdb' },
+            ]}>
+            Or scan to pay your bill
           </Text>
-        </Pressable>
-        <Pressable
-          onPress={handleCreateWallet}
-          style={[styles.button, styles.buttonClose]}>
-          <Text style={styles.txnText}>Create a new Card</Text>
-        </Pressable>
+        </View>
       </View>
     </>
   );
