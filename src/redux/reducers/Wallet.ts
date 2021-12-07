@@ -8,6 +8,7 @@ interface WalletState {
   accounts: any;
   txnInfo: any;
   txnResponse: any;
+  defaultAddress: string;
 }
 
 const initialState = {
@@ -17,6 +18,7 @@ const initialState = {
   web3: null,
   accounts: [],
   txnInfo: null,
+  defaultAddress: '',
   txnResponse: {
     amount: '4',
     privateKey:
@@ -64,6 +66,9 @@ const walletSlice = createSlice({
     setTxnsResponse(state, action) {
       state.txnResponse = action.payload;
     },
+    setDefaultAddress(state, action) {
+      state.defaultAddress = action.payload;
+    },
   },
 });
 
@@ -74,5 +79,6 @@ export const {
   setAccounts,
   setTxnsInfo,
   setTxnsResponse,
+  setDefaultAddress,
 } = walletSlice.actions;
 export default walletSlice.reducer;

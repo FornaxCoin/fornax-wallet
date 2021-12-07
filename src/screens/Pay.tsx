@@ -7,7 +7,7 @@ import {
 import QRCode from 'react-native-qrcode-svg';
 import { useSelector } from 'react-redux';
 
-const ScanImage = '../../assets/images/Scan.png';
+const PayImage = '../../assets/images/pay.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 
 const styles = StyleSheet.create({
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     color: '#bdbdbd',
     textAlign: 'center',
     fontFamily: 'Quicksand-Medium',
+    marginTop: 20,
   },
   inputBox: {
     flexDirection: 'row',
@@ -108,13 +109,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const Scan = (props: any) => {
+const Pay = (props: any) => {
   const navigate = props.navigation.navigate;
 
-  const { accounts, defaultAddress } = useSelector(({ wallet }: any) => {
+  const { accounts } = useSelector(({ wallet }: any) => {
     return {
+      web3: wallet?.web3,
       accounts: wallet?.accounts,
-      defaultAddress: wallet?.defaultAddress,
     };
   });
 
@@ -127,17 +128,15 @@ const Scan = (props: any) => {
       </View>
       <View style={styles.fornaxBox}>
         <View style={styles.fornaxInnerBox}>
-          <Image style={styles.fornaxIcon} source={require(ScanImage)} />
-          <Text style={styles.textStyle}>Scan Me</Text>
-          <Text style={styles.fornaxMiniText}>My QR code</Text>
+          <Image style={styles.fornaxIcon} source={require(PayImage)} />
+          <Text style={styles.textStyle}>Pay Me</Text>
+          <Text style={styles.fornaxMiniText}>Scan QR code</Text>
         </View>
         <View style={styles.qrCodeImg}>
           <View style={styles.topLine} />
           <View style={styles.leftLine} />
           <QRCode
-            value={
-              defaultAddress || (accounts.length > 0 && accounts[0]?.address)
-            }
+            value={accounts.length > 0 && accounts[0]?.address}
             size={230}
             color="#363853"
             backgroundColor="aliceblue"
@@ -146,19 +145,11 @@ const Scan = (props: any) => {
           <View style={styles.bottomLine} />
         </View>
         <View>
-          <Text style={styles.fornaxMiniText}>Scan this to pay</Text>
-          <Text style={styles.fornaxMiniText}>debt to you more easily</Text>
-          <Text
-            style={[
-              styles.fornaxMiniText,
-              { marginTop: 25, color: '#2d9cdb' },
-            ]}>
-            Or scan to pay your bill
-          </Text>
+          <Text style={styles.fornaxMiniText}>Or pay your bill</Text>
         </View>
       </View>
     </>
   );
 };
 
-export default Scan;
+export default Pay;

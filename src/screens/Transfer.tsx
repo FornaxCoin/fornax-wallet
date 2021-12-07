@@ -12,7 +12,7 @@ import { setTxnsInfo } from '../redux/reducers/Wallet';
 import { useDispatch, useSelector } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 
-const SendImage = '../../assets/images/Sendmini.png';
+const SendImage = '../../assets/images/transfer.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 // const DownArrow = '../../assets/images/Vector-arrow.png';
 

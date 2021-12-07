@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     position: 'absolute',
     top: -40,
-    left: 135,
+    left: 134,
     right: 0,
     bottom: 0,
   },
@@ -73,7 +73,7 @@ const NavTab = ({ navigate }: any) => {
       // navigate: 'ConfirmTransaction',
     },
     { key: 'scan', title: 'Scan', icon: ScanImg, navigate: 'Scan' },
-    { key: 'pay', title: 'Pay', icon: PayImg },
+    { key: 'pay', title: 'Pay', icon: PayImg, navigate: 'Pay' },
     { key: 'topUp', title: 'Top up', icon: TopupImg },
   ];
 

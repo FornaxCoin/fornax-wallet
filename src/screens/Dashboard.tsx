@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import React, { useEffect } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import CardCarousel from '../components/CardCarousel';
 import MainTab from '../components/MainTab';
 import NavTab from '../components/NaviTab';
@@ -102,32 +102,6 @@ const Dashboard = (props: any) => {
     }
   };
 
-  const getTransactions = async (web3: any) => {
-    const address = '0xC21a4AD429e4E2E194816d989d9bBd255c67Fd6C';
-    const privateKey =
-      '0x6343d2e0502e5133cb74c528189598264456fdd079c72cbaa78d3605defc3801';
-    web3.eth.accounts.wallet.add(privateKey);
-    web3.eth.defaultAccount = address;
-    const ignoreLength: any = false;
-    console.log(privateKey, address);
-    const data = await web3.eth.accounts.privateKeyToAccount(privateKey, [
-      ignoreLength,
-    ]);
-    console.log(data, 'data');
-    web3.eth
-      .getPastLogs({
-        fromBlock: '0x0',
-        address: address,
-      })
-      .then((res: any) => {
-        console.log(res, 'res');
-        res.forEach((rec: any) => {
-          console.log(rec.blockNumber, rec.transactionHash, rec.topics, 'rec');
-        });
-      })
-      .catch((err: any) => console.log('getPastLogs failed', err));
-  };
-
   const connectWallet = async () => {
     try {
       // const remove = await AsyncStorage.removeItem('accountList');
@@ -145,7 +119,6 @@ const Dashboard = (props: any) => {
       const web3 = new Web3(provider);
       if (web3) {
         checkAccount();
-        getTransactions(web3);
         // await web3.eth.accounts.wallet.clear();
         // await AsyncStorage.removeItem('accountList');
         dispatch(setWeb3(web3));
@@ -165,8 +138,12 @@ const Dashboard = (props: any) => {
       <View style={styles.fornaxBox}>
         <View style={styles.navBar}>
           <View style={styles.badge} />
-          <Image source={require(BellIcon)} style={styles.bellImg} />
-          <Image source={require(SettingIcon)} style={styles.settingImg} />
+          <Pressable onPress={() => navigate('Notifications')}>
+            <Image source={require(BellIcon)} style={styles.bellImg} />
+          </Pressable>
+          <Pressable onPress={() => navigate('Settings')}>
+            <Image source={require(SettingIcon)} style={styles.settingImg} />
+          </Pressable>
         </View>
         <Text style={styles.fornaxText}>Dashboard</Text>
         <View style={styles.cardCarousel}>

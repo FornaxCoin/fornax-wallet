@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const SettingImage = '../../assets/images/Settingmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const ProfileIcon = '../../assets/images/Iconly_Curved_Profilemini.png';
@@ -72,6 +73,13 @@ const styles = StyleSheet.create({
 const Settings = (props: any) => {
   const navigate = props.navigation.navigate;
 
+  const handleLogout = async () => {
+    // await web3.eth.accounts.wallet.clear();
+    // await AsyncStorage.removeItem('accountList');
+    await AsyncStorage.removeItem('loginUser');
+    navigate('Login');
+  };
+
   return (
     <>
       <View>
@@ -94,7 +102,7 @@ const Settings = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Notifications')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(NotificationIcon)} />
           <Text style={styles.txnText}>Notifications</Text>
@@ -103,7 +111,7 @@ const Settings = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Wallet')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(WalletIcon)} />
           <Text style={styles.txnText}>Your Wallet</Text>
@@ -112,7 +120,7 @@ const Settings = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('LoginSetting')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(LoginIcon)} />
           <Text style={styles.txnText}>Login Settings</Text>
@@ -130,7 +138,7 @@ const Settings = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={handleLogout}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(LogoutIcon)} />
           <Text style={styles.txnText}>Log Out</Text>

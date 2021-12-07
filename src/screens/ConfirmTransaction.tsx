@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Clipboard,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
