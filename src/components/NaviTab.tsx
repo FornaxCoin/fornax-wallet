@@ -70,7 +70,7 @@ const NavTab = ({ navigate }: any) => {
       title: 'Transfer',
       icon: TransferImg,
       navigate: 'Transfer',
-      // navigate: 'SetAmount',
+      // navigate: 'ConfirmTransaction',
     },
     { key: 'scan', title: 'Scan', icon: ScanImg, navigate: 'Scan' },
     { key: 'pay', title: 'Pay', icon: PayImg },

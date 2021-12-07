@@ -11,7 +11,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAccounts } from '../redux/reducers/Wallet';
-const SettingImage = '../../assets/images/Settingmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const backLines = '../../assets/images/Group_37background.png';
 const backCard = '../../assets/images/Group_36card.png';
@@ -75,8 +74,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: 'green',
-    // marginTop: 120,
     marginTop: hp('10'),
     marginBottom: hp('4'),
   },
@@ -112,7 +109,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   center: {
-    // flexDirection: 'column',
     top: hp(-5),
     zIndex: -99,
     position: 'absolute',

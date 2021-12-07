@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 const CardCarousel = (props: any) => {
   const carouselRef = useRef(null);
   const navigate = props.navigate;
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [, setActiveIndex] = useState(0);
 
   const { accounts } = useSelector(({ wallet }: any) => {
     return {
@@ -57,9 +57,9 @@ const CardCarousel = (props: any) => {
           {item?.title || `Account ${index + 1}`}
         </Text>
         <Text style={styles.carouselText}>
-          {(parseInt(item?.balance, 10) === 0.0
+          {(parseFloat(item?.balance) === 0.0
             ? 0
-            : parseInt(item?.balance, 10)?.toFixed(2)) || 0}
+            : parseFloat(item?.balance)?.toFixed(2)) || 0}
         </Text>
         <View style={styles.addBtn}>
           <Pressable onPress={() => navigate('AddCard')}>

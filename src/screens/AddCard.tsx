@@ -5,7 +5,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setAccounts } from '../redux/reducers/Wallet';
 import { useDispatch, useSelector } from 'react-redux';
 
-const SettingImage = '../../assets/images/Settingmaga.png';
 const backLines = '../../assets/images/Group_37background.png';
 const backCard = '../../assets/images/Group_36card.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';

@@ -30,6 +30,7 @@ import AddCard from './src/screens/AddCard';
 import ImportCard from './src/screens/ImportCard';
 import Transfer from './src/screens/Transfer';
 import SetAmount from './src/screens/SetAmount';
+import ConfirmTransaction from './src/screens/ConfirmTransaction';
 const BgImage = './assets/images/Layer.png';
 
 const styles = StyleSheet.create({
@@ -151,6 +152,10 @@ const MainStackNavigator = ({ initRoute }: any) => {
         <Stack.Screen name="ImportCard" component={ImportCard} />
         <Stack.Screen name="Transfer" component={Transfer} />
         <Stack.Screen name="SetAmount" component={SetAmount} />
+        <Stack.Screen
+          name="ConfirmTransaction"
+          component={ConfirmTransaction}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

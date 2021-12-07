@@ -135,9 +135,9 @@ const SetAmount = (props: any) => {
       const found = accounts.find((ac: any) => ac.address === txnData?.to);
       console.log(found);
       if (!found) {
-        navigate('Dashboard');
+        navigate('ConfirmTransaction');
       } else if (found && account?.address === found?.address) {
-        navigate('Dashboard');
+        navigate('ConfirmTransaction');
       }
     } catch (error) {
       // Error saving data
