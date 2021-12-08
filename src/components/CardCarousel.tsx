@@ -12,6 +12,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Carousel from 'react-native-snap-carousel';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDefaultAddress } from '../redux/reducers/Wallet';
+
 const BgImage = '../../assets/images/Group_35card.png';
 const plusImg = '../../assets/images/Plusmini.png';
 const copyImg = '../../assets/images/copy.png';

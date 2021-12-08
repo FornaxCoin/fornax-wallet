@@ -1,38 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import Intro from './src/screens/Intro';
-import Signup from './src/screens/Signup';
-import SocialMedia from './src/screens/SocialMedia';
-import Fingerprint from './src/screens/Fingerprint';
-import FaceId from './src/screens/FaceId';
-import ServiceCenter from './src/screens/ServiceCenter';
-import CriticsSuggestion from './src/screens/CriticsSuggestion';
-import LoginSetting from './src/screens/LoginSetting';
-import SetPin from './src/screens/SetPin';
-import Settings from './src/screens/Settings';
-import Wallet from './src/screens/Wallet';
-import Notifications from './src/screens/Notifications';
-import WalletSetup from './src/screens/WalletSetup';
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 import {
   configureFonts,
   DefaultTheme as PaperDefaultTheme,
   Provider as PaperProvider,
 } from 'react-native-paper';
-import Dashboard from './src/screens/Dashboard';
-import ImportWallet from './src/screens/ImportWallet';
 import store from './src/redux/index';
 import { Provider } from 'react-redux';
-import Login from './src/screens/Login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AddCard from './src/screens/AddCard';
-import ImportCard from './src/screens/ImportCard';
-import Transfer from './src/screens/Transfer';
-import SetAmount from './src/screens/SetAmount';
-import ConfirmTransaction from './src/screens/ConfirmTransaction';
-import Scan from './src/screens/Scan';
-import Pay from './src/screens/Pay';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { fontConfig } from './src/utils/config';
+import MainStackNavigator from './src/router/MainStackNavigator';
+
 const BgImage = './assets/images/Layer.png';
 
 const styles = StyleSheet.create({
@@ -48,122 +27,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const Stack = createStackNavigator();
-
-const fontConfig = {
-  web: {
-    regular: {
-      fontFamily: 'Quicksand',
-    },
-    medium: {
-      fontFamily: 'Quicksand-Medium',
-    },
-    light: {
-      fontFamily: 'Quicksand-Light',
-    },
-    thin: {
-      fontFamily: 'Quicksand',
-    },
-    bold: {
-      fontFamily: 'Quicksand-Bold',
-    },
-    semiBold: {
-      fontFamily: 'Quicksand-SemiBold',
-    },
-  },
-  ios: {
-    regular: {
-      fontFamily: 'Quicksand',
-    },
-    medium: {
-      fontFamily: 'Quicksand-Medium',
-    },
-    light: {
-      fontFamily: 'Quicksand-Light',
-    },
-    thin: {
-      fontFamily: 'Quicksand',
-    },
-    bold: {
-      fontFamily: 'Quicksand-Bold',
-    },
-    semiBold: {
-      fontFamily: 'Quicksand-SemiBold',
-    },
-  },
-  android: {
-    regular: {
-      fontFamily: 'Quicksand',
-    },
-    medium: {
-      fontFamily: 'Quicksand-Medium',
-    },
-    light: {
-      fontFamily: 'Quicksand-Light',
-    },
-    thin: {
-      fontFamily: 'Quicksand',
-    },
-    bold: {
-      fontFamily: 'Quicksand-Bold',
-    },
-    semiBold: {
-      fontFamily: 'Quicksand-SemiBold',
-    },
-  },
-};
-
 const theme = {
   ...PaperDefaultTheme,
   fonts: configureFonts(fontConfig),
 };
 
-const MyTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: 'rgb(255, 45, 85)',
-    background: 'transparent',
-  },
-};
-const MainStackNavigator = ({ initRoute }: any) => {
-  return (
-    <NavigationContainer theme={MyTheme}>
-      <Stack.Navigator
-        initialRouteName={initRoute}
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen name="Intro" component={Intro} />
-        <Stack.Screen name="WalletSetup" component={WalletSetup} />
-        <Stack.Screen name="Import" component={ImportWallet} />
-        <Stack.Screen name="SetPin" component={SetPin} />
-        <Stack.Screen name="Settings" component={Settings} />
-        <Stack.Screen name="Wallet" component={Wallet} />
-        <Stack.Screen name="Notifications" component={Notifications} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="LoginSetting" component={LoginSetting} />
-        <Stack.Screen name="Fingerprint" component={Fingerprint} />
-        <Stack.Screen name="CriticsSuggestion" component={CriticsSuggestion} />
-        <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="Dashboard" component={Dashboard} />
-        <Stack.Screen name="SocialMedia" component={SocialMedia} />
-        <Stack.Screen name="ServiceCenter" component={ServiceCenter} />
-        <Stack.Screen name="FaceId" component={FaceId} />
-        <Stack.Screen name="AddCard" component={AddCard} />
-        <Stack.Screen name="ImportCard" component={ImportCard} />
-        <Stack.Screen name="Transfer" component={Transfer} />
-        <Stack.Screen name="SetAmount" component={SetAmount} />
-        <Stack.Screen name="Scan" component={Scan} />
-        <Stack.Screen name="Pay" component={Pay} />
-        <Stack.Screen
-          name="ConfirmTransaction"
-          component={ConfirmTransaction}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
+// Initialize Apollo Client
+const client = new ApolloClient({
+  uri: 'http://45.79.253.185:4001/graphql',
+  cache: new InMemoryCache(),
+});
 
 const App = () => {
   const [initRoute, setInitRoute] = useState('');
@@ -195,22 +68,24 @@ const App = () => {
   }, []);
 
   return (
-    <Provider store={store}>
-      <ImageBackground
-        source={require(BgImage)}
-        resizeMode="cover"
-        style={styles.image}>
-        <PaperProvider theme={theme}>
-          <View style={styles.container}>
-            {initRoute ? (
-              <MainStackNavigator initRoute={initRoute} />
-            ) : (
-              <Text>Loading...</Text>
-            )}
-          </View>
-        </PaperProvider>
-      </ImageBackground>
-    </Provider>
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <ImageBackground
+          source={require(BgImage)}
+          resizeMode="cover"
+          style={styles.image}>
+          <PaperProvider theme={theme}>
+            <View style={styles.container}>
+              {initRoute ? (
+                <MainStackNavigator initRoute={initRoute} />
+              ) : (
+                <Text>Loading...</Text>
+              )}
+            </View>
+          </PaperProvider>
+        </ImageBackground>
+      </Provider>
+    </ApolloProvider>
   );
 };
 

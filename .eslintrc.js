@@ -30,8 +30,8 @@ module.exports = {
     'no-param-reassign': 'error',
 
     // Do not allow unused expressions.
-    'no-unused-expressions': 'error',
     'react-native/no-inline-styles': 'off',
+    'no-unused-expressions': ['error', { enforceForJSX: true }],
 
     // Prefer const over let.
     'prefer-const': 'error',
@@ -40,6 +40,6 @@ module.exports = {
     'prefer-template': 'error',
 
     // Allow unescaped single and double quotes.
-    'react/no-unescaped-entities': ['error', {forbid: ['>', '}']}],
+    'react/no-unescaped-entities': ['error', { forbid: ['>', '}'] }],
   },
 };

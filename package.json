@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "gql-start": "rm -rf ./node_modules/.cache/babel-loader && node index.js",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
@@ -10,6 +11,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@apollo/client": "^3.5.6",
     "@react-native-async-storage/async-storage": "^1.15.14",
     "@react-native-clipboard/clipboard": "^1.9.0",
     "@react-native-community/masked-view": "^0.1.11",
@@ -25,6 +27,7 @@
     "bip39": "^3.0.4",
     "buffer": "6.0.3",
     "ethereumjs-wallet": "^1.0.2",
+    "graphql": "^16.1.0",
     "moment": "^2.29.1",
     "node-libs-browser": "2.2.1",
     "path-browserify": "0.0.0",
@@ -35,7 +38,9 @@
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-get-random-values": "1.5.0",
+    "react-native-gifted-charts": "^0.2.2",
     "react-native-http": "^0.0.3",
+    "react-native-linear-gradient": "^2.5.6",
     "react-native-modal": "^13.0.0",
     "react-native-pager-view": "^5.4.9",
     "react-native-paper": "^4.10.1",
@@ -65,6 +70,7 @@
     "@types/react-native": "^0.66.5",
     "@types/react-test-renderer": "^17.0.1",
     "babel-jest": "^26.6.3",
+    "babel-plugin-import-graphql": "^2.8.1",
     "eslint": "7.14.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.66.2",

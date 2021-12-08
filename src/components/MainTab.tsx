@@ -1,12 +1,21 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   useWindowDimensions,
   Text,
   StyleSheet,
-  ScrollView,
+  FlatList,
 } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import {
+  // heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
+import { useLazyQuery, useQuery } from '@apollo/client';
+import { GET_TRANSACTIONS, GET_TRANSACTIONS_BY_MONTH } from '../utils/query';
+import { useSelector } from 'react-redux';
+import { BarChart, LineChart } from "react-native-gifted-charts";
 
 const styles = StyleSheet.create({
   titleText: {
@@ -27,6 +36,7 @@ const styles = StyleSheet.create({
     color: '#363853',
     fontSize: 18,
     marginBottom: 4,
+    width: wp('35'),
   },
   descriptionText: {
     fontFamily: 'Quicksand-Medium',
@@ -51,108 +61,197 @@ const styles = StyleSheet.create({
   },
 });
 
-const FirstRoute = () => (
-  <ScrollView style={styles.scrollTable}>
-    <View style={{ flex: 1, backgroundColor: 'transparent' }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginTop: 30,
-          marginBottom: 20,
-        }}>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={styles.roundIcon} />
-          <View>
-            <Text style={styles.symbolText}>FRX</Text>
-            <Text style={styles.descriptionText}>Top up</Text>
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'center',
-            width: 130,
-          }}>
-          <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
-          <Text style={styles.amountText}> FRX 200.000</Text>
+const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any) => {
+  const getAccountName = () => {
+    const found = accounts.length > 0 && accounts.findIndex((acc: any) => acc.address.toLowerCase() === item?.from.toLowerCase());
+    if(found !== -1) {
+      return 'Account '+(found + 1);
+    } else {
+      return item?.from;
+    }
+  }
+
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 20,
+      }}>
+      <View style={{ flexDirection: 'row' }}>
+        <View style={[styles.roundIcon, { backgroundColor: '#4368c7' }]} />
+        <View>
+          <Text 
+            style={styles.symbolText}
+            numberOfLines={1}
+            ellipsizeMode="middle"
+          >{getAccountName()}</Text>
+          <Text style={styles.descriptionText}>Income</Text>
         </View>
       </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginBottom: 20,
-        }}>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={[styles.roundIcon, { backgroundColor: '#4368c7' }]} />
-          <View>
-            <Text style={styles.symbolText}>C-Wallet</Text>
-            <Text style={styles.descriptionText}>Income</Text>
-          </View>
-        </View>
-        <View style={{ flexDirection: 'row', alignSelf: 'center', width: 120 }}>
+      <View style={{ flexDirection: 'row', alignSelf: 'center', width: 120 }}>
+        {defaultAddress && defaultAddress === item.from ? (
+          <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
+        ):(
           <Text style={[styles.minusIcon, { color: '#52e34f' }]}>+</Text>
-          <Text style={styles.amountText}> $ 980.000</Text>
-        </View>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginBottom: 20,
-        }}>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={styles.roundIcon} />
-          <View>
-            <Text style={styles.symbolText}>FRX</Text>
-            <Text style={styles.descriptionText}>Top up</Text>
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'center',
-            width: 130,
-          }}>
-          <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
-          <Text style={styles.amountText}> FRX 200.000</Text>
-        </View>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginBottom: 20,
-        }}>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={styles.roundIcon} />
-          <View>
-            <Text style={styles.symbolText}>FRX</Text>
-            <Text style={styles.descriptionText}>Top up</Text>
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'center',
-            width: 130,
-          }}>
-          <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
-          <Text style={styles.amountText}> FRX 200.000</Text>
-        </View>
+        )}
+        <Text style={styles.amountText}> $ {web3 && parseFloat(web3?.utils?.fromWei(item.value)).toFixed(2)}</Text>
       </View>
     </View>
-  </ScrollView>
-);
+  );
+};
 
-const SecondRoute = () => (
-  <View style={{ flex: 1, backgroundColor: 'transparent' }} />
-);
+const TransactionList = () => {
+  const pageLimit = 10;
+  const [offset, setOffset] = useState(0);
+  const [txnList, setTxnList] = useState<any>([]);
+
+  const { web3, defaultAddress, accounts } = useSelector(({ wallet }: any) => {
+    return {
+      web3: wallet?.web3,
+      defaultAddress: wallet?.defaultAddress,
+      accounts: wallet?.accounts,
+    };
+  });
+
+  const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
+    variables: {
+      offset,
+      limit: pageLimit,
+      sortBy: 'DATE',
+    },
+  });
+
+  useEffect(() => {
+    setOffset(0);
+    if (error) {
+      console.log(error, loading);
+    }
+    if (data) {
+      data?.transactionsWithPagination?.transactions?.length > 0 && setTxnList(data?.transactionsWithPagination?.transactions);
+    }
+  }, [data]);
+
+  return (
+    <View style={{ flex: 1, backgroundColor: 'transparent', marginTop: 15 }}>
+      <FlatList
+        data={txnList}
+        renderItem={(item) => renderItem(item, web3, defaultAddress, accounts)}
+        keyExtractor={item => item.id}
+      />
+    </View>
+  );
+};
+
+const SavingTxnList = () => {
+  const [txnList, setTxnList] = useState<any>([]);
+  const barData = [
+    {
+      value: 40,
+      label: 'Jan',
+      spacing: 2,
+      labelWidth: 30,
+      labelTextStyle: {color: 'gray'},
+      frontColor: '#363853',
+    },
+    {value: 20, frontColor: '#936ee3'},
+    {
+      value: 50,
+      label: 'Feb',
+      spacing: 2,
+      labelWidth: 30,
+      labelTextStyle: {color: 'gray'},
+      frontColor: '#363853',
+    },
+    {value: 40, frontColor: '#936ee3'},
+    {
+      value: 75,
+      label: 'Mar',
+      spacing: 2,
+      labelWidth: 30,
+      labelTextStyle: {color: 'gray'},
+      frontColor: '#363853',
+    },
+    {value: 25, frontColor: '#936ee3'},
+    {
+      value: 30,
+      label: 'Apr',
+      spacing: 2,
+      labelWidth: 30,
+      labelTextStyle: {color: 'gray'},
+      frontColor: '#363853',
+    },
+    {value: 20, frontColor: '#936ee3'},
+    {
+      value: 60,
+      label: 'May',
+      spacing: 2,
+      labelWidth: 30,
+      labelTextStyle: {color: 'gray'},
+      frontColor: '#363853',
+    },
+    {value: 40, frontColor: '#936ee3'},
+    {
+      value: 65,
+      label: 'Jun',
+      spacing: 2,
+      labelWidth: 30,
+      labelTextStyle: {color: 'gray'},
+      frontColor: '#363853',
+    },
+    {value: 30, frontColor: '#936ee3'},
+  ];
+
+  const { defaultAddress } = useSelector(({ wallet }: any) => {
+    return {
+      defaultAddress: wallet?.defaultAddress,
+    };
+  });
+
+  const [getTxnByMonth, { loading, error, data }] = useLazyQuery(GET_TRANSACTIONS_BY_MONTH);
+
+  useEffect(() => {
+    defaultAddress && getTxnByMonth({
+      variables: {
+        address: '0xC21a4AD429e4E2E194816d989d9bBd255c67Fd6C',
+      },
+    })
+  }, [defaultAddress])
+
+
+  useEffect(() => {
+    if (error) {
+      console.log(error, loading, "saving Error");
+    }
+    if (data) {
+      data?.transactionsByMonth?.length > 0 && setTxnList(data?.transactionsByMonth);
+    }
+  }, [data]);
+  console.log(data);
+
+  return (
+    <View style={{ flex: 1, backgroundColor: 'transparent', marginTop: 5, marginBottom: 10, marginLeft: -40 }}>
+      <BarChart
+        data={barData}
+        barWidth={10}
+        spacing={24}
+        roundedTop
+        roundedBottom
+        hideRules
+        hideAxesAndRules
+        xAxisThickness={0}
+        yAxisThickness={0}
+        yAxisTextStyle={{color: 'gray'}}
+        noOfSections={3}
+        width={wp('80')}
+      />
+    </View>
+  );
+};
 
 const renderScene = SceneMap({
-  transaction: FirstRoute,
-  savings: SecondRoute,
+  transaction: TransactionList,
+  savings: SavingTxnList,
 });
 
 const MainTab = () => {

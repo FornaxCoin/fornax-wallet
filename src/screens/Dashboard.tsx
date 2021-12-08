@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 import React, { useEffect } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import CardCarousel from '../components/CardCarousel';
@@ -6,9 +5,8 @@ import MainTab from '../components/MainTab';
 import NavTab from '../components/NaviTab';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
-import Web3 from 'web3';
 import { setAccounts, setWeb3 } from '../redux/reducers/Wallet';
-const HDWalletProvider = require('@truffle/hdwallet-provider');
+import { getWeb3 } from '../utils/common';
 
 const BellIcon = '../../assets/images/bell.png';
 const SettingIcon = '../../assets/images/setting.png';
@@ -106,17 +104,7 @@ const Dashboard = (props: any) => {
     try {
       // const remove = await AsyncStorage.removeItem('accountList');
       const mnemonicPhrase = await AsyncStorage.getItem('mnemonicPhrase');
-      const provider = new HDWalletProvider({
-        mnemonic: {
-          phrase: mnemonicPhrase,
-        },
-        providerOrUrl: 'wss://node.watchfornax.com/ws',
-        network_id: 13936,
-        confirmations: 10,
-        timeoutBlocks: 200,
-        skipDryRun: true,
-      });
-      const web3 = new Web3(provider);
+      const web3 = mnemonicPhrase && getWeb3(mnemonicPhrase);
       if (web3) {
         checkAccount();
         // await web3.eth.accounts.wallet.clear();
