@@ -15,7 +15,7 @@ import { setDefaultAddress } from '../redux/reducers/Wallet';
 
 const BgImage = '../../assets/images/Group_35card.png';
 const plusImg = '../../assets/images/Plusmini.png';
-const copyImg = '../../assets/images/copy.png';
+const copyImg = '../../assets/images/copy.gif';
 
 const styles = StyleSheet.create({
   carouselBox: {
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     paddingTop: 45,
   },
   carouselText: {
-    fontSize: 24,
+    fontSize: 16,
     fontFamily: 'Quicksand-Bold',
     color: '#ffffff',
     textAlign: 'left',
@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
   copyIcon: {
     height: 20,
     width: 20,
-    backgroundColor: '#ffffff',
+    marginLeft: 5,
+    // backgroundColor: '#ffffff',
   },
 });
 
