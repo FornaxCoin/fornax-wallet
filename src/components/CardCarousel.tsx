@@ -55,14 +55,29 @@ const CardCarousel = (props: any) => {
   const navigate = props.navigate;
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const { accounts } = useSelector(({ wallet }: any) => {
+  const { accounts, web3 } = useSelector(({ wallet }: any) => {
     return {
       accounts: wallet?.accounts,
+      web3: wallet?.web3,
     };
   });
 
   const handleClipboard = (address: string) => {
     Clipboard.setString(address);
+  };
+  
+  const getBalance = async (account: any) => {
+    web3.eth.getBalance(account?.address).then(
+      async (bal: any) => {
+        if (bal >= 0) {
+          const balance = await web3.utils.fromWei(bal, 'ether');
+          return parseFloat(balance)?.toFixed(2);
+        }
+      },
+      (error: any) => {
+        console.log(error, 'getBalance');
+      },
+    );
   };
 
   useEffect(() => {
@@ -84,9 +99,10 @@ const CardCarousel = (props: any) => {
           {item?.title || `Account ${index + 1}`}
         </Text>
         <Text style={styles.carouselText}>
-          {(parseFloat(item?.balance) === 0.0
+          {(parseFloat(item?.balance) === 0.00 || parseFloat(item?.balance) === 0.0)
             ? 0
-            : parseFloat(item?.balance)?.toFixed(2)) || 0}
+            : parseFloat(item?.balance)?.toFixed(2)
+          }
         </Text>
         <Text
           style={styles.carouselText}

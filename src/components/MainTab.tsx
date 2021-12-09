@@ -13,9 +13,10 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import { useLazyQuery, useQuery } from '@apollo/client';
-import { GET_TRANSACTIONS, GET_TRANSACTIONS_BY_MONTH } from '../utils/query';
+import { GET_TRANSACTIONS_BY_ADDRESS, GET_TRANSACTIONS_BY_MONTH } from '../utils/query';
 import { useSelector } from 'react-redux';
-import { BarChart, LineChart } from "react-native-gifted-charts";
+import { BarChart } from "react-native-gifted-charts";
+import moment from 'moment';
 
 const styles = StyleSheet.create({
   titleText: {
@@ -59,11 +60,18 @@ const styles = StyleSheet.create({
   scrollTable: {
     flex: 1,
   },
+  noTxnText: {
+    fontFamily: 'Quicksand-Medium',
+    color: '#ffffff',
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 20,
+  }
 });
 
 const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any) => {
   const getAccountName = () => {
-    const found = accounts.length > 0 && accounts.findIndex((acc: any) => acc.address.toLowerCase() === item?.from.toLowerCase());
+    const found = accounts.length > 0 && accounts.findIndex((acc: any) => acc.address.toLowerCase() === item?.to.toLowerCase());
     if(found !== -1) {
       return 'Account '+(found + 1);
     } else {
@@ -114,13 +122,19 @@ const TransactionList = () => {
     };
   });
 
-  const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
-    variables: {
-      offset,
-      limit: pageLimit,
-      sortBy: 'DATE',
-    },
-  });
+  const [getTxnList, { loading, error, data }] = useLazyQuery(GET_TRANSACTIONS_BY_ADDRESS, { errorPolicy: 'all' });
+
+  useEffect(() => {
+    setTxnList([]);
+    defaultAddress && getTxnList({
+      variables: {
+        offset,
+        limit: pageLimit,
+        address: defaultAddress,
+        sortBy: 'DATE',
+      },
+    })
+  }, [defaultAddress])
 
   useEffect(() => {
     setOffset(0);
@@ -128,17 +142,22 @@ const TransactionList = () => {
       console.log(error, loading);
     }
     if (data) {
-      data?.transactionsWithPagination?.transactions?.length > 0 && setTxnList(data?.transactionsWithPagination?.transactions);
+      setTxnList([]);
+      data?.transactionsByAddressWithPagination?.transactions?.length > 0 && setTxnList(data?.transactionsByAddressWithPagination?.transactions);
     }
   }, [data]);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'transparent', marginTop: 15 }}>
-      <FlatList
-        data={txnList}
-        renderItem={(item) => renderItem(item, web3, defaultAddress, accounts)}
-        keyExtractor={item => item.id}
-      />
+     {txnList.length > 0 ? (
+        <FlatList
+          data={txnList}
+          renderItem={(item) => renderItem(item, web3, defaultAddress, accounts)}
+          keyExtractor={item => item.id}
+        />
+      ) : (
+        <Text style={styles.noTxnText}>No Transactions Found</Text>
+      )}
     </View>
   );
 };
@@ -213,7 +232,7 @@ const SavingTxnList = () => {
   useEffect(() => {
     defaultAddress && getTxnByMonth({
       variables: {
-        address: '0xC21a4AD429e4E2E194816d989d9bBd255c67Fd6C',
+        address: defaultAddress,
       },
     })
   }, [defaultAddress])
@@ -224,10 +243,20 @@ const SavingTxnList = () => {
       console.log(error, loading, "saving Error");
     }
     if (data) {
-      data?.transactionsByMonth?.length > 0 && setTxnList(data?.transactionsByMonth);
+      const FilterTxns = data?.transactionsByMonth?.length > 0 && data?.transactionsByMonth?.reduce((newtxn: any, txn: any) => {
+        newtxn.push({
+          value: 65,
+          label: moment.unix(txn.month).format('MMM'),
+          spacing: 2,
+          labelWidth: 30,
+          labelTextStyle: {color: 'gray'},
+          frontColor: '#363853',
+        })
+        return newtxn;
+      }, []);
+      FilterTxns.length > 0 && setTxnList(FilterTxns);
     }
   }, [data]);
-  console.log(data);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'transparent', marginTop: 5, marginBottom: 10, marginLeft: -40 }}>
@@ -266,8 +295,8 @@ const MainTab = () => {
   const renderTabBar = (props: any) => (
     <TabBar
       {...props}
-      activeColor={'#363853'}
-      inactiveColor={'#ffffff'}
+      activeColor={'#ffffff'}
+      inactiveColor={'#363853'}
       renderLabel={({ route, color }) => {
         if (route.key === 'transaction') {
           return (
@@ -285,7 +314,7 @@ const MainTab = () => {
         backgroundColor: '#5671ff',
         width: 20,
         height: 4,
-        marginHorizontal: 54,
+        marginHorizontal: 70,
         marginTop: 30,
       }}
       style={{

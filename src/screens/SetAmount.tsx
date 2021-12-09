@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   Pressable,
@@ -10,7 +10,7 @@ import {
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setAccounts, setTxnsInfo } from '../redux/reducers/Wallet';
+import { setAccounts, setTxnsInfo, setTxnsResponse } from '../redux/reducers/Wallet';
 
 const CocoPinImage = '../../assets/images/Iconly_Curved_Passwordmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
@@ -97,6 +97,7 @@ const SetAmount = (props: any) => {
   const dispatch = useDispatch();
   const navigate = props.navigation.navigate;
   const [amount, setAmount] = useState('');
+  const [accIndex, setAccIndex] = useState(-1);
 
   const handleAmonut = (val: any) => {
     setAmount(amount + val);
@@ -177,7 +178,7 @@ const SetAmount = (props: any) => {
           to: txnData.to,
           value: web3.utils.toWei(amount, 'ether'),
           gasPrice: gasPrice,
-          gas: 100000,
+          gas: 21000,
           nonce: nonce,
         })
         .on('transactionHash', function (hash: any) {
@@ -194,12 +195,18 @@ const SetAmount = (props: any) => {
           if (found) {
             getBalance(found);
           }
+          dispatch(setTxnsResponse({ ...receipt, amount, ...txnData, gasPrice}))
         })
         .on('error', console.error);
     } catch (err) {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    const found = accounts.findIndex((acc: any) => acc.address === txnData?.from?.address);
+    found !== -1 && setAccIndex(found);
+  }, [accounts])
 
   const handleTransfer = () => {
     if (txnData.from?.address && txnData.to && parseInt(amount, 10) > 0) {
@@ -216,8 +223,8 @@ const SetAmount = (props: any) => {
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(CocoPinImage)} />
-        <Text style={[styles.textStyle, { marginBottom: 20 }]}>Wallet 1</Text>
-        <Text style={styles.textStyle}>FRX 120.00</Text>
+        <Text style={[styles.textStyle, { marginBottom: 20 }]}>Wallet {accIndex + 1}</Text>
+        <Text style={styles.textStyle}>FRX {accIndex && accounts[accIndex]?.balance || 0}</Text>
       </View>
       <View style={styles.fornaxBox}>
         <View style={styles.pinInput}>

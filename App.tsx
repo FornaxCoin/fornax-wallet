@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { fontConfig } from './src/utils/config';
 import MainStackNavigator from './src/router/MainStackNavigator';
+import SplashScreen from 'react-native-splash-screen';
 
 const BgImage = './assets/images/Layer.png';
 
@@ -64,6 +65,7 @@ const App = () => {
   };
 
   useEffect(() => {
+    // SplashScreen.hide();
     handleRoute();
   }, []);
 

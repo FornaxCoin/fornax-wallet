@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   txnDetailBox: {
-    paddingVertical: wp('10'),
+    paddingVertical: wp('8'),
     paddingHorizontal: hp('5'),
     backgroundColor: '#ffffff',
     width: wp('90'),
@@ -75,16 +75,16 @@ const styles = StyleSheet.create({
     color: '#363853',
     textAlign: 'center',
     fontFamily: 'Quicksand-Bold',
-    fontSize: 30,
+    fontSize: 28,
     marginBottom: 5,
   },
   sentText: {
     color: '#828282',
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 16,
   },
   valueText: {
-    width: wp('33'),
+    width: wp('34'),
     textAlign: 'left',
   },
   footerBox: {
@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
 const ConfirmTransaction = (props: any) => {
   const navigate = props.navigation.navigate;
   const [timeStamp, setTimeStamp] = useState<any>(null);
+  const [total, setTotal] = useState<any>(null);
 
   const { web3, txnResponse } = useSelector(({ wallet }: any) => {
     return {
@@ -191,21 +192,20 @@ const ConfirmTransaction = (props: any) => {
         <View style={styles.txnDetailBox}>
           <View>
             <Text style={styles.amountText}>
-              FRX {parseFloat(txnResponse?.amount).toFixed(2) || '120.00'}
+              FRX {parseFloat(txnResponse?.amount).toFixed(2) || '0.00'}
             </Text>
-            <Text style={styles.sentText}>Success sent to Naveed</Text>
+            <Text style={styles.sentText}>Success sent to</Text>
+            <Text style={[styles.sentText, { marginTop: 2}]} ellipsizeMode="middle" numberOfLines={1}>
+              {txnResponse?.to}
+            </Text>
           </View>
           <View style={styles.divider} />
           <View style={styles.detailSection}>
             <View style={styles.detailrow}>
-              <Text style={styles.detailText}>Code</Text>
+              <Text style={styles.detailText}>Gas Limit(Units)</Text>
               <Text style={[styles.detailText, styles.valueText]}>
-                NVX1256SJKL0
+                {txnResponse?.gasUsed}
               </Text>
-            </View>
-            <View style={styles.detailrow}>
-              <Text style={styles.detailText}>Reference Code</Text>
-              <Text style={[styles.detailText, styles.valueText]}>-</Text>
             </View>
             <View style={styles.detailrow}>
               <Text style={styles.detailText}>Date</Text>
@@ -217,6 +217,12 @@ const ConfirmTransaction = (props: any) => {
               <Text style={styles.detailText}>Time</Text>
               <Text style={[styles.detailText, styles.valueText]}>
                 {timeStamp?.time || '9:13 PM'}
+              </Text>
+            </View>
+            <View style={styles.detailrow}>
+              <Text style={styles.detailText}>Total</Text>
+              <Text style={[styles.detailText, styles.valueText]}>
+                FRX {(parseInt(txnResponse?.gasUsed, 10) * parseInt(txnResponse?.gasPrice, 10)) + parseInt(txnResponse?.amount, 10) || 0}
               </Text>
             </View>
           </View>

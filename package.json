@@ -53,6 +53,7 @@
     "react-native-screens": "^3.9.0",
     "react-native-simple-icons": "^1.0.0",
     "react-native-snap-carousel": "^3.9.1",
+    "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "^12.1.1",
     "react-native-tab-view": "^3.1.1",
     "react-native-template-typescript": "^6.8.3",

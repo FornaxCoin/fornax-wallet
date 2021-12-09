@@ -98,9 +98,10 @@ const ImportCard = (props: any) => {
   const navigate = props.navigation.navigate;
   const [privateKey, setPrivateKey] = useState('');
 
-  const { web3 } = useSelector(({ wallet }: any) => {
+  const { web3, accounts } = useSelector(({ wallet }: any) => {
     return {
       web3: wallet?.web3,
+      accounts: wallet?.accounts,
     };
   });
 
@@ -139,11 +140,16 @@ const ImportCard = (props: any) => {
   const handleImport = async () => {
     try {
       if (web3) {
-        const account = await web3.eth.accounts.privateKeyToAccount(
-          privateKey,
-          [ignoreLength],
-        );
-        getBalance(account);
+        const found = accounts.length > 0 && accounts.find((acc: any) => acc.privateKey === privateKey)
+        if(found) {
+          getBalance(found);
+        } else {
+          const account = await web3.eth.accounts.privateKeyToAccount(
+            privateKey,
+            [ignoreLength],
+          );
+          getBalance(account);  
+        }
       }
     } catch (err) {
       console.log(err);
