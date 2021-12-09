@@ -205,12 +205,12 @@ const SetAmount = (props: any) => {
         .on('confirmation', function (confirmationNumber: any, receipt: any) {
           console.log(confirmationNumber, 'confirmationNumber');
           console.log(receipt, 'receipt');
+          dispatch(setTxnsResponse({ ...receipt, amount, ...txnData, gasPrice}))
           getBalance(txnData.from);
           const found = accounts.find((ac: any) => ac.address === txnData?.to);
           if (found) {
             getBalance(found);
           }
-          dispatch(setTxnsResponse({ ...receipt, amount, ...txnData, gasPrice}))
         })
         .on('error', (console.error));
     } catch (err) {

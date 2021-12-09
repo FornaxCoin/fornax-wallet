@@ -12,7 +12,8 @@ import {
   // heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { useLazyQuery, useQuery } from '@apollo/client';
+import _ from 'lodash';
+import { useLazyQuery } from '@apollo/client';
 import { GET_TRANSACTIONS_BY_ADDRESS, GET_TRANSACTIONS_BY_MONTH } from '../utils/query';
 import { useSelector } from 'react-redux';
 import { BarChart } from "react-native-gifted-charts";
@@ -99,7 +100,7 @@ const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any
     if(found !== -1) {
       return 'Account '+(found + 1);
     } else {
-      return item?.from;
+      return item?.to;
     }
   }
 
@@ -122,7 +123,7 @@ const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any
         </View>
       </View>
       <View style={{ flexDirection: 'row', alignSelf: 'center', width: 120 }}>
-        {defaultAddress && defaultAddress === item.from ? (
+        {defaultAddress && defaultAddress === item?.from ? (
           <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
         ):(
           <Text style={[styles.minusIcon, { color: '#52e34f' }]}>+</Text>
@@ -134,7 +135,7 @@ const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any
 };
 
 const TransactionList = () => {
-  const pageLimit = 10;
+  const pageLimit = 4;
   const [loader, setLoader] = useState(true)
   const [offset, setOffset] = useState(0);
   const [txnList, setTxnList] = useState<any>([]);
@@ -147,7 +148,7 @@ const TransactionList = () => {
     };
   });
 
-  const [getTxnList, { loading, error, data }] = useLazyQuery(GET_TRANSACTIONS_BY_ADDRESS, { errorPolicy: 'all' });
+  const [getTxnList, { loading, error, data, fetchMore }] = useLazyQuery(GET_TRANSACTIONS_BY_ADDRESS, { errorPolicy: 'all' });
 
   useEffect(() => {
     setTxnList([]);
@@ -168,12 +169,25 @@ const TransactionList = () => {
       setLoader(false);
       console.log(error, "Transction list Error");
     }
+
+    // updateQuery: (previousResult: any, { fetchMoreResult }: any) => {
+    //   setOffset(offset + 1);
+    //   if (!fetchMoreResult || fetchMoreResult?.transactionsByAddressWithPagination?.transactions?.length === 0) {
+    //     return previousResult;
+    //   }      return {
+    //     transactionsByAddressWithPagination: {
+    //       ...previousResult.transactionsByAddressWithPagination,
+    //       transactions: _.unionBy(previousResult.transactionsByAddressWithPagination.transactions, fetchMoreResult.transactionsByAddressWithPagination.transactions, 'id')
+    //     },
+    //   };
+    // }
     if (data) {
       setTxnList([]);
       setLoader(false);
       data?.transactionsByAddressWithPagination?.transactions?.length > 0 && setTxnList(data?.transactionsByAddressWithPagination?.transactions);
     }
   }, [data, loading]);
+  console.log(data), "dataaaa ---- ";
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent', marginTop: 15 }}>
@@ -183,6 +197,18 @@ const TransactionList = () => {
           data={txnList}
           renderItem={(item) => renderItem(item, web3, defaultAddress, accounts)}
           keyExtractor={item => item.id}
+          onEndReachedThreshold={0.5}
+          onEndReached={() => {
+            fetchMore({
+              variables: { 
+                offset: offset + 1, 
+                limit: pageLimit,
+                address: defaultAddress,
+                sortBy: 'DATE',
+              }
+            });
+            setOffset(offset + 1);
+          }}
         />
       ) : (
         <Text style={styles.noTxnText}>No Transactions Found</Text>

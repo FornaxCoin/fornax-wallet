@@ -12,6 +12,8 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { fontConfig } from './src/utils/config';
 import MainStackNavigator from './src/router/MainStackNavigator';
 import SplashScreen from 'react-native-splash-screen';
+import { offsetLimitPagination } from '@apollo/client/utilities';
+import _ from 'lodash';
 
 const BgImage = './assets/images/Layer.png';
 
@@ -36,7 +38,27 @@ const theme = {
 // Initialize Apollo Client
 const client = new ApolloClient({
   uri: 'http://45.79.253.185:4001/graphql',
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          transactionsByAddressWithPagination: {
+            merge(existing = [], incoming) {
+              // console.log(existing);
+              if (!incoming || incoming?.transactionsByAddressWithPagination?.transactions?.length === 0) {
+                  return existing;
+                }      return {
+                  transactionsByAddressWithPagination: {
+                    ...existing?.transactionsByAddressWithPagination,
+                    transactions: _.unionBy(existing?.transactionsByAddressWithPagination?.transactions, incoming?.transactionsByAddressWithPagination?.transactions, 'id')
+                  },
+                };
+            },
+          },
+        },
+      },
+    },
+  }),
 });
 
 const App = () => {
