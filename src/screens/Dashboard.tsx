@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import CardCarousel from '../components/CardCarousel';
 import MainTab from '../components/MainTab';
@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { setAccounts, setWeb3 } from '../redux/reducers/Wallet';
 import { getWeb3 } from '../utils/common';
+import Spinner from 'react-native-spinkit';
 
 const BellIcon = '../../assets/images/bell.png';
 const SettingIcon = '../../assets/images/setting.png';
@@ -61,10 +62,22 @@ const styles = StyleSheet.create({
     right: 40,
     top: 0,
   },
+  loaderBack: {
+    flex: 1,
+    backgroundColor: '#00000057',
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    right: 0,
+    left: 0,
+    bottom: 0,
+    top: 0
+  },
 });
 
 const Dashboard = (props: any) => {
   const dispatch = useDispatch();
+  const [loader, setLoader] = useState(true);
   const navigate = props.navigation.navigate;
 
   // const getBalances = async (data: any, web3: any) => {
@@ -90,6 +103,7 @@ const Dashboard = (props: any) => {
       if (value != null) {
         const data = JSON.parse(value);
         dispatch(setAccounts(data));
+        setLoader(false);
         // const _bal =
         //   data?.length > 0 && (await web3.eth.getBalance(data[0]?.address));
         // console.log(_bal);
@@ -118,11 +132,17 @@ const Dashboard = (props: any) => {
 
   useEffect(() => {
     connectWallet();
+    setLoader(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
+      {loader && (
+        <View style={styles.loaderBack}>
+          <Spinner isVisible={true} size={50} type={'9CubeGrid'} color="#b27f29"/>
+        </View>
+      )}
       <View style={styles.fornaxBox}>
         <View style={styles.navBar}>
           <View style={styles.badge} />
@@ -134,16 +154,20 @@ const Dashboard = (props: any) => {
           </Pressable>
         </View>
         <Text style={styles.fornaxText}>Dashboard</Text>
-        <View style={styles.cardCarousel}>
-          <CardCarousel navigate={navigate} />
+        {!loader && (
+          <>
+            <View style={styles.cardCarousel}>
+              <CardCarousel navigate={navigate} />
+            </View>
+            <View style={styles.tabBox}>
+              <MainTab />
+            </View>
+            <View style={styles.navTabBox}>
+              <NavTab navigate={navigate} />
+            </View>
+          </>
+        )}
         </View>
-        <View style={styles.tabBox}>
-          <MainTab />
-        </View>
-        <View style={styles.navTabBox}>
-          <NavTab navigate={navigate} />
-        </View>
-      </View>
     </>
   );
 };

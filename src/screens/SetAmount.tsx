@@ -11,6 +11,7 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setAccounts, setTxnsInfo, setTxnsResponse } from '../redux/reducers/Wallet';
+import Spinner from 'react-native-spinkit';
 
 const CocoPinImage = '../../assets/images/Iconly_Curved_Passwordmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
@@ -91,10 +92,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
+  loaderBack: {
+    flex: 1,
+    backgroundColor: '#00000057',
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    right: 0,
+    left: 0,
+    bottom: 0,
+    top: 0
+  },
 });
 
 const SetAmount = (props: any) => {
   const dispatch = useDispatch();
+  const [loader, setLoader] = useState(false);
   const navigate = props.navigation.navigate;
   const [amount, setAmount] = useState('');
   const [accIndex, setAccIndex] = useState(-1);
@@ -128,10 +141,11 @@ const SetAmount = (props: any) => {
       await AsyncStorage.setItem('accountList', JSON.stringify(_accounts));
       dispatch(setAccounts(_accounts));
       const found = accounts.find((ac: any) => ac.address === txnData?.to);
-      console.log(found);
-      if (!found) {
+      if (!found) {      
+        setLoader(false);
         navigate('ConfirmTransaction');
       } else if (found && account?.address === found?.address) {
+        setLoader(false);
         navigate('ConfirmTransaction');
       }
     } catch (error) {
@@ -149,6 +163,7 @@ const SetAmount = (props: any) => {
       },
       (error: any) => {
         console.log(error, 'getBalance');
+        setLoader(false);
       },
     );
   };
@@ -197,9 +212,10 @@ const SetAmount = (props: any) => {
           }
           dispatch(setTxnsResponse({ ...receipt, amount, ...txnData, gasPrice}))
         })
-        .on('error', console.error);
+        .on('error', (console.error));
     } catch (err) {
       console.log(err);
+      setLoader(false);
     }
   };
 
@@ -210,12 +226,18 @@ const SetAmount = (props: any) => {
 
   const handleTransfer = () => {
     if (txnData.from?.address && txnData.to && parseInt(amount, 10) > 0) {
+      setLoader(true);
       sendTxn();
     }
   };
 
   return (
     <>
+      {loader && (
+        <View style={styles.loaderBack}>
+          <Spinner isVisible={true} size={50} type={'9CubeGrid'} color="#b27f29"/>
+        </View>
+      )}
       <View>
         <Pressable onPress={() => navigate('Transfer')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />

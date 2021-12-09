@@ -17,6 +17,7 @@ import { GET_TRANSACTIONS_BY_ADDRESS, GET_TRANSACTIONS_BY_MONTH } from '../utils
 import { useSelector } from 'react-redux';
 import { BarChart } from "react-native-gifted-charts";
 import moment from 'moment';
+import Spinner from 'react-native-spinkit';
 
 const styles = StyleSheet.create({
   titleText: {
@@ -66,6 +67,29 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     marginTop: 20,
+  },
+  footerBox: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 5
+  },
+  incomeText: {
+    fontSize: 14,
+    fontFamily: 'Quicksand-Medium',
+    marginRight: 20,
+    color: '#936ee3',
+  },
+  outcomeText: {
+    fontSize: 14,
+    fontFamily: 'Quicksand-Medium',
+    color: 'gray',
+  },
+  roundBox: {
+    height: 10,
+    width: 10,
+    borderRadius: 30,
+    marginRight: 5
   }
 });
 
@@ -111,6 +135,7 @@ const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any
 
 const TransactionList = () => {
   const pageLimit = 10;
+  const [loader, setLoader] = useState(true)
   const [offset, setOffset] = useState(0);
   const [txnList, setTxnList] = useState<any>([]);
 
@@ -126,6 +151,7 @@ const TransactionList = () => {
 
   useEffect(() => {
     setTxnList([]);
+    setLoader(true);
     defaultAddress && getTxnList({
       variables: {
         offset,
@@ -139,17 +165,20 @@ const TransactionList = () => {
   useEffect(() => {
     setOffset(0);
     if (error) {
-      console.log(error, loading);
+      setLoader(false);
+      console.log(error, "Transction list Error");
     }
     if (data) {
       setTxnList([]);
+      setLoader(false);
       data?.transactionsByAddressWithPagination?.transactions?.length > 0 && setTxnList(data?.transactionsByAddressWithPagination?.transactions);
     }
-  }, [data]);
+  }, [data, loading]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'transparent', marginTop: 15 }}>
-     {txnList.length > 0 ? (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent', marginTop: 15 }}>
+      <Spinner isVisible={loader} size={50} type={'9CubeGrid'} color="#b27f29"/>
+      {!loader && ( txnList.length > 0 ? (
         <FlatList
           data={txnList}
           renderItem={(item) => renderItem(item, web3, defaultAddress, accounts)}
@@ -157,13 +186,14 @@ const TransactionList = () => {
         />
       ) : (
         <Text style={styles.noTxnText}>No Transactions Found</Text>
-      )}
+      ))}
     </View>
   );
 };
 
 const SavingTxnList = () => {
   const [txnList, setTxnList] = useState<any>([]);
+  const [loader, setLoader] = useState(true)
   const { defaultAddress, web3 } = useSelector(({ wallet }: any) => {
     return {
       defaultAddress: wallet?.defaultAddress,
@@ -174,9 +204,11 @@ const SavingTxnList = () => {
   const [getTxnByMonth, { loading, error, data }] = useLazyQuery(GET_TRANSACTIONS_BY_MONTH);
 
   useEffect(() => {
+    setTxnList([]);
+    setLoader(true);
     defaultAddress && getTxnByMonth({
       variables: {
-        address: '0xC21a4AD429e4E2E194816d989d9bBd255c67Fd6C',
+        address: defaultAddress,
       },
     })
   }, [defaultAddress])
@@ -184,9 +216,11 @@ const SavingTxnList = () => {
 
   useEffect(() => {
     if (error) {
-      console.log(error, loading, "saving Error");
+      setLoader(false);
+      console.log(error, "Saving list Error");
     }
     if (data) {
+      setTxnList([]);
       const newData = data?.transactionsByMonth?.length > 0 && data?.transactionsByMonth.slice(data?.transactionsByMonth?.length - 6, data?.transactionsByMonth?.length)
       const FilterTxns = newData?.length > 0 && newData?.reduce((newtxn: any, txn: any) => {
         newtxn.push({
@@ -202,28 +236,42 @@ const SavingTxnList = () => {
         })      
         return newtxn;
       }, []);
+      setLoader(false);
       FilterTxns.length > 0 && setTxnList(FilterTxns);
     }
-  }, [data]);
+  }, [data, loading]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'transparent', marginTop: 5, marginBottom: 10, marginLeft: -70 }}>
-      {txnList.length > 0 && 
-        <BarChart
-          data={txnList}
-          barWidth={10}
-          spacing={24}
-          roundedTop
-          roundedBottom
-          hideRules
-          hideAxesAndRules
-          xAxisThickness={0}
-          yAxisThickness={0}
-          yAxisTextStyle={{color: 'gray'}}
-          noOfSections={3}
-          width={wp('90')}
-        />
-      }
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent', marginTop: 5, marginBottom: 20, marginLeft: -20 }}>
+      <Spinner isVisible={loader} size={50} type={'9CubeGrid'} color="#b27f29"/>
+      <View style={{ marginBottom: 15 }}>
+        {!loader && txnList.length > 0 && 
+          <BarChart
+            data={txnList}
+            barWidth={10}
+            spacing={24}
+            roundedTop
+            roundedBottom
+            hideRules
+            hideAxesAndRules
+            xAxisThickness={0}
+            yAxisThickness={0}
+            yAxisTextStyle={{color: 'gray'}}
+            noOfSections={3}
+            width={wp('90')}
+          />
+        }
+      </View>
+      <View style={styles.footerBox}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={[styles.roundBox, { backgroundColor: '#936ee3' }]} />
+          <Text style={styles.incomeText}>Income</Text>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={[styles.roundBox, { backgroundColor: '#363853' }]} />
+          <Text style={styles.outcomeText}>Outcome</Text>
+        </View>
+      </View>
     </View>
   );
 };

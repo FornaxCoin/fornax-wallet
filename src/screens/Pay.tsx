@@ -1,10 +1,10 @@
-import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useRef } from 'react';
+import { Image, Linking, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import QRCode from 'react-native-qrcode-svg';
+import QRCodeScanner from 'react-native-qrcode-scanner';
 import { useSelector } from 'react-redux';
 
 const PayImage = '../../assets/images/pay.png';
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: 'aliceblue',
     borderRadius: 30,
-    paddingTop: 28,
     backgroundColor: 'aliceblue',
   },
   topLine: {
@@ -107,11 +106,21 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -6,
   },
+  centerText: {
+    flex: 1,
+    fontSize: 18,
+    padding: 42,
+    color: '#777'
+  },
+  cameraContainer: {
+    height: hp('30'),
+    width: wp('63'),
+  }
 });
 
 const Pay = (props: any) => {
   const navigate = props.navigation.navigate;
-
+  let scanner = useRef(null);
   const { accounts } = useSelector(({ wallet }: any) => {
     return {
       web3: wallet?.web3,
@@ -119,6 +128,12 @@ const Pay = (props: any) => {
     };
   });
 
+  const onSuccess = (e: any) => {
+    Linking.openURL(e.data).catch(err =>
+      console.error('An error occured', err)
+    );
+  };
+  
   return (
     <>
       <View>
@@ -131,15 +146,18 @@ const Pay = (props: any) => {
           <Image style={styles.fornaxIcon} source={require(PayImage)} />
           <Text style={styles.textStyle}>Pay Me</Text>
           <Text style={styles.fornaxMiniText}>Scan QR code</Text>
+          <Text style={styles.fornaxMiniText}>Please move your camera {"\n"} over the QR Code</Text>
         </View>
         <View style={styles.qrCodeImg}>
           <View style={styles.topLine} />
           <View style={styles.leftLine} />
-          <QRCode
-            value={accounts.length > 0 && accounts[0]?.address}
-            size={230}
-            color="#363853"
-            backgroundColor="aliceblue"
+          <QRCodeScanner
+            reactivate={true}
+            showMarker={false}
+            ref={scanner}
+            containerStyle={styles.cameraContainer}
+            cameraStyle={styles.cameraContainer}
+            onRead={onSuccess}
           />
           <View style={styles.rightLine} />
           <View style={styles.bottomLine} />

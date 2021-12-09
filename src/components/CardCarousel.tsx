@@ -80,12 +80,10 @@ const CardCarousel = (props: any) => {
     );
   };
 
-  useEffect(() => {
-    if (activeIndex) {
-      dispatch(setDefaultAddress(accounts[activeIndex]?.address || ''));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeIndex]);
+  const handleActiveIndex = (index: any) => {
+    dispatch(setDefaultAddress(accounts[index]?.address || ''));
+    setActiveIndex(index)
+  }
 
   useEffect(() => {
     dispatch(setDefaultAddress(accounts[0]?.address || ''));
@@ -142,7 +140,7 @@ const CardCarousel = (props: any) => {
             removeClippedSubviews={false}
             itemWidth={300}
             renderItem={_renderItem}
-            onSnapToItem={index => setActiveIndex(index)}
+            onSnapToItem={index => handleActiveIndex(index)}
           />
         </View>
       </SafeAreaView>
