@@ -65,7 +65,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    // SplashScreen.hide();
+    SplashScreen.hide();
     handleRoute();
   }, []);
 
