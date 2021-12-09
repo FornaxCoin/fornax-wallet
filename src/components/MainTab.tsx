@@ -164,66 +164,10 @@ const TransactionList = () => {
 
 const SavingTxnList = () => {
   const [txnList, setTxnList] = useState<any>([]);
-  const barData = [
-    {
-      value: 40,
-      label: 'Jan',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#363853',
-    },
-    {value: 20, frontColor: '#936ee3'},
-    {
-      value: 50,
-      label: 'Feb',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#363853',
-    },
-    {value: 40, frontColor: '#936ee3'},
-    {
-      value: 75,
-      label: 'Mar',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#363853',
-    },
-    {value: 25, frontColor: '#936ee3'},
-    {
-      value: 30,
-      label: 'Apr',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#363853',
-    },
-    {value: 20, frontColor: '#936ee3'},
-    {
-      value: 60,
-      label: 'May',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#363853',
-    },
-    {value: 40, frontColor: '#936ee3'},
-    {
-      value: 65,
-      label: 'Jun',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#363853',
-    },
-    {value: 30, frontColor: '#936ee3'},
-  ];
-
-  const { defaultAddress } = useSelector(({ wallet }: any) => {
+  const { defaultAddress, web3 } = useSelector(({ wallet }: any) => {
     return {
       defaultAddress: wallet?.defaultAddress,
+      web3: wallet?.web3,
     };
   });
 
@@ -232,7 +176,7 @@ const SavingTxnList = () => {
   useEffect(() => {
     defaultAddress && getTxnByMonth({
       variables: {
-        address: defaultAddress,
+        address: '0xC21a4AD429e4E2E194816d989d9bBd255c67Fd6C',
       },
     })
   }, [defaultAddress])
@@ -243,15 +187,19 @@ const SavingTxnList = () => {
       console.log(error, loading, "saving Error");
     }
     if (data) {
-      const FilterTxns = data?.transactionsByMonth?.length > 0 && data?.transactionsByMonth?.reduce((newtxn: any, txn: any) => {
+      const newData = data?.transactionsByMonth?.length > 0 && data?.transactionsByMonth.slice(data?.transactionsByMonth?.length - 6, data?.transactionsByMonth?.length)
+      const FilterTxns = newData?.length > 0 && newData?.reduce((newtxn: any, txn: any) => {
         newtxn.push({
-          value: 65,
+          value: parseInt(web3.utils.fromWei(txn.fromTotal, 'ether'), 10),
           label: moment.unix(txn.month).format('MMM'),
           spacing: 2,
           labelWidth: 30,
           labelTextStyle: {color: 'gray'},
           frontColor: '#363853',
-        })
+        }, {
+          value: parseInt(web3.utils.fromWei(txn.toTotal, 'ether'), 10),
+          frontColor: '#936ee3',
+        })      
         return newtxn;
       }, []);
       FilterTxns.length > 0 && setTxnList(FilterTxns);
@@ -259,21 +207,23 @@ const SavingTxnList = () => {
   }, [data]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'transparent', marginTop: 5, marginBottom: 10, marginLeft: -40 }}>
-      <BarChart
-        data={barData}
-        barWidth={10}
-        spacing={24}
-        roundedTop
-        roundedBottom
-        hideRules
-        hideAxesAndRules
-        xAxisThickness={0}
-        yAxisThickness={0}
-        yAxisTextStyle={{color: 'gray'}}
-        noOfSections={3}
-        width={wp('80')}
-      />
+    <View style={{ flex: 1, backgroundColor: 'transparent', marginTop: 5, marginBottom: 10, marginLeft: -70 }}>
+      {txnList.length > 0 && 
+        <BarChart
+          data={txnList}
+          barWidth={10}
+          spacing={24}
+          roundedTop
+          roundedBottom
+          hideRules
+          hideAxesAndRules
+          xAxisThickness={0}
+          yAxisThickness={0}
+          yAxisTextStyle={{color: 'gray'}}
+          noOfSections={3}
+          width={wp('90')}
+        />
+      }
     </View>
   );
 };
