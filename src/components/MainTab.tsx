@@ -135,8 +135,8 @@ const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any
 };
 
 const TransactionList = () => {
-  const pageLimit = 4;
   const [loader, setLoader] = useState(true)
+  const [pageLimit, setPageLimit] = useState(4);
   const [offset, setOffset] = useState(0);
   const [txnList, setTxnList] = useState<any>([]);
 
@@ -169,25 +169,25 @@ const TransactionList = () => {
       setLoader(false);
       console.log(error, "Transction list Error");
     }
-
-    // updateQuery: (previousResult: any, { fetchMoreResult }: any) => {
-    //   setOffset(offset + 1);
-    //   if (!fetchMoreResult || fetchMoreResult?.transactionsByAddressWithPagination?.transactions?.length === 0) {
-    //     return previousResult;
-    //   }      return {
-    //     transactionsByAddressWithPagination: {
-    //       ...previousResult.transactionsByAddressWithPagination,
-    //       transactions: _.unionBy(previousResult.transactionsByAddressWithPagination.transactions, fetchMoreResult.transactionsByAddressWithPagination.transactions, 'id')
-    //     },
-    //   };
-    // }
     if (data) {
-      setTxnList([]);
       setLoader(false);
-      data?.transactionsByAddressWithPagination?.transactions?.length > 0 && setTxnList(data?.transactionsByAddressWithPagination?.transactions);
+      data?.transactionsByAddressWithPagination?.transactions?.length > 0 && 
+      setTxnList([..._.uniqBy(data?.transactionsByAddressWithPagination?.transactions, 'id')]);
     }
   }, [data, loading]);
-  console.log(data), "dataaaa ---- ";
+
+  const handleFetchMore = () => {
+    defaultAddress && getTxnList({
+      variables: {
+        offset: offset + 1,
+        limit: pageLimit + pageLimit,
+        address: defaultAddress,
+        sortBy: 'DATE',
+      },
+    })
+    setOffset(offset + 1);
+    setPageLimit(pageLimit + pageLimit);
+  }
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent', marginTop: 15 }}>
@@ -198,17 +198,7 @@ const TransactionList = () => {
           renderItem={(item) => renderItem(item, web3, defaultAddress, accounts)}
           keyExtractor={item => item.id}
           onEndReachedThreshold={0.5}
-          onEndReached={() => {
-            fetchMore({
-              variables: { 
-                offset: offset + 1, 
-                limit: pageLimit,
-                address: defaultAddress,
-                sortBy: 'DATE',
-              }
-            });
-            setOffset(offset + 1);
-          }}
+          onEndReached={handleFetchMore}
         />
       ) : (
         <Text style={styles.noTxnText}>No Transactions Found</Text>

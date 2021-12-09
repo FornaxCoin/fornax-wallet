@@ -38,27 +38,7 @@ const theme = {
 // Initialize Apollo Client
 const client = new ApolloClient({
   uri: 'http://45.79.253.185:4001/graphql',
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          transactionsByAddressWithPagination: {
-            merge(existing = [], incoming) {
-              // console.log(existing);
-              if (!incoming || incoming?.transactionsByAddressWithPagination?.transactions?.length === 0) {
-                  return existing;
-                }      return {
-                  transactionsByAddressWithPagination: {
-                    ...existing?.transactionsByAddressWithPagination,
-                    transactions: _.unionBy(existing?.transactionsByAddressWithPagination?.transactions, incoming?.transactionsByAddressWithPagination?.transactions, 'id')
-                  },
-                };
-            },
-          },
-        },
-      },
-    },
-  }),
+  cache: new InMemoryCache(),
 });
 
 const App = () => {
