@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { heightPercentageToDP as hp , widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import {
   Animated,
   View,
@@ -28,6 +29,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   item: {
+    // backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 4.5,
@@ -38,6 +40,14 @@ const styles = StyleSheet.create({
     width: 24,
     marginBottom: 5,
   },
+  scanicon: {
+    // height: 26,
+    // width: 24,
+    // marginBottom: 50,
+    // backgroundColor: 'red',
+    position: 'absolute',
+    top:-20,
+  },
   label: {
     fontSize: 10,
     marginTop: 3,
@@ -45,20 +55,26 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     color: 'white',
   },
+  scanLabel:{
+    marginTop:32,
+  },
   scanTab: {
     width: 72,
     height: 72,
     backgroundColor: '#936ee3',
     borderRadius: 30,
+    marginLeft:-61,
     position: 'absolute',
+    // right: wp(35),
+    left: wp(50),
     top: -40,
-    left: 134,
-    right: 0,
+    // left: 134,
+    // right: 0,
     bottom: 0,
   },
   scanIcon: {
-    marginBottom: 28,
-    marginTop: -18,
+    // marginBottom: 28,
+    // marginTop: -18,
   },
 });
 
@@ -87,9 +103,9 @@ const NavTab = ({ navigate }: any) => {
               <Pressable onPress={() => navigate(route.navigate)}>
                 <Image
                   source={route.icon}
-                  style={[styles.icon, route.key === 'scan' && styles.scanIcon]}
+                  style={[styles.icon, route.key === 'scan' && styles.scanIcon && styles.scanicon]}
                 />
-                <Text style={[styles.label]}>{route.title}</Text>
+                <Text style={[styles.label, route.key === 'scan' && styles.scanLabel]}>{route.title}</Text>
               </Pressable>
             </Animated.View>
           ))}

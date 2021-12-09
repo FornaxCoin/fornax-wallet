@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { setAccounts, setWeb3 } from '../redux/reducers/Wallet';
 import { getWeb3 } from '../utils/common';
+import { heightPercentageToDP as hp , widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const BellIcon = '../../assets/images/bell.png';
 const SettingIcon = '../../assets/images/setting.png';
@@ -15,6 +16,7 @@ const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
     flexDirection: 'column',
+    // justifyContent: 'space-between',
     marginTop: 30,
     marginHorizontal: 20,
   },
@@ -42,15 +44,14 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   cardCarousel: {
-    height: 260,
+    height:216,
+    // backgroundColor:'red',
     width: 450,
   },
   tabBox: {
-    height: 320,
+    // height: 310,
+    height: hp(45),
     marginBottom: 30,
-  },
-  navTabBox: {
-    height: 70,
   },
   badge: {
     width: 7,
@@ -61,6 +62,18 @@ const styles = StyleSheet.create({
     right: 40,
     top: 0,
   },
+  navTabBox: {
+    height: 70,
+    //new
+    // position: 'absolute',
+    // bottom: 0,
+  },
+  colco:{
+    // backgroundColor: 'red',
+    position:"absolute",
+    width:wp(90),
+    bottom: 5,
+  }
 });
 
 const Dashboard = (props: any) => {
@@ -140,10 +153,13 @@ const Dashboard = (props: any) => {
         <View style={styles.tabBox}>
           <MainTab />
         </View>
-        <View style={styles.navTabBox}>
-          <NavTab navigate={navigate} />
+        <View style={styles.colco}>
+          <View style={styles.navTabBox}>
+            <NavTab navigate={navigate} />
+          </View>
         </View>
       </View>
+
     </>
   );
 };

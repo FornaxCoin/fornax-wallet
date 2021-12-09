@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { heightPercentageToDP as hp , widthPercentageToDP as wp } from 'react-native-responsive-screen';
+
 import {
   SafeAreaView,
   Text,
@@ -19,7 +21,8 @@ const copyImg = '../../assets/images/copy.gif';
 
 const styles = StyleSheet.create({
   carouselBox: {
-    height: 240,
+    height: 220,
+    // height:hp(30),
     marginLeft: -40,
     marginRight: 50,
     paddingHorizontal: 50,
