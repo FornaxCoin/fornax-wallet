@@ -11,6 +11,7 @@ import PhoneModal from '../components/Modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { validateEmail } from '../utils/common';
+import { widthPercentageToDP as wp} from 'react-native-responsive-screen';
 const SendImg = '../../assets/images/Iconly_Curved_Send.png';
 const EyeSlashImg = '../../assets/images/Eye-slashmini.png';
 
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     flexDirection: 'column',
-    maxWidth: 360,
+    maxWidth: wp('60'),
   },
   createAccText: {
     fontSize: 22,
