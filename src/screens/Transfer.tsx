@@ -11,8 +11,10 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { setTxnsInfo } from '../redux/reducers/Wallet';
 import { useDispatch, useSelector } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const SendImage = '../../assets/images/transfer.png';
+const QrcodeImage = '../../assets/images/COCO_Line_Menumini.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 // const DownArrow = '../../assets/images/Vector-arrow.png';
 
@@ -123,9 +125,15 @@ const Transfer = (props: any) => {
   const handleSend = async () => {
     const isValid = await web3.utils.isAddress(txnData.to);
     if (txnData.from?.address && isValid) {
+      hideMessage();
       dispatch(setTxnsInfo(txnData));
       navigate('SetAmount');
     } else {
+      showMessage({
+        message: "Address is Invalid!",
+        description: "Again scan QR code",
+        type: "warning",
+      });
       console.log('adress is invalid');
     }
   };
@@ -167,6 +175,12 @@ const Transfer = (props: any) => {
             onChangeText={e => handleValue(e, 'to')}
             value={txnData.to}
           />
+          <Pressable onPress={() => navigate('QRScanner')}>
+            <Image 
+              style={{ height: 30, width: 30, position: 'absolute' , right: 15, bottom: 15 }} 
+              source={require(QrcodeImage)} 
+            />
+          </Pressable>
         </View>
       </View>
     </>

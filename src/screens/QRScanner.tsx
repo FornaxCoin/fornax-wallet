@@ -1,15 +1,18 @@
 import React, { useRef } from 'react';
-import { Image, Linking, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { useDispatch, useSelector } from 'react-redux';
+import { setTxnsInfo } from '../redux/reducers/Wallet';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const PayImage = '../../assets/images/pay.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const  qrCodeWidth = hp('34');
+
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 0,
@@ -28,11 +31,6 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   fornaxIcon: {
-    // width:80,
-    // height:80,
-    // width:  hp(9),
-    // height: hp(9),
-    // marginBottom: 30,
     marginBottom: hp(3),
   },
   fornaxInnerBox: {
@@ -48,7 +46,6 @@ const styles = StyleSheet.create({
     color: '#bdbdbd',
     textAlign: 'center',
     fontFamily: 'Quicksand-Medium',
-    // marginTop: 20,
     marginTop: hp(1.8),
   },
   inputBox: {
@@ -122,44 +119,47 @@ const styles = StyleSheet.create({
   }
 });
 
-const Pay = (props: any) => {
+const QRScanner = (props: any) => {
   const dispatch = useDispatch();
   const navigate = props.navigation.navigate;
   let scanner = useRef(null);
 
-  const { accounts, defaultAdress } = useSelector(({ wallet }: any) => {
+  const { txnInfo, web3 } = useSelector(({ wallet }: any) => {
     return {
+      txnInfo: wallet?.txnInfo,
       web3: wallet?.web3,
-      accounts: wallet?.accounts,
-      defaultAdress: wallet?.defaultAdress,
     };
   });
 
-  const onSuccess = (e: any) => {
-    Linking.openURL(e.data).catch(err =>
-      console.error('An error occured', err)
-    );
-    // const found = accounts.find((acc: any) => acc.address === defaultAdress);
-    // dispatch(setTxnsInfo({ from: { ...found }, to: e.data}));
+  const onSuccess = async (e: any) => {
+    dispatch(setTxnsInfo({ ...txnInfo, to: e.data}));
+    const isValid = await web3.utils.isAddress(e.data);
+    if(e.data && isValid) {
+      hideMessage();
+      navigate('SetAmount');
+    } else {
+      showMessage({
+        message: "Address is Invalid!",
+        description: "Again scan QR code",
+        type: "warning",
+      });
+    }
   };
 
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('Dashboard')}>
+        <Pressable onPress={() => navigate('Transfer')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>
       <View style={styles.fornaxBox}>
         <View style={styles.fornaxInnerBox}>
           <Image style={styles.fornaxIcon} source={require(PayImage)} />
-          <Text style={styles.textStyle}>Pay Me</Text>
-          <Text style={styles.fornaxMiniText}>Scan QR code</Text>
+          <Text style={styles.textStyle}>Scan QR code</Text>
           <Text style={styles.fornaxMiniText}>Please move your camera {"\n"} over the QR Code</Text>
         </View>
         <View style={styles.qrCodeImg}>
-          {/*<View style={styles.topLine} />*/}
-          {/*<View style={styles.leftLine} />*/}
           <QRCodeScanner
             reactivate={true}
             showMarker={false}
@@ -168,15 +168,10 @@ const Pay = (props: any) => {
             cameraStyle={styles.cameraContainer}
             onRead={onSuccess}
           />
-          {/*<View style={styles.rightLine} />*/}
-          {/*<View style={styles.bottomLine} />*/}
-        </View>
-        <View>
-          <Text style={styles.fornaxMiniText}>Or pay your bill</Text>
         </View>
       </View>
     </>
   );
 };
 
-export default Pay;
+export default QRScanner;
