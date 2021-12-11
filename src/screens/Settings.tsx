@@ -96,15 +96,15 @@ const Settings = (props: any) => {
         <Text style={styles.textStyle}>Settings</Text>
       </View>
       <View style={styles.fornaxBox}>
-        <Pressable
-          onPress={() => navigate('Signup')}
-          style={[styles.button, styles.buttonClose]}>
-          <Image source={require(ProfileIcon)} />
-          <Text style={styles.txnText}>Account</Text>
-          <View style={styles.arrowRightIcon}>
-            <Image source={require(ArrowRightIcon)} />
-          </View>
-        </Pressable>
+        {/*<Pressable*/}
+        {/*  onPress={() => navigate('Signup')}*/}
+        {/*  style={[styles.button, styles.buttonClose]}>*/}
+        {/*  <Image source={require(ProfileIcon)} />*/}
+        {/*  <Text style={styles.txnText}>Account</Text>*/}
+        {/*  <View style={styles.arrowRightIcon}>*/}
+        {/*    <Image source={require(ArrowRightIcon)} />*/}
+        {/*  </View>*/}
+        {/*</Pressable>*/}
         <Pressable
           onPress={() => navigate('Notifications')}
           style={[styles.button, styles.buttonClose]}>
