@@ -180,7 +180,7 @@ const SetAmount = (props: any) => {
         .then((count: any) => {
           return count;
         });
-      const ignoreLength: any = false;
+      const ignoreLength: any = true;
       console.log(txnData, 'txnData');
       web3.eth.accounts.wallet.add(txnData?.from?.privateKey);
       web3.eth.defaultAccount = txnData?.from?.address;

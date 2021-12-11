@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   Pressable,
@@ -11,6 +11,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAccounts } from '../redux/reducers/Wallet';
+import { showMessage, hideMessage } from "react-native-flash-message";
+import Wallet from 'ethereumjs-wallet'
+
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const backLines = '../../assets/images/Group_37background.png';
 const backCard = '../../assets/images/Group_36card.png';
@@ -82,7 +85,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ffffff',
     fontFamily: 'Quicksand-Medium',
     color: '#ffffff',
-    paddingHorizontal: 10,
     fontSize: 16,
   },
   center: {
@@ -135,7 +137,7 @@ const ImportCard = (props: any) => {
     );
   };
 
-  const ignoreLength: any = false;
+  const ignoreLength: any = true;
 
   const handleImport = async () => {
     try {
@@ -143,15 +145,33 @@ const ImportCard = (props: any) => {
         const found = accounts.length > 0 && accounts.find((acc: any) => acc.privateKey === privateKey)
         if(found) {
           getBalance(found);
+          showMessage({
+            message: "Adress already Exist!",
+            description: "This address is already exist",
+            type: "info",
+          });
         } else {
-          const account = await web3.eth.accounts.privateKeyToAccount(
-            privateKey,
-            [ignoreLength],
-          );
-          getBalance(account);
+          if (privateKey.toString().trim().length === 66) {
+            const account = await web3.eth.accounts.privateKeyToAccount(
+              privateKey.trim(),
+              [ignoreLength],
+            );
+            getBalance(account);    
+          } else {
+            showMessage({
+              message: "Private Key Invalid!",
+              description: "Please enter valid Private key!",
+              type: "info",
+            });
+          }
         }
       }
     } catch (err) {
+      showMessage({
+        message: "Private Key Invalid!",
+        description: "Please enter valid Private key!",
+        type: "info",
+      });
       console.log(err);
     }
   };

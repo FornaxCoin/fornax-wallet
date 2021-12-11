@@ -25,4 +25,9 @@ const getWeb3 = (mnemonicPhrase: string) => {
   }
 };
 
-export { getWeb3 };
+const validateEmail = (email: any) => {
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());  
+}
+
+export { getWeb3, validateEmail };

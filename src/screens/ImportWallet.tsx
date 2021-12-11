@@ -13,6 +13,9 @@ import _join from 'lodash/join';
 import { setWeb3 } from '../redux/reducers/Wallet';
 import { useDispatch } from 'react-redux';
 import { getWeb3 } from '../utils/common';
+import { showMessage, hideMessage } from "react-native-flash-message";
+
+const bip39 = require('bip39');
 
 const SettingImage = '../../assets/images/Settingmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
@@ -83,10 +86,14 @@ const styles = StyleSheet.create({
     borderStyle: 'dotted',
     borderColor: '#b27f29',
     marginVertical: 10,
-    marginRight: 10,
     paddingHorizontal: 10,
     paddingVertical: 8,
     width: 125,
+  },
+  seedCountText: {
+    color: '#b27f29',
+    fontSize: 14,
+    marginRight: 8,
   },
   seedText: {
     color: '#ffffff',
@@ -145,13 +152,23 @@ const ImportWallet = (props: any) => {
   const handleImport = async () => {
     const mnemonicPhrase = _join(seed, ' ');
     try {
-      const web3 = getWeb3(mnemonicPhrase);
-      if (web3) {
-        dispatch(setWeb3(web3));
-        const account = await web3.eth.accounts.create();
-        getBalance(web3, account, mnemonicPhrase);
+      if (bip39.validateMnemonic(mnemonicPhrase.toString().toLowerCase().trim())) {
+        hideMessage();
+        const web3 = getWeb3(mnemonicPhrase);
+        if (web3) {
+          dispatch(setWeb3(web3));
+          const account = await web3.eth.accounts.create();
+          getBalance(web3, account, mnemonicPhrase);
+        }
+      } else {
+        showMessage({
+          message: "Import Phrase Failed!!!",
+          description: "Please enter correct mnemonic phrase",
+          type: "danger",
+        });
       }
     } catch (err) {
+      hideMessage();
       console.log(err);
     }
   };
@@ -176,15 +193,18 @@ const ImportWallet = (props: any) => {
             {seedArray.map((sed: any, index: any) => {
               if (index <= 5) {
                 return (
-                  <View key={index} style={styles.seedBox}>
-                    <TextInput
-                      style={styles.seedText}
-                      placeholder={sed}
-                      placeholderTextColor="#bdbdbd"
-                      onChangeText={e => handleSeeds(e, index)}
-                      value={seed[index]}
-                      autoCapitalize={'none'}
-                    />
+                  <View key={index} style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center' }}>
+                    <Text style={styles.seedCountText}>{index + 1}.</Text>
+                    <View style={styles.seedBox}>
+                      <TextInput
+                        style={styles.seedText}
+                        placeholder={sed}
+                        placeholderTextColor="#bdbdbd"
+                        onChangeText={e => handleSeeds(e, index)}
+                        value={seed[index]}
+                        autoCapitalize={'none'}
+                      />
+                    </View>
                   </View>
                 );
               }
@@ -194,15 +214,18 @@ const ImportWallet = (props: any) => {
             {seedArray.map((sed: any, index: any) => {
               if (index >= 6) {
                 return (
-                  <View key={index} style={styles.seedBox}>
-                    <TextInput
-                      style={styles.seedText}
-                      placeholder={sed}
-                      placeholderTextColor="#bdbdbd"
-                      onChangeText={e => handleSeeds(e, index)}
-                      value={seed[index]}
-                      autoCapitalize={'none'}
-                    />
+                  <View key={index} style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', marginLeft: 10 }}>
+                    <Text style={styles.seedCountText}>{index + 1}.</Text>
+                    <View style={styles.seedBox}>
+                      <TextInput
+                        style={styles.seedText}
+                        placeholder={sed}
+                        placeholderTextColor="#bdbdbd"
+                        onChangeText={e => handleSeeds(e, index)}
+                        value={seed[index]}
+                        autoCapitalize={'none'}
+                      />
+                    </View>
                   </View>
                 );
               }

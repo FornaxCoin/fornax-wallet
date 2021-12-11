@@ -85,7 +85,7 @@ const ServiceCenter = (props: any) => {
       </View>
       <View style={styles.fornaxBox}>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(CriticsIcon)} />
           <Text style={styles.txnText}>Critics & Suggestions</Text>
@@ -94,7 +94,7 @@ const ServiceCenter = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(InstagramIcon)} />
           <Text style={styles.txnText}>Social Media</Text>
@@ -103,7 +103,7 @@ const ServiceCenter = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(CallingIcon)} />
           <Text style={styles.txnText}>Support</Text>

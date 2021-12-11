@@ -9,7 +9,10 @@ import {
 } from 'react-native';
 import PhoneModal from '../components/Modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const sendImg = '../../assets/images/Iconly_Curved_Send.png';
+import { showMessage, hideMessage } from "react-native-flash-message";
+import { validateEmail } from '../utils/common';
+const SendImg = '../../assets/images/Iconly_Curved_Send.png';
+const EyeSlashImg = '../../assets/images/Eye-slashmini.png';
 
 const styles = StyleSheet.create({
   fornaxBox: {
@@ -29,6 +32,8 @@ const styles = StyleSheet.create({
   inputBox: {
     flexDirection: 'row',
     marginVertical: 13,
+    alignContent: 'center',
+    alignItems: 'center',
   },
   inputLabel: {
     fontSize: 16,
@@ -123,7 +128,7 @@ const VerifyModal = ({ isModalVisible, setModalVisible }: any) => {
   return (
     <>
       <View style={styles.verifyModalBox}>
-        <Image source={require(sendImg)} style={styles.topImg} />
+        <Image source={require(SendImg)} style={styles.topImg} />
         <Text style={styles.verifyText}>
           Verify your account, we have sent a verification code to your mobile
           number
@@ -141,6 +146,7 @@ const VerifyModal = ({ isModalVisible, setModalVisible }: any) => {
 const SignUp = (props: any) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const navigate = props.navigation.navigate;
+  const [showPass, setShowPass] = useState(true);
   const [user, setUser] = useState({
     username: '',
     email: '',
@@ -149,12 +155,62 @@ const SignUp = (props: any) => {
 
   const handleSignup = async () => {
     try {
-      await AsyncStorage.setItem('registerUser', JSON.stringify(user));
-      navigate('WalletSetup');
+      if (user.email && user.password && user.username) {
+        if (!validateEmail(user.email)) {
+          showMessage({
+            message: "Email Validation Failed!!!",
+            description: "Please enter valid Email Address",
+            type: "warning",
+          });
+          return;
+        }
+        if (user.password.length < 6) {
+          showMessage({
+            message: "Password Strenght is Weak!",
+            description: "Please enter password length atleast 6 or more for registration",
+            type: "warning",
+          });
+          return; 
+        }
+        hideMessage();
+        await AsyncStorage.setItem('registerUser', JSON.stringify(user));
+        navigate('WalletSetup');
+      } else {
+        showMessage({
+          message: "Registration Failed!!!",
+          description: "Please enter data for registration",
+          type: "warning",
+        });
+      }
     } catch (err) {
       console.log('Signup Error', err);
     }
   };
+
+  const handlePass = (e: any) => {
+    setUser({ ...user, password: e });
+    hideMessage();
+  }
+
+  const onBlurEmail = () => {
+    if(!validateEmail(user.email)) {
+      showMessage({
+        message: "Email Validation Failed!!!",
+        description: "Please enter valid Email Address",
+        type: "warning",
+      });
+    }
+  }
+
+  const onBlurPassword = (e: any) => {
+    if (e.length < 6) {
+      showMessage({
+        message: "Password Strenght is Weak!",
+        description: "Please enter password length atleast 6 or more for registration",
+        type: "warning",
+      });
+    }
+  }
 
   return (
     <>
@@ -179,7 +235,7 @@ const SignUp = (props: any) => {
             style={styles.input}
             placeholder="username"
             placeholderTextColor="#bdbdbd"
-            onChangeText={e => setUser({ ...user, username: e })}
+            onChangeText={e => { setUser({ ...user, username: e }); hideMessage();}}
             value={user.username}
           />
         </View>
@@ -189,7 +245,10 @@ const SignUp = (props: any) => {
             style={styles.input}
             placeholder="example@mail.com"
             placeholderTextColor="#bdbdbd"
-            onChangeText={e => setUser({ ...user, email: e })}
+            autoCapitalize='none'
+            autoCorrect={false}
+            onBlur={onBlurEmail}
+            onChangeText={e => { setUser({ ...user, email: e }); hideMessage();}}
             value={user.email}
           />
         </View>
@@ -198,11 +257,15 @@ const SignUp = (props: any) => {
           <TextInput
             style={styles.input}
             placeholder="xxxxxxxx"
-            secureTextEntry={true}
+            secureTextEntry={showPass}
             placeholderTextColor="#bdbdbd"
-            onChangeText={e => setUser({ ...user, password: e })}
+            onChangeText={e => handlePass(e)}
+            onBlur={onBlurPassword}
             value={user.password}
           />
+          <Pressable onPress={() => setShowPass(!showPass)} style={{ marginBottom: 20, marginRight: 10 }}>
+            <Image source={require(EyeSlashImg)} style={{ width: 20, position: 'absolute', right: 0 }} />
+          </Pressable>
         </View>
         <Pressable
           onPress={handleSignup}

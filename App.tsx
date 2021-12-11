@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 import {
   configureFonts,
@@ -12,7 +12,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { fontConfig } from './src/utils/config';
 import MainStackNavigator from './src/router/MainStackNavigator';
 import SplashScreen from 'react-native-splash-screen';
-import { offsetLimitPagination } from '@apollo/client/utilities';
+import FlashMessage from "react-native-flash-message";
 import _ from 'lodash';
 
 const BgImage = './assets/images/Layer.png';
@@ -43,6 +43,7 @@ const client = new ApolloClient({
 
 const App = () => {
   const [initRoute, setInitRoute] = useState('');
+  const flashRef = useRef(null);
 
   const handleRoute = async () => {
     const registerUser = await AsyncStorage.getItem('registerUser');
@@ -79,6 +80,7 @@ const App = () => {
           resizeMode="cover"
           style={styles.image}>
           <PaperProvider theme={theme}>
+            <FlashMessage position="bottom" />
             <View style={styles.container}>
               {initRoute ? (
                 <MainStackNavigator initRoute={initRoute} />
@@ -86,6 +88,7 @@ const App = () => {
                 <Text>Loading...</Text>
               )}
             </View>
+            <FlashMessage ref={flashRef} /> 
           </PaperProvider>
         </ImageBackground>
       </Provider>

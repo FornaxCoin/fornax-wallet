@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
   fornaxBox: {
@@ -44,8 +45,13 @@ const styles = StyleSheet.create({
 const Intro = (props: any) => {
   const navigate = props.navigation.navigate;
 
-  const handleStarted = () => {
-    navigate('Signup');
+  const handleStarted = async () => {
+    const registerUser = await AsyncStorage.getItem('registerUser');
+    if (registerUser === null) {
+      navigate('Signup');
+    } else {
+      navigate('Login');
+    }
   };
 
   return (

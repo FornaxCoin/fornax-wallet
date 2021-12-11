@@ -85,7 +85,7 @@ const SocialMedia = (props: any) => {
       </View>
       <View style={styles.fornaxBox}>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(FacebookImage)} />
           <Text style={styles.txnText}>Facebook</Text>
@@ -94,7 +94,7 @@ const SocialMedia = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(TwitterImage)} />
           <Text style={styles.txnText}>Twitter</Text>
@@ -103,7 +103,7 @@ const SocialMedia = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(InstagramImage)} />
           <Text style={styles.txnText}>Instagram</Text>

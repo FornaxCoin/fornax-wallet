@@ -141,7 +141,7 @@ const Dashboard = (props: any) => {
 
   const connectWallet = async () => {
     try {
-      // const remove = await AsyncStorage.removeItem('accountList');
+      // await AsyncStorage.removeItem('registerUser');
       const mnemonicPhrase = await AsyncStorage.getItem('mnemonicPhrase');
       const web3 = mnemonicPhrase && getWeb3(mnemonicPhrase);
       if (web3) {

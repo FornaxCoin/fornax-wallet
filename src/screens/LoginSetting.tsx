@@ -95,7 +95,7 @@ const LoginSetting = (props: any) => {
       </View>
       <View style={styles.fornaxBox}>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Text style={styles.txnText}>PIN</Text>
           <View style={styles.arrowRight}>
@@ -107,7 +107,7 @@ const LoginSetting = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Text style={styles.txnText}>Face ID</Text>
           <View style={styles.arrowRight}>
@@ -126,7 +126,7 @@ const LoginSetting = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Text style={styles.txnText}>Fingerprint</Text>
           <View style={styles.arrowRight}>
