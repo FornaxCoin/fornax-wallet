@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
   fornaxIcon: {
     // width:80,
     // height:80,
-    // width:  hp(9),
-    // height: hp(9),
+    width:  hp(9),
+    height: hp(9),
     marginBottom: 30,
   },
   fornaxInnerBox: {
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const SetPin = (props: any) => {
+const LoginPin = (props: any) => {
   const navigate = props.navigation.navigate;
   const [showPass, setShowPass] = useState(true);
   const [pin, setPin] = useState('');
@@ -116,10 +116,18 @@ const SetPin = (props: any) => {
   
   const handleSetPin = async () => {
     if (pin && pin.length === 4) {
-      hideMessage();
-      await AsyncStorage.setItem('loginPin', pin);
-      await AsyncStorage.setItem('isLoginPinSet', JSON.stringify(true));
-      navigate('Dashboard')
+      const _pin = await AsyncStorage.getItem('loginPin')
+      if (_pin === pin) {
+        hideMessage();
+        await AsyncStorage.setItem('isLoginPinSet', pin);
+        navigate('Dashboard')
+      } else {
+        showMessage({
+          message: "Login Pin Failed!",
+          description: "Please enter 4 digit valid Pin",
+          type: "danger",
+        });
+      }
     } else {
       showMessage({
         message: "Login Pin Failed!",
@@ -135,14 +143,14 @@ const SetPin = (props: any) => {
 
   return (
     <>
-      <View>
+      {/* <View>
         <Pressable onPress={() => navigate('LoginSetting')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
-      </View>
+      </View> */}
       <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(CocoPinImage)} />
-        <Text style={styles.textStyle}>Set Pin</Text>
+        <Text style={styles.textStyle}>Enter Pin</Text>
       </View>
       <View style={styles.fornaxBox}>
         <View style={styles.pinInput}>
@@ -229,11 +237,11 @@ const SetPin = (props: any) => {
         <Pressable
           onPress={handleSetPin}
           style={[styles.button, styles.buttonClose]}>
-          <Text style={styles.textStyle}>Set PIN</Text>
+          <Text style={styles.textStyle}>Verify PIN</Text>
         </Pressable>
       </View>
     </>
   );
 };
 
-export default SetPin;
+export default LoginPin;

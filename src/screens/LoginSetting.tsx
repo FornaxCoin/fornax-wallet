@@ -95,7 +95,7 @@ const LoginSetting = (props: any) => {
       </View>
       <View style={styles.fornaxBox}>
         <Pressable
-          onPress={() => navigate('Dashboard')}
+          onPress={() => navigate('SetPin')}
           style={[styles.button, styles.buttonClose]}>
           <Text style={styles.txnText}>PIN</Text>
           <View style={styles.arrowRight}>

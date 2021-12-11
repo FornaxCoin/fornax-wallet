@@ -24,6 +24,7 @@ import CriticsSuggestion from '../screens/CriticsSuggestion';
 import SetPin from '../screens/SetPin';
 import Settings from '../screens/Settings';
 import Notifications from '../screens/Notifications';
+import LoginPin from '../screens/LoginPin';
 
 const Stack = createStackNavigator();
 
@@ -66,6 +67,7 @@ const MainStackNavigator = ({ initRoute }: any) => {
         <Stack.Screen name="SetAmount" component={SetAmount} />
         <Stack.Screen name="Scan" component={Scan} />
         <Stack.Screen name="Pay" component={Pay} />
+        <Stack.Screen name="LoginPin" component={LoginPin} />
         <Stack.Screen
           name="ConfirmTransaction"
           component={ConfirmTransaction}

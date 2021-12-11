@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { AppState, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import {
   configureFonts,
   DefaultTheme as PaperDefaultTheme,
@@ -56,16 +56,49 @@ const App = () => {
       setInitRoute('Login');
       return;
     }
+    const loginPin = await AsyncStorage.getItem('loginPin');
+    const isloginPin = await AsyncStorage.getItem('isLoginPinSet');
+    if (loginPin && isloginPin === null) {
+      setInitRoute('LoginPin');
+      return;
+    }
     const accountList = await AsyncStorage.getItem('accountList');
     if (accountList === null) {
       setInitRoute('WalletSetup');
       return;
     }
-    if (registerUser && loginUser && accountList) {
-      setInitRoute('WalletSetup');
+    if (registerUser && loginUser && accountList && isloginPin) {
+      setInitRoute('Dashboard');
       return;
     }
   };
+
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
+  const removePin = async () => {
+    await AsyncStorage.removeItem('isLoginPinSet');
+  }
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", nextAppState => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === "active"
+      ) {
+        console.log("App has come to the foreground!");
+      }
+
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+      console.log("AppState", appState.current, appStateVisible);
+    });
+
+    return  () => {
+      removePin();
+      subscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     SplashScreen.hide();

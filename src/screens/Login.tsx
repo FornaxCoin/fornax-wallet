@@ -8,7 +8,6 @@ import {
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { validateEmail } from '../utils/common';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { validateEmail } from '../utils/common';
 const EyeSlashImg = '../../assets/images/Eye-slashmini.png';
