@@ -151,12 +151,12 @@ const ImportCard = (props: any) => {
             type: "info",
           });
         } else {
-          if (privateKey.toString().trim().length === 66) {
+          if (privateKey.toString().trim().length === 64) {
             const account = await web3.eth.accounts.privateKeyToAccount(
               privateKey.trim(),
               [ignoreLength],
             );
-            getBalance(account);    
+            getBalance(account);
           } else {
             showMessage({
               message: "Private Key Invalid!",
