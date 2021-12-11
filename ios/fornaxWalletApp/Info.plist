@@ -69,6 +69,7 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>This feature requires camera to scan qr code</string>
-
+	<key>NSFaceIDUsageDescription</key>
+	<string>$(PRODUCT_NAME) requires FaceID access to allows you quick and secure access.</string>
 </dict>
 </plist>

@@ -1,6 +1,8 @@
-import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Alert, Image, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import FingerprintScanner from 'react-native-fingerprint-scanner';
+
 const CocoFingerprintImage = '../../assets/images/coco-fingerprint.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const FingerprintScanIcon = '../../assets/images/Fingerprint-scan.png';
@@ -34,8 +36,6 @@ const styles = StyleSheet.create({
     marginBottom: 142,
   },
   fornaxIcon: {
-    // width:  hp(9),
-    // height: hp(9),
     marginBottom: 30,
   },
   fornaxInnerBox: {
@@ -48,8 +48,21 @@ const styles = StyleSheet.create({
   },
 });
 
-const Fingerprint = () => {
+const Fingerprint = (props: any) => {
   // const navigate = props.navigation.navigate;
+
+  useEffect(() => {
+    FingerprintScanner
+      .authenticate({ description: 'Scan your fingerprint on the device scanner to continue' })
+      .then(() => {
+        props.handlePopupDismissed();
+        Alert.alert('Authenticated successfully');
+      })
+      .catch((error) => {
+        props.handlePopupDismissed();
+        Alert.alert(error.message);
+      });
+  }, [])
 
   return (
     <>

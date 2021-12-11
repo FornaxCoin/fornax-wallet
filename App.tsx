@@ -58,16 +58,20 @@ const App = () => {
     }
     const loginPin = await AsyncStorage.getItem('loginPin');
     const isloginPin = await AsyncStorage.getItem('isLoginPinSet');
+    if(loginPin === null) {
+      setInitRoute('Login');
+      return;
+    }
     if (loginPin && isloginPin === null) {
       setInitRoute('LoginPin');
       return;
-    }
+    } 
     const accountList = await AsyncStorage.getItem('accountList');
     if (accountList === null) {
       setInitRoute('WalletSetup');
       return;
     }
-    if (registerUser && loginUser && accountList && isloginPin) {
+    if (registerUser && loginUser && accountList && (loginPin && isloginPin)) {
       setInitRoute('Dashboard');
       return;
     }
@@ -101,9 +105,12 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    SplashScreen.hide();
     handleRoute();
   }, []);
+
+  useEffect(() => {
+    initRoute && SplashScreen.hide();
+  }, [initRoute]);
 
   return (
     <ApolloProvider client={client}>
