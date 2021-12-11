@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
   fornaxIcon: {
     // width:80,
     // height:80,
-    width:  hp(9),
-    height: hp(9),
+    // width:  hp(9),
+    // height: hp(9),
     marginBottom: 30,
   },
   fornaxInnerBox: {

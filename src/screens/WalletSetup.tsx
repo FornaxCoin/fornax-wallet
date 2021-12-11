@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   secondaryButton: {
     backgroundColor: '#fff',
     color: '#b27f29',
-    marginTop: 185,
+    marginTop: hp(10),
   },
   textStyle: {
     fontSize: 20,
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('10'),
+    marginTop: hp('5'),
     marginBottom: hp('4'),
   },
   fornaxMiniText: {

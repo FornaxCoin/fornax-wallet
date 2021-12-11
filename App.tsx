@@ -62,7 +62,7 @@ const App = () => {
       return;
     }
     if (registerUser && loginUser && accountList) {
-      setInitRoute('Dashboard');
+      setInitRoute('WalletSetup');
       return;
     }
   };
@@ -88,7 +88,7 @@ const App = () => {
                 <Text>Loading...</Text>
               )}
             </View>
-            <FlashMessage ref={flashRef} /> 
+            <FlashMessage ref={flashRef} />
           </PaperProvider>
         </ImageBackground>
       </Provider>

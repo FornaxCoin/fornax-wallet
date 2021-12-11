@@ -17,7 +17,7 @@ import { setDefaultAddress } from '../redux/reducers/Wallet';
 
 const BgImage = '../../assets/images/Group_35card.png';
 const plusImg = '../../assets/images/Plusmini.png';
-const copyImg = '../../assets/images/copy.gif';
+const copyImg = '../../assets/images/copy.png';
 
 const styles = StyleSheet.create({
   carouselBox: {
@@ -68,7 +68,7 @@ const CardCarousel = (props: any) => {
   const handleClipboard = (address: string) => {
     Clipboard.setString(address);
   };
-  
+
   const getBalance = async (account: any) => {
     web3.eth.getBalance(account?.address).then(
       async (bal: any) => {

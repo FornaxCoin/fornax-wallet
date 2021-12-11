@@ -22,7 +22,7 @@ const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 
 const styles = StyleSheet.create({
   fornaxBox: {
-    flex: 1,
+    flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
   fornaxIcon: {
     // width:80,
     // height:80,
-    width:  hp(9),
-    height: hp(9),
+    // width:  hp(9),
+    // height: hp(9),
     marginBottom: 30,
   },
   fornaxInnerBox: {
@@ -85,10 +85,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderStyle: 'dotted',
     borderColor: '#b27f29',
-    marginVertical: 10,
+    marginVertical: hp(1),
     paddingHorizontal: 10,
     paddingVertical: 8,
     width: 125,
+    backgroundColor: 'red',
+    // height:hp(4.3),
   },
   seedCountText: {
     color: '#b27f29',
@@ -96,6 +98,10 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   seedText: {
+    backgroundColor: 'green',
+    // height:20,
+    fontSize: 14,
+    includeFontPadding:true,
     color: '#ffffff',
     textAlign: 'center',
     width: 80,
@@ -103,6 +109,7 @@ const styles = StyleSheet.create({
   seedList: {
     flexDirection: 'column',
     marginBottom: 10,
+
   },
   seedListBox: {
     width: 280,
