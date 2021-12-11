@@ -58,22 +58,35 @@ const CardCarousel = (props: any) => {
   const navigate = props.navigate;
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const { accounts } = useSelector(({ wallet }: any) => {
+  const { accounts, web3 } = useSelector(({ wallet }: any) => {
     return {
       accounts: wallet?.accounts,
+      web3: wallet?.web3,
     };
   });
 
   const handleClipboard = (address: string) => {
     Clipboard.setString(address);
   };
+  
+  const getBalance = async (account: any) => {
+    web3.eth.getBalance(account?.address).then(
+      async (bal: any) => {
+        if (bal >= 0) {
+          const balance = await web3.utils.fromWei(bal, 'ether');
+          return parseFloat(balance)?.toFixed(2);
+        }
+      },
+      (error: any) => {
+        console.log(error, 'getBalance');
+      },
+    );
+  };
 
-  useEffect(() => {
-    if (activeIndex) {
-      dispatch(setDefaultAddress(accounts[activeIndex]?.address || ''));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeIndex]);
+  const handleActiveIndex = (index: any) => {
+    dispatch(setDefaultAddress(accounts[index]?.address || ''));
+    setActiveIndex(index)
+  }
 
   useEffect(() => {
     dispatch(setDefaultAddress(accounts[0]?.address || ''));
@@ -87,9 +100,10 @@ const CardCarousel = (props: any) => {
           {item?.title || `Account ${index + 1}`}
         </Text>
         <Text style={styles.carouselText}>
-          {(parseFloat(item?.balance) === 0.0
+          {(parseFloat(item?.balance) === 0.00 || parseFloat(item?.balance) === 0.0)
             ? 0
-            : parseFloat(item?.balance)?.toFixed(2)) || 0}
+            : parseFloat(item?.balance)?.toFixed(2)
+          }
         </Text>
         <Text
           style={styles.carouselText}
@@ -129,7 +143,7 @@ const CardCarousel = (props: any) => {
             removeClippedSubviews={false}
             itemWidth={300}
             renderItem={_renderItem}
-            onSnapToItem={index => setActiveIndex(index)}
+            onSnapToItem={index => handleActiveIndex(index)}
           />
         </View>
       </SafeAreaView>

@@ -1,12 +1,18 @@
 import { gql } from '@apollo/client';
 
-const GET_TRANSACTIONS = gql`
-  query TransactionsWithPagination(
-    $offset: Int = 0
-    $limit: Int = 10
+const GET_TRANSACTIONS_BY_ADDRESS = gql`
+  query TransactionsByAddressWithPagination (
+    $offset: Int
+    $limit: Int
+    $address: String!
     $sortBy: Sort
   ) {
-    transactionsWithPagination(page: $offset, limit: $limit, sortBy: $sortBy) {
+    transactionsByAddressWithPagination(
+      page: $offset, 
+      limit: $limit, 
+      address: $address,
+      sortBy: $sortBy
+    ) {
       paginator {
         slNo
         prev
@@ -63,7 +69,7 @@ const GET_TRANSACTIONS = gql`
 `;
 
 const GET_TRANSACTIONS_BY_MONTH = gql`
-  query TransactionsByMonth($address: String) {
+  query TransactionsByMonth ($address: String!) {
     transactionsByMonth(address: $address) {
       fromCount
       fromTotal
@@ -74,4 +80,4 @@ const GET_TRANSACTIONS_BY_MONTH = gql`
   }
 `;
 
-export { GET_TRANSACTIONS, GET_TRANSACTIONS_BY_MONTH };
+export { GET_TRANSACTIONS_BY_ADDRESS, GET_TRANSACTIONS_BY_MONTH };

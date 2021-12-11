@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Image, Pressable, StyleSheet, ScrollView, Text, View } from 'react-native';
 import CardCarousel from '../components/CardCarousel';
 import MainTab from '../components/MainTab';
 import NavTab from '../components/NaviTab';
@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { setAccounts, setWeb3 } from '../redux/reducers/Wallet';
 import { getWeb3 } from '../utils/common';
 import { heightPercentageToDP as hp , widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import Spinner from 'react-native-spinkit';
 
 const BellIcon = '../../assets/images/bell.png';
 const SettingIcon = '../../assets/images/setting.png';
@@ -50,6 +51,7 @@ const styles = StyleSheet.create({
   },
   tabBox: {
     // height: 310,
+    // backgroundColor:'red',
     height: hp(45),
     marginBottom: 30,
   },
@@ -62,6 +64,17 @@ const styles = StyleSheet.create({
     right: 40,
     top: 0,
   },
+  loaderBack: {
+    flex: 1,
+    backgroundColor: '#00000057',
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    right: 0,
+    left: 0,
+    bottom: 0,
+    top: 0
+  },
   navTabBox: {
     height: 70,
     //new
@@ -73,11 +86,23 @@ const styles = StyleSheet.create({
     position:"absolute",
     width:wp(90),
     bottom: 5,
+  },
+  innerContainer:{
+    // backgroundColor:'blue',
+    // flex: 1,
+    flexDirection: 'column',
+    // height:hp(50),
+    // overflow:"scroll",
+    // paddingBottom:50,
+  },
+  extrahight:{
+    height:hp(10),
   }
 });
 
 const Dashboard = (props: any) => {
   const dispatch = useDispatch();
+  const [loader, setLoader] = useState(true);
   const navigate = props.navigation.navigate;
 
   // const getBalances = async (data: any, web3: any) => {
@@ -103,6 +128,7 @@ const Dashboard = (props: any) => {
       if (value != null) {
         const data = JSON.parse(value);
         dispatch(setAccounts(data));
+        setLoader(false);
         // const _bal =
         //   data?.length > 0 && (await web3.eth.getBalance(data[0]?.address));
         // console.log(_bal);
@@ -131,11 +157,17 @@ const Dashboard = (props: any) => {
 
   useEffect(() => {
     connectWallet();
+    setLoader(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
+      {loader && (
+        <View style={styles.loaderBack}>
+          <Spinner isVisible={true} size={50} type={'9CubeGrid'} color="#b27f29"/>
+        </View>
+      )}
       <View style={styles.fornaxBox}>
         <View style={styles.navBar}>
           <View style={styles.badge} />
@@ -147,19 +179,27 @@ const Dashboard = (props: any) => {
           </Pressable>
         </View>
         <Text style={styles.fornaxText}>Dashboard</Text>
-        <View style={styles.cardCarousel}>
-          <CardCarousel navigate={navigate} />
-        </View>
-        <View style={styles.tabBox}>
-          <MainTab />
-        </View>
-        <View style={styles.colco}>
-          <View style={styles.navTabBox}>
-            <NavTab navigate={navigate} />
-          </View>
-        </View>
-      </View>
+        {!loader && (
+          <>
+            <ScrollView style={styles.innerContainer}>
+              <View style={styles.cardCarousel}>
+                <CardCarousel navigate={navigate} />
+              </View>
+              <View style={styles.tabBox}>
+                <MainTab />
+              </View>
+              <View style={styles.extrahight}>
 
+              </View>
+            </ScrollView>
+            <View style={styles.colco}>
+              <View style={styles.navTabBox}>
+                <NavTab navigate={navigate} />
+              </View>
+            </View>
+          </>
+        )}
+        </View>
     </>
   );
 };

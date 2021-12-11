@@ -12,10 +12,13 @@ import {
   // heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { useLazyQuery, useQuery } from '@apollo/client';
-import { GET_TRANSACTIONS, GET_TRANSACTIONS_BY_MONTH } from '../utils/query';
+import _ from 'lodash';
+import { useLazyQuery } from '@apollo/client';
+import { GET_TRANSACTIONS_BY_ADDRESS, GET_TRANSACTIONS_BY_MONTH } from '../utils/query';
 import { useSelector } from 'react-redux';
-import { BarChart, LineChart } from "react-native-gifted-charts";
+import { BarChart } from "react-native-gifted-charts";
+import moment from 'moment';
+import Spinner from 'react-native-spinkit';
 
 const styles = StyleSheet.create({
   titleText: {
@@ -59,15 +62,45 @@ const styles = StyleSheet.create({
   scrollTable: {
     flex: 1,
   },
+  noTxnText: {
+    fontFamily: 'Quicksand-Medium',
+    color: '#ffffff',
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  footerBox: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 5
+  },
+  incomeText: {
+    fontSize: 14,
+    fontFamily: 'Quicksand-Medium',
+    marginRight: 20,
+    color: '#936ee3',
+  },
+  outcomeText: {
+    fontSize: 14,
+    fontFamily: 'Quicksand-Medium',
+    color: 'gray',
+  },
+  roundBox: {
+    height: 10,
+    width: 10,
+    borderRadius: 30,
+    marginRight: 5
+  }
 });
 
 const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any) => {
   const getAccountName = () => {
-    const found = accounts.length > 0 && accounts.findIndex((acc: any) => acc.address.toLowerCase() === item?.from.toLowerCase());
+    const found = accounts.length > 0 && accounts.findIndex((acc: any) => acc.address.toLowerCase() === item?.to.toLowerCase());
     if(found !== -1) {
       return 'Account '+(found + 1);
     } else {
-      return item?.from;
+      return item?.to;
     }
   }
 
@@ -90,7 +123,7 @@ const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any
         </View>
       </View>
       <View style={{ flexDirection: 'row', alignSelf: 'center', width: 120 }}>
-        {defaultAddress && defaultAddress === item.from ? (
+        {defaultAddress && defaultAddress === item?.from ? (
           <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
         ):(
           <Text style={[styles.minusIcon, { color: '#52e34f' }]}>+</Text>
@@ -102,7 +135,8 @@ const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any
 };
 
 const TransactionList = () => {
-  const pageLimit = 10;
+  const [loader, setLoader] = useState(true)
+  const [pageLimit, setPageLimit] = useState(4);
   const [offset, setOffset] = useState(0);
   const [txnList, setTxnList] = useState<any>([]);
 
@@ -114,106 +148,83 @@ const TransactionList = () => {
     };
   });
 
-  const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
-    variables: {
-      offset,
-      limit: pageLimit,
-      sortBy: 'DATE',
-    },
-  });
+  const [getTxnList, { loading, error, data, fetchMore }] = useLazyQuery(GET_TRANSACTIONS_BY_ADDRESS, { errorPolicy: 'all' });
+
+  useEffect(() => {
+    setTxnList([]);
+    setLoader(true);
+    defaultAddress && getTxnList({
+      variables: {
+        offset,
+        limit: pageLimit,
+        address: defaultAddress,
+        sortBy: 'DATE',
+      },
+    })
+  }, [defaultAddress])
 
   useEffect(() => {
     setOffset(0);
     if (error) {
-      console.log(error, loading);
+      setLoader(false);
+      console.log(error, "Transction list Error");
     }
     if (data) {
-      data?.transactionsWithPagination?.transactions?.length > 0 && setTxnList(data?.transactionsWithPagination?.transactions);
+      setLoader(false);
+      data?.transactionsByAddressWithPagination?.transactions?.length > 0 && 
+      setTxnList([..._.uniqBy(data?.transactionsByAddressWithPagination?.transactions, 'id')]);
     }
-  }, [data]);
+  }, [data, loading]);
+
+  const handleFetchMore = () => {
+    defaultAddress && getTxnList({
+      variables: {
+        offset: offset + 1,
+        limit: pageLimit + pageLimit,
+        address: defaultAddress,
+        sortBy: 'DATE',
+      },
+    })
+    setOffset(offset + 1);
+    setPageLimit(pageLimit + pageLimit);
+  }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'transparent', marginTop: 15 }}>
-      <FlatList
-        data={txnList}
-        renderItem={(item) => renderItem(item, web3, defaultAddress, accounts)}
-        keyExtractor={item => item.id}
-      />
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent', marginTop: 15 }}>
+      <Spinner isVisible={loader} size={50} type={'9CubeGrid'} color="#b27f29"/>
+      {!loader && ( txnList.length > 0 ? (
+        <FlatList
+          data={txnList}
+          renderItem={(item) => renderItem(item, web3, defaultAddress, accounts)}
+          keyExtractor={item => item.id}
+          onEndReachedThreshold={0.5}
+          onEndReached={handleFetchMore}
+        />
+      ) : (
+        <Text style={styles.noTxnText}>No Transactions Found</Text>
+      ))}
     </View>
   );
 };
 
 const SavingTxnList = () => {
   const [txnList, setTxnList] = useState<any>([]);
-  const barData = [
-    {
-      value: 40,
-      label: 'Jan',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#363853',
-    },
-    {value: 20, frontColor: '#936ee3'},
-    {
-      value: 50,
-      label: 'Feb',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#363853',
-    },
-    {value: 40, frontColor: '#936ee3'},
-    {
-      value: 75,
-      label: 'Mar',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#363853',
-    },
-    {value: 25, frontColor: '#936ee3'},
-    {
-      value: 30,
-      label: 'Apr',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#363853',
-    },
-    {value: 20, frontColor: '#936ee3'},
-    {
-      value: 60,
-      label: 'May',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#363853',
-    },
-    {value: 40, frontColor: '#936ee3'},
-    {
-      value: 65,
-      label: 'Jun',
-      spacing: 2,
-      labelWidth: 30,
-      labelTextStyle: {color: 'gray'},
-      frontColor: '#363853',
-    },
-    {value: 30, frontColor: '#936ee3'},
-  ];
-
-  const { defaultAddress } = useSelector(({ wallet }: any) => {
+  const [loader, setLoader] = useState(true)
+  const { defaultAddress, web3 } = useSelector(({ wallet }: any) => {
     return {
       defaultAddress: wallet?.defaultAddress,
+      web3: wallet?.web3,
     };
   });
 
   const [getTxnByMonth, { loading, error, data }] = useLazyQuery(GET_TRANSACTIONS_BY_MONTH);
 
   useEffect(() => {
+    setTxnList([]);
+    setLoader(true);
     defaultAddress && getTxnByMonth({
       variables: {
-        address: '0xC21a4AD429e4E2E194816d989d9bBd255c67Fd6C',
+        address: defaultAddress,
       },
     })
   }, [defaultAddress])
@@ -221,30 +232,62 @@ const SavingTxnList = () => {
 
   useEffect(() => {
     if (error) {
-      console.log(error, loading, "saving Error");
+      setLoader(false);
+      console.log(error, "Saving list Error");
     }
     if (data) {
-      data?.transactionsByMonth?.length > 0 && setTxnList(data?.transactionsByMonth);
+      setTxnList([]);
+      const newData = data?.transactionsByMonth?.length > 0 && data?.transactionsByMonth.slice(data?.transactionsByMonth?.length - 6, data?.transactionsByMonth?.length)
+      const FilterTxns = newData?.length > 0 && newData?.reduce((newtxn: any, txn: any) => {
+        newtxn.push({
+          value: parseInt(web3.utils.fromWei(txn.fromTotal, 'ether'), 10),
+          label: moment.unix(txn.month).format('MMM'),
+          spacing: 2,
+          labelWidth: 30,
+          labelTextStyle: {color: 'gray'},
+          frontColor: '#363853',
+        }, {
+          value: parseInt(web3.utils.fromWei(txn.toTotal, 'ether'), 10),
+          frontColor: '#936ee3',
+        })      
+        return newtxn;
+      }, []);
+      setLoader(false);
+      FilterTxns.length > 0 && setTxnList(FilterTxns);
     }
-  }, [data]);
-  console.log(data);
+  }, [data, loading]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'transparent', marginTop: 5, marginBottom: 10, marginLeft: -40 }}>
-      <BarChart
-        data={barData}
-        barWidth={10}
-        spacing={24}
-        roundedTop
-        roundedBottom
-        hideRules
-        hideAxesAndRules
-        xAxisThickness={0}
-        yAxisThickness={0}
-        yAxisTextStyle={{color: 'gray'}}
-        noOfSections={3}
-        width={wp('80')}
-      />
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent', marginTop: 5, marginBottom: 20, marginLeft: -20 }}>
+      <Spinner isVisible={loader} size={50} type={'9CubeGrid'} color="#b27f29"/>
+      <View style={{ marginBottom: 15 }}>
+        {!loader && txnList.length > 0 && 
+          <BarChart
+            data={txnList}
+            barWidth={10}
+            spacing={24}
+            roundedTop
+            roundedBottom
+            hideRules
+            hideAxesAndRules
+            xAxisThickness={0}
+            yAxisThickness={0}
+            yAxisTextStyle={{color: 'gray'}}
+            noOfSections={3}
+            width={wp('90')}
+          />
+        }
+      </View>
+      <View style={styles.footerBox}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={[styles.roundBox, { backgroundColor: '#936ee3' }]} />
+          <Text style={styles.incomeText}>Income</Text>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={[styles.roundBox, { backgroundColor: '#363853' }]} />
+          <Text style={styles.outcomeText}>Outcome</Text>
+        </View>
+      </View>
     </View>
   );
 };
@@ -266,8 +309,8 @@ const MainTab = () => {
   const renderTabBar = (props: any) => (
     <TabBar
       {...props}
-      activeColor={'#363853'}
-      inactiveColor={'#ffffff'}
+      activeColor={'#ffffff'}
+      inactiveColor={'#363853'}
       renderLabel={({ route, color }) => {
         if (route.key === 'transaction') {
           return (
@@ -285,7 +328,7 @@ const MainTab = () => {
         backgroundColor: '#5671ff',
         width: 20,
         height: 4,
-        marginHorizontal: 54,
+        marginHorizontal: 70,
         marginTop: 30,
       }}
       style={{

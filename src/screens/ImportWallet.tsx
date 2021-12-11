@@ -56,6 +56,10 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   fornaxIcon: {
+    // width:80,
+    // height:80,
+    width:  hp(9),
+    height: hp(9),
     marginBottom: 30,
   },
   fornaxInnerBox: {
@@ -64,7 +68,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     marginTop: hp('5'),
-    marginBottom: hp('1'),
+    marginBottom: hp('4'),
   },
   fornaxMiniText: {
     fontSize: 18,

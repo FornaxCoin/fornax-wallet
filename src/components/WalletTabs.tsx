@@ -96,6 +96,9 @@ const styles = StyleSheet.create({
   downIcon: {
     height: 5,
   },
+  extrahight: {
+    height:100,
+  }
 });
 
 const FirstRoute = () => (
@@ -135,6 +138,9 @@ const FirstRoute = () => (
             <View style={styles.downIconBorder}>
               <Image source={require(DownArrowImg)} style={styles.downIcon} />
             </View>
+          </View>
+          <View style={styles.extrahight}>
+
           </View>
         </View>
       </View>

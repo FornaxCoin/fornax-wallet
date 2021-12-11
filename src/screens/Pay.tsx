@@ -1,18 +1,18 @@
-import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useRef } from 'react';
+import { Image, Linking, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import QRCode from 'react-native-qrcode-svg';
+import QRCodeScanner from 'react-native-qrcode-scanner';
 import { useSelector } from 'react-redux';
 
 const PayImage = '../../assets/images/pay.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-
+const  qrCodeWidth = hp('34');
 const styles = StyleSheet.create({
   fornaxBox: {
-    flex: 1,
+    flex: 0,
     flexDirection: 'column',
     justifyContent: 'flex-start',
   },
@@ -28,16 +28,19 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   fornaxIcon: {
-    width: 80,
-    height: 80,
-    marginBottom: 30,
+    // width:80,
+    // height:80,
+    width:  hp(9),
+    height: hp(9),
+    // marginBottom: 30,
+    marginBottom: hp(3),
   },
   fornaxInnerBox: {
     flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('10'),
+    marginTop: hp('5'),
     marginBottom: hp('4'),
   },
   fornaxMiniText: {
@@ -45,7 +48,8 @@ const styles = StyleSheet.create({
     color: '#bdbdbd',
     textAlign: 'center',
     fontFamily: 'Quicksand-Medium',
-    marginTop: 20,
+    // marginTop: 20,
+    marginTop: hp(1.8),
   },
   inputBox: {
     flexDirection: 'row',
@@ -69,12 +73,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     marginBottom: 20,
-    height: hp('34'),
-    width: wp('73'),
+    height:qrCodeWidth,
+    width: qrCodeWidth,
     borderWidth: 5,
     borderColor: 'aliceblue',
     borderRadius: 30,
-    paddingTop: 28,
     backgroundColor: 'aliceblue',
   },
   topLine: {
@@ -107,17 +110,33 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -6,
   },
+  centerText: {
+    flex: 1,
+    fontSize: 18,
+    padding: 42,
+    color: '#777'
+  },
+  cameraContainer: {
+    height: qrCodeWidth -70,
+    width: qrCodeWidth-70,
+  }
 });
 
 const Pay = (props: any) => {
   const navigate = props.navigation.navigate;
-
+  let scanner = useRef(null);
   const { accounts } = useSelector(({ wallet }: any) => {
     return {
       web3: wallet?.web3,
       accounts: wallet?.accounts,
     };
   });
+
+  const onSuccess = (e: any) => {
+    Linking.openURL(e.data).catch(err =>
+      console.error('An error occured', err)
+    );
+  };
 
   return (
     <>
@@ -131,18 +150,21 @@ const Pay = (props: any) => {
           <Image style={styles.fornaxIcon} source={require(PayImage)} />
           <Text style={styles.textStyle}>Pay Me</Text>
           <Text style={styles.fornaxMiniText}>Scan QR code</Text>
+          <Text style={styles.fornaxMiniText}>Please move your camera {"\n"} over the QR Code</Text>
         </View>
         <View style={styles.qrCodeImg}>
-          <View style={styles.topLine} />
-          <View style={styles.leftLine} />
-          <QRCode
-            value={accounts.length > 0 && accounts[0]?.address}
-            size={230}
-            color="#363853"
-            backgroundColor="aliceblue"
+          {/*<View style={styles.topLine} />*/}
+          {/*<View style={styles.leftLine} />*/}
+          <QRCodeScanner
+            reactivate={true}
+            showMarker={false}
+            ref={scanner}
+            containerStyle={styles.cameraContainer}
+            cameraStyle={styles.cameraContainer}
+            onRead={onSuccess}
           />
-          <View style={styles.rightLine} />
-          <View style={styles.bottomLine} />
+          {/*<View style={styles.rightLine} />*/}
+          {/*<View style={styles.bottomLine} />*/}
         </View>
         <View>
           <Text style={styles.fornaxMiniText}>Or pay your bill</Text>

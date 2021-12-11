@@ -30,18 +30,20 @@ const styles = StyleSheet.create({
     marginLeft: 26,
     marginTop: 32,
   },
-  fornaxIcon: {
-    marginBottom: 44,
-  },
   fornaxCenterIcon: {
     marginBottom: 142,
+  },
+  fornaxIcon: {
+    width:  hp(9),
+    height: hp(9),
+    marginBottom: 30,
   },
   fornaxInnerBox: {
     flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('10'),
+    marginTop: hp('5'),
     marginBottom: hp('4'),
   },
 });

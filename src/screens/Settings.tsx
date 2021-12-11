@@ -58,14 +58,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   fornaxIcon: {
-    marginBottom: 44,
+    // width:80,
+    // height:80,
+    width:  hp(9),
+    height: hp(9),
+    marginBottom: 30,
   },
   fornaxInnerBox: {
     flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('10'),
+    marginTop: hp('5'),
     marginBottom: hp('4'),
   },
 });
@@ -129,7 +133,7 @@ const Settings = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('ServiceCenter')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(CallingIcon)} />
           <Text style={styles.txnText}>Help</Text>

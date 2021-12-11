@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   Pressable,
@@ -10,7 +10,8 @@ import {
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setAccounts, setTxnsInfo } from '../redux/reducers/Wallet';
+import { setAccounts, setTxnsInfo, setTxnsResponse } from '../redux/reducers/Wallet';
+import Spinner from 'react-native-spinkit';
 
 const CocoPinImage = '../../assets/images/Iconly_Curved_Passwordmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
@@ -91,12 +92,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
+  loaderBack: {
+    flex: 1,
+    backgroundColor: '#00000057',
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    right: 0,
+    left: 0,
+    bottom: 0,
+    top: 0
+  },
 });
 
 const SetAmount = (props: any) => {
   const dispatch = useDispatch();
+  const [loader, setLoader] = useState(false);
   const navigate = props.navigation.navigate;
   const [amount, setAmount] = useState('');
+  const [accIndex, setAccIndex] = useState(-1);
 
   const handleAmonut = (val: any) => {
     setAmount(amount + val);
@@ -127,10 +141,11 @@ const SetAmount = (props: any) => {
       await AsyncStorage.setItem('accountList', JSON.stringify(_accounts));
       dispatch(setAccounts(_accounts));
       const found = accounts.find((ac: any) => ac.address === txnData?.to);
-      console.log(found);
-      if (!found) {
+      if (!found) {      
+        setLoader(false);
         navigate('ConfirmTransaction');
       } else if (found && account?.address === found?.address) {
+        setLoader(false);
         navigate('ConfirmTransaction');
       }
     } catch (error) {
@@ -148,6 +163,7 @@ const SetAmount = (props: any) => {
       },
       (error: any) => {
         console.log(error, 'getBalance');
+        setLoader(false);
       },
     );
   };
@@ -177,7 +193,7 @@ const SetAmount = (props: any) => {
           to: txnData.to,
           value: web3.utils.toWei(amount, 'ether'),
           gasPrice: gasPrice,
-          gas: 100000,
+          gas: 21000,
           nonce: nonce,
         })
         .on('transactionHash', function (hash: any) {
@@ -189,26 +205,39 @@ const SetAmount = (props: any) => {
         .on('confirmation', function (confirmationNumber: any, receipt: any) {
           console.log(confirmationNumber, 'confirmationNumber');
           console.log(receipt, 'receipt');
+          dispatch(setTxnsResponse({ ...receipt, amount, ...txnData, gasPrice}))
           getBalance(txnData.from);
           const found = accounts.find((ac: any) => ac.address === txnData?.to);
           if (found) {
             getBalance(found);
           }
         })
-        .on('error', console.error);
+        .on('error', (console.error));
     } catch (err) {
       console.log(err);
+      setLoader(false);
     }
   };
 
+  useEffect(() => {
+    const found = accounts.findIndex((acc: any) => acc.address === txnData?.from?.address);
+    found !== -1 && setAccIndex(found);
+  }, [accounts])
+
   const handleTransfer = () => {
     if (txnData.from?.address && txnData.to && parseInt(amount, 10) > 0) {
+      setLoader(true);
       sendTxn();
     }
   };
 
   return (
     <>
+      {loader && (
+        <View style={styles.loaderBack}>
+          <Spinner isVisible={true} size={50} type={'9CubeGrid'} color="#b27f29"/>
+        </View>
+      )}
       <View>
         <Pressable onPress={() => navigate('Transfer')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
@@ -216,8 +245,8 @@ const SetAmount = (props: any) => {
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(CocoPinImage)} />
-        <Text style={[styles.textStyle, { marginBottom: 20 }]}>Wallet 1</Text>
-        <Text style={styles.textStyle}>FRX 120.00</Text>
+        <Text style={[styles.textStyle, { marginBottom: 20 }]}>Wallet {accIndex + 1}</Text>
+        <Text style={styles.textStyle}>FRX {accIndex && accounts[accIndex]?.balance || 0}</Text>
       </View>
       <View style={styles.fornaxBox}>
         <View style={styles.pinInput}>

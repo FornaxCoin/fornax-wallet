@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 
 const ScanImage = '../../assets/images/Scan.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-
+const  qrCodeWidth = hp('34');
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
@@ -28,8 +28,10 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   fornaxIcon: {
-    width: 80,
-    height: 80,
+    // width:80,
+    // height:80,
+    width:  hp(9),
+    height: hp(9),
     marginBottom: 30,
   },
   fornaxInnerBox: {
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('10'),
+    marginTop: hp('5'),
     marginBottom: hp('4'),
   },
   fornaxMiniText: {
@@ -68,8 +70,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     marginBottom: 20,
-    height: hp('34'),
-    width: wp('73'),
+    height: qrCodeWidth,
+    width: qrCodeWidth,
     borderWidth: 5,
     borderColor: 'aliceblue',
     borderRadius: 30,
@@ -132,18 +134,18 @@ const Scan = (props: any) => {
           <Text style={styles.fornaxMiniText}>My QR code</Text>
         </View>
         <View style={styles.qrCodeImg}>
-          <View style={styles.topLine} />
-          <View style={styles.leftLine} />
+          {/*<View style={styles.topLine} />*/}
+          {/*<View style={styles.leftLine} />*/}
           <QRCode
             value={
               defaultAddress || (accounts.length > 0 && accounts[0]?.address)
             }
-            size={230}
+            size={(qrCodeWidth-60)}
             color="#363853"
             backgroundColor="aliceblue"
           />
-          <View style={styles.rightLine} />
-          <View style={styles.bottomLine} />
+          {/*<View style={styles.rightLine} />*/}
+          {/*<View style={styles.bottomLine} />*/}
         </View>
         <View>
           <Text style={styles.fornaxMiniText}>Scan this to pay</Text>
