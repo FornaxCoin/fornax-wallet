@@ -9,6 +9,7 @@ interface WalletState {
   txnInfo: any;
   txnResponse: any;
   defaultAddress: string;
+  sendTxnStatus: string;
 }
 
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
   txnInfo: null,
   defaultAddress: '',
   txnResponse: null,
+  sendTxnStatus: '',
 } as WalletState;
 
 const walletSlice = createSlice({
@@ -48,6 +50,9 @@ const walletSlice = createSlice({
     setDefaultAddress(state, action) {
       state.defaultAddress = action.payload;
     },
+    setSendTxnStatus(state, action) {
+      state.sendTxnStatus = action.payload;
+    },
   },
 });
 
@@ -59,5 +64,6 @@ export const {
   setTxnsInfo,
   setTxnsResponse,
   setDefaultAddress,
+  setSendTxnStatus
 } = walletSlice.actions;
 export default walletSlice.reducer;

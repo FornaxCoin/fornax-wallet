@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Pressable, Switch, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const CocoLockImage = '../../assets/images/lockmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-
 const ArrowRightIcon = '../../assets/images/arrow-right.png';
+
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
@@ -81,6 +83,29 @@ const styles = StyleSheet.create({
 
 const LoginSetting = (props: any) => {
   const navigate = props.navigation.navigate;
+  const [isFaceId, setIsFaceId] = useState(false);
+  const [isFingerId, setIsFingerId] = useState(false);
+
+  const checkStorage = async () => {
+    const faceId = await AsyncStorage.getItem('isfaceId');
+    const fingerId = await AsyncStorage.getItem('isfingerId');
+    setIsFaceId(faceId === 'true')
+    setIsFingerId(fingerId === 'true')
+  }
+
+  useEffect(() => {
+    checkStorage();
+  }, [])
+
+  const handleFaceId = async () => {
+    setIsFaceId(!isFaceId);
+    await AsyncStorage.setItem('isfaceId', 'true');
+  }
+
+  const handleFingerId = async () => {
+    setIsFingerId(!isFingerId);
+    await AsyncStorage.setItem('isfingerId', 'true');
+  }
 
   return (
     <>
@@ -111,13 +136,14 @@ const LoginSetting = (props: any) => {
           style={[styles.button, styles.buttonClose]}>
           <Text style={styles.txnText}>Face ID</Text>
           <View style={styles.arrowRight}>
-            <Text style={styles.txnMiniText}>OFF</Text>
+            <Text style={styles.txnMiniText}>{isFaceId ? 'ON' : 'OFF'}</Text>
             <Switch
               style={styles.switch}
               trackColor={{ false: '#dfdfdf', true: '#363853' }}
               thumbColor={'#fff'}
               ios_backgroundColor="#dfdfdf"
-              value={false}
+              onValueChange={handleFaceId}
+              value={isFaceId}
             />
             <Image
               style={styles.arrowRightIcon}
@@ -130,13 +156,14 @@ const LoginSetting = (props: any) => {
           style={[styles.button, styles.buttonClose]}>
           <Text style={styles.txnText}>Fingerprint</Text>
           <View style={styles.arrowRight}>
-            <Text style={styles.txnMiniText}>ON</Text>
+            <Text style={styles.txnMiniText}>{isFingerId ? 'ON' : 'OFF'}</Text>
             <Switch
               style={styles.switch}
               trackColor={{ false: '#e0e0e0', true: '#363853' }}
               thumbColor={'#fff'}
               ios_backgroundColor="#3e3e3e"
-              value={true}
+              onValueChange={handleFingerId}
+              value={isFingerId}
             />
             <Image
               style={styles.arrowRightIcon}

@@ -10,6 +10,8 @@ import {
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage, hideMessage } from "react-native-flash-message";
+import { useDispatch, useSelector } from 'react-redux';
+import { setSendTxnStatus } from '../redux/reducers/Wallet';
 
 const CocoPinImage = '../../assets/images/Iconly_Curved_Passwordmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
@@ -104,9 +106,16 @@ const styles = StyleSheet.create({
 
 const LoginPin = (props: any) => {
   const navigate = props.navigation.navigate;
+  const dispatch = useDispatch();
   const [showPass, setShowPass] = useState(true);
   const [pin, setPin] = useState('');
 
+  const { sendTxnStatus } = useSelector(({ wallet }: any) => {
+    return {
+      sendTxnStatus: wallet?.sendTxnStatus,
+    };
+  });
+  
   const handlePin = (val: any) => {
     if(pin.length < 4) {
       hideMessage();
@@ -117,6 +126,19 @@ const LoginPin = (props: any) => {
   const handleSetPin = async () => {
     if (pin && pin.length === 4) {
       const _pin = await AsyncStorage.getItem('loginPin')
+      if (sendTxnStatus && sendTxnStatus?.include('pin')) {
+        if (_pin === pin) {
+          dispatch(setSendTxnStatus(sendTxnStatus.replace('pin', 'done')));
+          navigate('SetAmount')
+        } else {
+          showMessage({
+            message: "Pin Failed!",
+            description: "Please enter 4 digit valid Pin",
+            type: "danger",
+          });
+        }
+        return ;
+      } 
       if (_pin === pin) {
         hideMessage();
         await AsyncStorage.setItem('isLoginPinSet', pin);
@@ -129,6 +151,14 @@ const LoginPin = (props: any) => {
         });
       }
     } else {
+      if (sendTxnStatus && sendTxnStatus?.include('pin')) {
+        showMessage({
+          message: "Pin Failed!",
+          description: "Please enter 4 digit Pin",
+          type: "warning",
+        });
+        return ;
+      }
       showMessage({
         message: "Login Pin Failed!",
         description: "Please enter 4 digit Pin",
@@ -143,11 +173,6 @@ const LoginPin = (props: any) => {
 
   return (
     <>
-      {/* <View>
-        <Pressable onPress={() => navigate('LoginSetting')}>
-          <Image style={styles.backIcon} source={require(BackIcon)} />
-        </Pressable>
-      </View> */}
       <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(CocoPinImage)} />
         <Text style={styles.textStyle}>Enter Pin</Text>

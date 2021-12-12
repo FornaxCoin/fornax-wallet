@@ -10,8 +10,10 @@ import {
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setAccounts, setTxnsInfo, setTxnsResponse } from '../redux/reducers/Wallet';
+import { setAccounts, setSendTxnStatus, setTxnsInfo, setTxnsResponse } from '../redux/reducers/Wallet';
 import Spinner from 'react-native-spinkit';
+import FaceId from './FaceId';
+import TouchID from 'react-native-touch-id';
 
 const CocoPinImage = '../../assets/images/Iconly_Curved_Passwordmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
@@ -22,6 +24,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    zIndex: 0
   },
   buttonClose: {
     backgroundColor: '#b27f29',
@@ -53,6 +56,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     marginTop: hp('8'),
     marginBottom: hp('4'),
+    zIndex: 0
   },
   input: {
     height: 40,
@@ -98,6 +102,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 10,
     right: 0,
     left: 0,
     bottom: 0,
@@ -117,13 +122,19 @@ const SetAmount = (props: any) => {
     dispatch(setTxnsInfo({ ...txnData, amount }));
   };
 
-  const { web3, accounts, txnData } = useSelector(({ wallet }: any) => {
+  const { web3, accounts, txnData, sendTxnStatus } = useSelector(({ wallet }: any) => {
     return {
       web3: wallet?.web3,
       accounts: wallet?.accounts,
       txnData: wallet?.txnInfo,
+      sendTxnStatus: wallet?.sendTxnStatus,
     };
   });
+
+  useEffect(() => {
+    const amt = sendTxnStatus.split('=')[2]
+    console.log(amt);
+  }, [sendTxnStatus])
 
   const storeDataAsync = async (account: any) => {
     try {
@@ -224,10 +235,44 @@ const SetAmount = (props: any) => {
     found !== -1 && setAccIndex(found);
   }, [accounts])
 
+  const confirmTxn = async () => {
+    const faceId = await AsyncStorage.getItem('isfaceId');
+    const fingerId = await AsyncStorage.getItem('isfingerId');
+    const isloginPin = await AsyncStorage.getItem('isLoginPinSet');
+    const optionalConfigObject = {
+      title: 'Fingerprint', // Android
+      imageColor: '#363853', // Android
+      imageErrorColor: '#ff0000', // Android
+      sensorDescription: 'Put your finger on the fingerprint scanner', // Android
+      sensorErrorDescription: 'Failed', // Android
+      cancelText: 'Cancel', // Android
+      fallbackLabel: 'Show Passcode', // iOS (if empty, then label is hidden)
+      unifiedErrors: false, // use unified error messages (default false)
+      passcodeFallback: false, 
+    }
+  
+    if (faceId || fingerId) {
+      TouchID.authenticate('Open your FornaxWallet', optionalConfigObject)
+        .then((success: any) => {
+          sendTxn();
+          console.log(success, "success");
+        })
+        .catch((error: any) => {
+          setLoader(false);
+          console.log(error, "error");
+          // Failure code
+        });
+    }
+    if(isloginPin) {
+      dispatch(setSendTxnStatus('pin='+amount))
+      navigate('LoginPin')
+    }
+  }
+
   const handleTransfer = () => {
     if (txnData.from?.address && txnData.to && parseInt(amount, 10) > 0) {
       setLoader(true);
-      sendTxn();
+      confirmTxn();
     }
   };
 
@@ -238,7 +283,7 @@ const SetAmount = (props: any) => {
           <Spinner isVisible={true} size={50} type={'9CubeGrid'} color="#b27f29"/>
         </View>
       )}
-      <View>
+      <View style={{ zIndex: 0 }}>
         <Pressable onPress={() => navigate('Transfer')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>

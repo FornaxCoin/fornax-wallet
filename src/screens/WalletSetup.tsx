@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { generateMnemonic } from 'bip39';
@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setWeb3 } from '../redux/reducers/Wallet';
 import { useDispatch } from 'react-redux';
 import { getWeb3 } from '../utils/common';
+import Spinner from 'react-native-spinkit';
 
 const SettingImage = '../../assets/images/Settingmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
@@ -16,6 +17,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 0
   },
   secondaryTxnText: {
     color: '#363853',
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
   secondaryButton: {
     backgroundColor: '#fff',
     color: '#b27f29',
-    marginTop: hp(10),
+    marginTop: hp('30'),
   },
   textStyle: {
     fontSize: 20,
@@ -71,9 +73,22 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Quicksand-Medium',
   },
+  loaderBack: {
+    flex: 1,
+    backgroundColor: '#00000096',
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+    right: 0,
+    left: 0,
+    bottom: 0,
+    top: 0
+  },
 });
 
 const WalletSetup = (props: any) => {
+  const [loader, setLoader] = useState(false)
   const dispatch = useDispatch();
   const navigate = props.navigation.navigate;
 
@@ -84,8 +99,10 @@ const WalletSetup = (props: any) => {
         ['accountList', JSON.stringify([account])],
         ['mnemonicPhrase', mnemonicPhrase],
       ]);
+      setLoader(false);
       navigate('Dashboard');
     } catch (error) {
+      setLoader(false);
       // Error saving data
     }
   };
@@ -100,14 +117,16 @@ const WalletSetup = (props: any) => {
         }
       },
       (error: any) => {
+        setLoader(false);
         console.log(error, 'getBalance');
       },
     );
   };
 
   const handleCreateWallet = async () => {
-    const mnemonicPhrase = await generateMnemonic();
+    setLoader(true);
     try {
+      const mnemonicPhrase = await generateMnemonic();
       const web3 = getWeb3(mnemonicPhrase);
       if (web3) {
         dispatch(setWeb3(web3));
@@ -115,25 +134,31 @@ const WalletSetup = (props: any) => {
         getBalance(web3, account, mnemonicPhrase);
       }
     } catch (err) {
+      setLoader(false);
       console.log(err);
     }
   };
 
   return (
     <>
-      <View>
+      {loader && (
+        <View style={styles.loaderBack}>
+          <Spinner isVisible={true} size={50} type={'9CubeGrid'} color="#b27f29"/>
+        </View>
+      )}
+      <View style={{ zIndex: 0 }}>
         <Pressable onPress={() => navigate('Dashboard')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>
-      <View style={styles.fornaxInnerBox}>
-        <Image style={styles.fornaxIcon} source={require(SettingImage)} />
-        <Text style={styles.textStyle}>Wallet Setup</Text>
-        <Text style={styles.fornaxMiniText}>
-          Import an existing wallet or create a new one
-        </Text>
-      </View>
       <View style={styles.fornaxBox}>
+        <View style={styles.fornaxInnerBox}>
+          <Image style={styles.fornaxIcon} source={require(SettingImage)} />
+          <Text style={styles.textStyle}>Wallet Setup</Text>
+          <Text style={styles.fornaxMiniText}>
+            Import an existing wallet or create a new one
+          </Text>
+        </View>
         <Pressable
           onPress={() => navigate('Import')}
           style={[styles.button, styles.buttonClose, styles.secondaryButton]}>
@@ -147,7 +172,7 @@ const WalletSetup = (props: any) => {
         </Pressable>
         <Pressable
           onPress={handleCreateWallet}
-          style={[styles.button, styles.buttonClose]}>
+          style={[styles.button, styles.buttonClose, { marginBottom: hp('10') }]}>
           <Text style={styles.txnText}>Create a new Wallet</Text>
         </Pressable>
       </View>

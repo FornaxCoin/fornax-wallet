@@ -7,7 +7,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp, widthPercentageToDP } from 'react-native-responsive-screen';
 import { setTxnsInfo } from '../redux/reducers/Wallet';
 import { useDispatch, useSelector } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
@@ -60,33 +60,36 @@ const styles = StyleSheet.create({
   inputBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: 60,
+    height: 55,
     borderRadius: 15,
     fontFamily: 'Quicksand-Medium',
     backgroundColor: '#ffffff',
     color: '#bdbdbd',
     fontSize: 16,
-    width: 340,
+    width: widthPercentageToDP('90'),
     marginBottom: 20,
   },
   input: {
     fontFamily: 'Quicksand-Medium',
     fontSize: 16,
-    width: 340,
+    width: widthPercentageToDP('80'),
+    color: '#000',
     paddingHorizontal: 20,
   },
 });
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    width: 340,
+    width: widthPercentageToDP('110'),
     fontSize: 16,
+    color: '#000',
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
   inputAndroid: {
-    width: 340,
+    width: widthPercentageToDP('110'),
     fontSize: 16,
+    color: '#000',
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
@@ -123,7 +126,7 @@ const Transfer = (props: any) => {
   };
 
   const handleSend = async () => {
-    const isValid = await web3.utils.isAddress(txnData.to);
+    const isValid = await web3.utils.isAddress(txnData.to.toLowerCase().trim());
     if (txnData.from?.address && isValid) {
       hideMessage();
       dispatch(setTxnsInfo(txnData));
@@ -131,7 +134,7 @@ const Transfer = (props: any) => {
     } else {
       showMessage({
         message: "Address is Invalid!",
-        description: "Again scan QR code",
+        description: "Again enter valid address",
         type: "warning",
       });
       console.log('adress is invalid');

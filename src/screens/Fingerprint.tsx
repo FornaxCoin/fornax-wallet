@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, Image, Pressable, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import TouchID from 'react-native-touch-id';
 
@@ -51,12 +51,19 @@ const styles = StyleSheet.create({
 const Fingerprint = (props: any) => {
   const navigate = props.navigation.navigate;
   const optionalConfigObject = {
+    title: 'Fingerprint', // Android
+    imageColor: '#363853', // Android
+    imageErrorColor: '#ff0000', // Android
+    sensorDescription: 'Put your finger on the fingerprint scanner', // Android
+    sensorErrorDescription: 'Failed', // Android
+    cancelText: 'Cancel', // Android
+    fallbackLabel: 'Show Passcode', // iOS (if empty, then label is hidden)
     unifiedErrors: false, // use unified error messages (default false)
-    passcodeFallback: false // if true is passed, itwill allow isSupported to return an error if the device is not enrolled in touch id/face id etc. Otherwise, it will just tell you what method is supported, even if the user is not enrolled.  (default false)
+    passcodeFallback: false, 
   }
   
-  useEffect(() => {
-    TouchID.authenticate('to demo this react-native component', optionalConfigObject)
+  const authenticate = () => {
+    TouchID.authenticate('Open your FornaxWallet', optionalConfigObject)
       .then((success: any) => {
         console.log(success, "success");
         // Success code
@@ -65,7 +72,12 @@ const Fingerprint = (props: any) => {
         console.log(error, "error");
         // Failure code
       });
+  }
+
+  useEffect(() => {
+    authenticate();
   }, [])
+
 
   return (
     <>
@@ -82,10 +94,12 @@ const Fingerprint = (props: any) => {
         <Text style={styles.textStyle}>Fingerprint</Text>
       </View>
       <View style={styles.fornaxBox}>
-        <Image
-          style={styles.fornaxCenterIcon}
-          source={require(FingerprintScanIcon)}
-        />
+        <Pressable onPress={authenticate}>
+          <Image
+            style={styles.fornaxCenterIcon}
+            source={require(FingerprintScanIcon)}
+          />
+        </Pressable>
         <Text style={styles.txnText}>Put your finger</Text>
         <Text style={styles.txnText}>on the fingerprint scanner</Text>
       </View>

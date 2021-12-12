@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   Pressable,
+  Platform,
 } from 'react-native';
 const HomeImg = require('../../assets/images/Homemini.png');
 const TransferImg = require('../../assets/images/transfer.png');
@@ -79,6 +80,7 @@ const styles = StyleSheet.create({
 });
 
 const NavTab = ({ navigate }: any) => {
+  console.log(Platform.OS, "Platform.OS");
   const routes = [
     { key: 'home', title: 'Home', icon: HomeImg, navigate: 'Dashboard' },
     {

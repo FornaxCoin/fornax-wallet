@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'space-between',
     marginTop: 30,
     marginHorizontal: 20,
+    zIndex: 0,
   },
   navBar: {
     flexDirection: 'row',
@@ -70,6 +71,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 10,
     right: 0,
     left: 0,
     bottom: 0,
@@ -199,7 +201,7 @@ const Dashboard = (props: any) => {
             </View>
           </>
         )}
-        </View>
+      </View>
     </>
   );
 };

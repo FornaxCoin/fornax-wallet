@@ -1,4 +1,6 @@
 rootProject.name = 'fornaxWalletApp'
+include ':react-native-fingerprint-identify'
+project(':react-native-fingerprint-identify').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fingerprint-identify/android')
 include ':react-native-touch-id'
 project(':react-native-touch-id').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-touch-id/android')
 include ':react-native-permissions'
