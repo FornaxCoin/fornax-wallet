@@ -14,6 +14,7 @@ import MainStackNavigator from './src/router/MainStackNavigator';
 import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from "react-native-flash-message";
 import _ from 'lodash';
+import TouchID from 'react-native-touch-id';
 
 const BgImage = './assets/images/Layer.png';
 
@@ -45,6 +46,18 @@ const App = () => {
   const [initRoute, setInitRoute] = useState('');
   const flashRef = useRef(null);
 
+  const optionalConfigObject = {
+    title: 'Fingerprint', // Android
+    imageColor: '#363853', // Android
+    imageErrorColor: '#ff0000', // Android
+    sensorDescription: 'Put your finger on the fingerprint scanner', // Android
+    sensorErrorDescription: 'Failed', // Android
+    cancelText: 'Cancel', // Android
+    fallbackLabel: 'Show Passcode', // iOS (if empty, then label is hidden)
+    unifiedErrors: false, // use unified error messages (default false)
+    passcodeFallback: false, 
+  }
+
   const handleRoute = async () => {
     const registerUser = await AsyncStorage.getItem('registerUser');
     if (registerUser === null) {
@@ -55,9 +68,30 @@ const App = () => {
     if (loginUser === null) {
       setInitRoute('Login');
       return;
-    }
+    } 
+    const faceId = await AsyncStorage.getItem('isfaceId');
+    const fingerId = await AsyncStorage.getItem('isfingerId');
     const loginPin = await AsyncStorage.getItem('loginPin');
     const isloginPin = await AsyncStorage.getItem('isLoginPinSet');
+    const accountList = await AsyncStorage.getItem('accountList');
+    if (faceId || fingerId) {
+      TouchID.authenticate('Open your FornaxWallet', optionalConfigObject)
+        .then((success: any) => {
+          if (accountList === null) {
+            setInitRoute('WalletSetup');
+            return;
+          }
+          if (registerUser && loginUser && accountList && (loginPin && isloginPin)) {
+            setInitRoute('Dashboard');
+            return;
+          }
+          console.log(success, "success");
+        })
+        .catch((error: any) => {
+          console.log(error, "error");
+          // Failure code
+        });
+    }
     if(loginPin === null) {
       setInitRoute('Login');
       return;
@@ -66,7 +100,6 @@ const App = () => {
       setInitRoute('LoginPin');
       return;
     } 
-    const accountList = await AsyncStorage.getItem('accountList');
     if (accountList === null) {
       setInitRoute('WalletSetup');
       return;

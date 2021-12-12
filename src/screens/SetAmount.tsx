@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setAccounts, setSendTxnStatus, setTxnsInfo, setTxnsResponse } from '../redux/reducers/Wallet';
 import Spinner from 'react-native-spinkit';
-import FaceId from './FaceId';
 import TouchID from 'react-native-touch-id';
 
 const CocoPinImage = '../../assets/images/Iconly_Curved_Passwordmaga.png';
@@ -252,7 +251,7 @@ const SetAmount = (props: any) => {
     }
   
     if (faceId || fingerId) {
-      TouchID.authenticate('Open your FornaxWallet', optionalConfigObject)
+      TouchID.authenticate('To confirm Transaction', optionalConfigObject)
         .then((success: any) => {
           sendTxn();
           console.log(success, "success");
