@@ -23,6 +23,8 @@ target 'fornaxWalletApp' do
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
   
   pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+  
+  pod 'TouchID', :path => "../node_modules/react-native-touch-id"
 
   target 'fornaxWalletAppTests' do
     inherit! :complete

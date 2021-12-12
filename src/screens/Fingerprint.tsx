@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Alert, Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import FingerprintScanner from 'react-native-fingerprint-scanner';
+import TouchID from 'react-native-touch-id';
 
 const CocoFingerprintImage = '../../assets/images/coco-fingerprint.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
@@ -49,25 +49,30 @@ const styles = StyleSheet.create({
 });
 
 const Fingerprint = (props: any) => {
-  // const navigate = props.navigation.navigate;
-
+  const navigate = props.navigation.navigate;
+  const optionalConfigObject = {
+    unifiedErrors: false, // use unified error messages (default false)
+    passcodeFallback: false // if true is passed, itwill allow isSupported to return an error if the device is not enrolled in touch id/face id etc. Otherwise, it will just tell you what method is supported, even if the user is not enrolled.  (default false)
+  }
+  
   useEffect(() => {
-    FingerprintScanner
-      .authenticate({ description: 'Scan your fingerprint on the device scanner to continue' })
-      .then(() => {
-        props.handlePopupDismissed();
-        Alert.alert('Authenticated successfully');
+    TouchID.authenticate('to demo this react-native component', optionalConfigObject)
+      .then((success: any) => {
+        console.log(success, "success");
+        // Success code
       })
-      .catch((error) => {
-        props.handlePopupDismissed();
-        Alert.alert(error.message);
+      .catch((error: any) => {
+        console.log(error, "error");
+        // Failure code
       });
   }, [])
 
   return (
     <>
       <View>
-        <Image style={styles.backIcon} source={require(BackIcon)} />
+        <Pressable onPress={() => navigate('Dashboard')}>
+          <Image style={styles.backIcon} source={require(BackIcon)} />
+        </Pressable>
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image

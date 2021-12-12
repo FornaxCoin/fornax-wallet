@@ -90,7 +90,7 @@ const NavTab = ({ navigate }: any) => {
     },
     { key: 'scan', title: 'Scan', icon: ScanImg, navigate: 'Scan' },
     { key: 'pay', title: 'Pay', icon: PayImg, navigate: 'Pay' },
-    { key: 'topUp', title: 'Top up', icon: TopupImg, navigate: 'BiometricCheck' },
+    { key: 'topUp', title: 'Top up', icon: TopupImg, navigate: 'Fingerprint' },
   ];
 
   return (

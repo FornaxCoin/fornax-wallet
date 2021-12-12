@@ -95,6 +95,7 @@ const WalletSetup = (props: any) => {
       async (bal: any) => {
         if (bal >= 0) {
           const balance = await web3.utils.fromWei(bal, 'ether');
+          console.log(balance, "balance");
           storeDataAsync({ ...account, balance }, mnemonicPhrase);
         }
       },

@@ -8446,6 +8446,11 @@ react-native-template-typescript@^6.8.3:
   resolved "https://registry.yarnpkg.com/react-native-template-typescript/-/react-native-template-typescript-6.8.3.tgz#a84648bbe36089859f2150eb6f953ead78cb41f0"
   integrity sha512-PdNFOO/BTuz76x3Bmj4KwyhIKXgQCcs+vlsMyMavxwP6UCKmXYenIp0aVjya8ow5owd+MbmBvIvWOLOpygmgHA==
 
+react-native-touch-id@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-touch-id/-/react-native-touch-id-4.4.1.tgz#8b1bb2d04c30bac36bb9696d2d723e719c4a8b08"
+  integrity sha512-1jTl8fC+0fxvqegy/XXTyo6vMvPhjzkoDdaqoYZx0OH8AT250NuXnNPyKktvigIcys3+2acciqOeaCall7lrvg==
+
 react-native-vector-icons@^9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-9.0.0.tgz#ab38ec6941f3f340d39846f1e8300e59863e2fb1"
