@@ -26,6 +26,7 @@ import Settings from '../screens/Settings';
 import Notifications from '../screens/Notifications';
 import LoginPin from '../screens/LoginPin';
 import QRScanner from '../screens/QRScanner';
+import VerifyMnemonic from '../screens/VerifyMnemonic';
 
 const Stack = createStackNavigator();
 
@@ -70,6 +71,7 @@ const MainStackNavigator = ({ initRoute }: any) => {
         <Stack.Screen name="Pay" component={Pay} />
         <Stack.Screen name="LoginPin" component={LoginPin} />
         <Stack.Screen name="QRScanner" component={QRScanner} />
+        <Stack.Screen name="VerifyMnemonic" component={VerifyMnemonic} />
         <Stack.Screen
           name="ConfirmTransaction"
           component={ConfirmTransaction}
