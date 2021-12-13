@@ -1,17 +1,14 @@
-/* eslint-disable no-unused-expressions */
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, ScrollView, Text, View } from 'react-native';
 import CardCarousel from '../components/CardCarousel';
 import MainTab from '../components/MainTab';
-import NavTab from '../components/navTab';
+import NavTab from '../components/NaviTab';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
-import Web3 from 'web3';
-import {
-  setAccounts as setWeb3Accounts,
-  setWeb3,
-} from '../redux/reducers/Wallet';
-const HDWalletProvider = require('@truffle/hdwallet-provider');
+import { setAccounts, setWeb3 } from '../redux/reducers/Wallet';
+import { getWeb3 } from '../utils/common';
+import { heightPercentageToDP as hp , widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import Spinner from 'react-native-spinkit';
 
 const BellIcon = '../../assets/images/bell.png';
 const SettingIcon = '../../assets/images/setting.png';
@@ -20,8 +17,10 @@ const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
     flexDirection: 'column',
+    // justifyContent: 'space-between',
     marginTop: 30,
     marginHorizontal: 20,
+    zIndex: 0,
   },
   navBar: {
     flexDirection: 'row',
@@ -46,39 +45,16 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
   },
-  txnText: {
-    fontSize: 16,
-    color: '#ffffff',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Medium',
-    marginTop: 4,
-  },
-  buttonClose: {
-    backgroundColor: '#b27f29',
-    width: 240,
-    alignSelf: 'center',
-  },
-  button: {
-    borderRadius: 20,
-    paddingVertical: 18,
-  },
-  textStyle: {
-    fontSize: 20,
-    color: '#ffffff',
-    lineHeight: 23,
-    fontFamily: 'Quicksand-Bold',
-    textAlign: 'center',
-  },
   cardCarousel: {
-    height: 260,
+    height:216,
+    // backgroundColor:'red',
     width: 450,
   },
   tabBox: {
-    height: 320,
+    // height: 310,
+    // backgroundColor:'red',
+    height: hp(45),
     marginBottom: 30,
-  },
-  navTabBox: {
-    height: 70,
   },
   badge: {
     width: 7,
@@ -89,61 +65,91 @@ const styles = StyleSheet.create({
     right: 40,
     top: 0,
   },
+  loaderBack: {
+    flex: 1,
+    backgroundColor: '#00000057',
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+    right: 0,
+    left: 0,
+    bottom: 0,
+    top: 0
+  },
+  navTabBox: {
+    height: 70,
+    //new
+    // position: 'absolute',
+    // bottom: 0,
+  },
+  colco:{
+    // backgroundColor: 'red',
+    position:"absolute",
+    width:wp(90),
+    bottom: 5,
+  },
+  innerContainer:{
+    // backgroundColor:'blue',
+    // flex: 1,
+    flexDirection: 'column',
+    // height:hp(50),
+    // overflow:"scroll",
+    // paddingBottom:50,
+  },
+  extrahight:{
+    height:hp(10),
+  }
 });
 
-const Dashboard = () => {
+const Dashboard = (props: any) => {
   const dispatch = useDispatch();
-  // const navigate = props.navigation.navigate;
-  const [accounts, setAccounts] = useState<any>([]);
+  const [loader, setLoader] = useState(true);
+  const navigate = props.navigation.navigate;
 
-  const checkAccount = async (web3: any) => {
+  // const getBalances = async (data: any, web3: any) => {
+  //   return data.map(async (account: any, index: any) => {
+  //     web3.eth.getBalance(account?.address).then(
+  //       (balance: any) => {
+  //         if (balance >= 0) {
+  //           data[index] = Object.assign({ balance }, data[index]);
+  //           // dispatch(setAccounts(data));
+  //           console.log(balance, data[index], index, "balance");
+  //         }
+  //       },
+  //       (error: any) => {
+  //         console.log(error, 'getallBalance');
+  //       },
+  //     );
+  //   });
+  // };
+
+  const checkAccount = async () => {
     try {
       const value = await AsyncStorage.getItem('accountList');
       if (value != null) {
-        const data = [JSON.parse(value)];
-        setAccounts([]);
-        data.length > 0 &&
-          data.map(async (acc: any) => {
-            try {
-              const balance =
-                web3 &&
-                acc?.address &&
-                (await web3?.eth?.getBalance(acc?.address));
-              balance && Object.assign(acc, { balance });
-              accounts.findIndex((ac: any) => ac.address === acc.address) ===
-                -1 && accounts.push(acc);
-              setAccounts([...accounts]);
-              dispatch(setWeb3Accounts(accounts));
-            } catch (err) {
-              console.log(err);
-              return;
-            }
-            return acc;
-          });
-
-        return;
+        const data = JSON.parse(value);
+        dispatch(setAccounts(data));
+        setLoader(false);
+        // const _bal =
+        //   data?.length > 0 && (await web3.eth.getBalance(data[0]?.address));
+        // console.log(_bal);
+        // await getBalances(data, web3);
       }
     } catch (err) {
-      console.log('Accoun Error', err);
+      console.log('Account Error', err);
     }
   };
 
   const connectWallet = async () => {
     try {
+      // await AsyncStorage.removeItem('registerUser');
       const mnemonicPhrase = await AsyncStorage.getItem('mnemonicPhrase');
-      const provider = new HDWalletProvider({
-        mnemonic: {
-          phrase: mnemonicPhrase,
-        },
-        providerOrUrl: 'wss://node.watchfornax.com/ws',
-        network_id: 13936,
-        confirmations: 10,
-        timeoutBlocks: 200,
-        skipDryRun: true,
-      });
-      const web3 = new Web3(provider);
+      const web3 = mnemonicPhrase && getWeb3(mnemonicPhrase);
       if (web3) {
-        checkAccount(web3);
+        checkAccount();
+        // await web3.eth.accounts.wallet.clear();
+        // await AsyncStorage.removeItem('accountList');
         dispatch(setWeb3(web3));
       }
     } catch (err) {
@@ -153,27 +159,48 @@ const Dashboard = () => {
 
   useEffect(() => {
     connectWallet();
+    setLoader(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
+      {loader && (
+        <View style={styles.loaderBack}>
+          <Spinner isVisible={true} size={50} type={'9CubeGrid'} color="#b27f29"/>
+        </View>
+      )}
       <View style={styles.fornaxBox}>
         <View style={styles.navBar}>
           <View style={styles.badge} />
-          <Image source={require('../../assets/images/bell.png')} style={styles.bellImg} />
-          <Image source={require('../../assets/images/setting.png')} style={styles.settingImg} />
+          <Pressable onPress={() => navigate('Notifications')}>
+            <Image source={require(BellIcon)} style={styles.bellImg} />
+          </Pressable>
+          <Pressable onPress={() => navigate('Settings')}>
+            <Image source={require(SettingIcon)} style={styles.settingImg} />
+          </Pressable>
         </View>
         <Text style={styles.fornaxText}>Dashboard</Text>
-        <View style={styles.cardCarousel}>
-          <CardCarousel />
-        </View>
-        <View style={styles.tabBox}>
-          <MainTab />
-        </View>
-        <View style={styles.navTabBox}>
-          <NavTab />
-        </View>
+        {!loader && (
+          <>
+            <ScrollView style={styles.innerContainer}>
+              <View style={styles.cardCarousel}>
+                <CardCarousel navigate={navigate} />
+              </View>
+              <View style={styles.tabBox}>
+                <MainTab />
+              </View>
+              <View style={styles.extrahight}>
+
+              </View>
+            </ScrollView>
+            <View style={styles.colco}>
+              <View style={styles.navTabBox}>
+                <NavTab navigate={navigate} />
+              </View>
+            </View>
+          </>
+        )}
       </View>
     </>
   );

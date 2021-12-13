@@ -7,9 +7,10 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import PhoneModal from '../components/Modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const sendImg = '../../assets/images/Iconly_Curved_Send.png';
+import { showMessage, hideMessage } from "react-native-flash-message";
+import { validateEmail } from '../utils/common';
+const EyeSlashImg = '../../assets/images/Eye-slashmini.png';
 
 const styles = StyleSheet.create({
   fornaxBox: {
@@ -29,6 +30,8 @@ const styles = StyleSheet.create({
   inputBox: {
     flexDirection: 'row',
     marginVertical: 13,
+    alignContent: 'center',
+    alignItems: 'center',
   },
   inputLabel: {
     fontSize: 16,
@@ -48,12 +51,6 @@ const styles = StyleSheet.create({
     width: 200,
     marginLeft: 30,
   },
-  fornaxText: {
-    fontSize: 48,
-    color: '#b27f29',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Bold',
-  },
   loginTextbox: {
     fontSize: 14,
     color: '#bdbdbd',
@@ -69,6 +66,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#81c2ff',
     fontFamily: 'Quicksand-Medium',
+    paddingTop: 6,
   },
   buttonClose: {
     backgroundColor: '#b27f29',
@@ -125,28 +123,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const VerifyModal = ({ isModalVisible, setModalVisible }: any) => {
-  return (
-    <>
-      <View style={styles.verifyModalBox}>
-        <Image source={require(sendImg)} style={styles.topImg} />
-        <Text style={styles.verifyText}>
-          Verify your account, we have sent a verification code to your mobile
-          number
-        </Text>
-        <Pressable
-          onPress={() => setModalVisible(!isModalVisible)}
-          style={styles.buttonCode}>
-          <Text style={styles.codeText}>Send Code</Text>
-        </Pressable>
-      </View>
-    </>
-  );
-};
-
 const Login = (props: any) => {
-  const [isModalVisible, setModalVisible] = useState(false);
   const navigate = props.navigation.navigate;
+  const [showPass, setShowPass] = useState(true);
   const [user, setUser] = useState({
     email: '',
     password: '',
@@ -154,29 +133,58 @@ const Login = (props: any) => {
 
   const handleLogin = async () => {
     try {
-      await AsyncStorage.setItem('loginUser', JSON.stringify(user));
-      const value = await AsyncStorage.getItem('accountList');
-      if (value) {
-        navigate('Dashboard');
-        return;
+      if (user.email && user.password) {
+        if (!validateEmail(user.email)) {
+          showMessage({
+            message: "Email Validation Failed!!!",
+            description: "Please enter valid Email Address",
+            type: "warning",
+          });
+          return;
+        }
+        const registerUser: any = await AsyncStorage.getItem('registerUser');
+        const registerData = registerUser && JSON.parse(registerUser);
+        if (registerData.password === user.password) {
+          hideMessage();
+          await AsyncStorage.setItem('loginUser', JSON.stringify(user));
+          const value = await AsyncStorage.getItem('accountList');
+          if (value) {
+            navigate('Dashboard');
+            return;
+          }
+          navigate('WalletSetup');
+        } else {
+          showMessage({
+            message: "Login Failed!!!",
+            description: "Please enter valid Email Address and Password",
+            type: "danger",
+          });
+        }
+      } else {
+        showMessage({
+          message: "Login Failed!!!",
+          description: "Please enter Email Address and Password",
+          type: "danger",
+        });
       }
-      navigate('WalletSetup');
     } catch (err) {
       console.log('Login Error', err);
     }
   };
+  
+  const onBlurEmail = () => {
+    if(!validateEmail(user.email)) {
+      showMessage({
+        message: "Email Validation Failed!!!",
+        description: "Please enter valid Email Address",
+        type: "warning",
+      });
+    }
+  }
 
   return (
     <>
       <View style={styles.fornaxBox}>
-        {isModalVisible && (
-          <PhoneModal isModalVisible={isModalVisible}>
-            <VerifyModal
-              isModalVisible={isModalVisible}
-              setModalVisible={setModalVisible}
-            />
-          </PhoneModal>
-        )}
         <View style={{ marginBottom: 50 }}>
           <Text style={styles.createAccText}>Login to your Account</Text>
         </View>
@@ -186,6 +194,9 @@ const Login = (props: any) => {
             style={styles.input}
             placeholder="example@mail.com"
             placeholderTextColor="#bdbdbd"
+            autoCapitalize='none'
+            autoCorrect={false}
+            onBlur={onBlurEmail}
             onChangeText={e => setUser({ ...user, email: e })}
             value={user.email}
           />
@@ -195,11 +206,14 @@ const Login = (props: any) => {
           <TextInput
             style={styles.input}
             placeholder="xxxxxxxx"
-            secureTextEntry={true}
+            secureTextEntry={showPass}
             placeholderTextColor="#bdbdbd"
             onChangeText={e => setUser({ ...user, password: e })}
             value={user.password}
           />
+          <Pressable onPress={() => setShowPass(!showPass)} style={{ marginBottom: 20, marginRight: 10 }}>
+            <Image source={require(EyeSlashImg)} style={{ width: 20, position: 'absolute', right: 0 }} />
+          </Pressable>
         </View>
         <Pressable
           onPress={handleLogin}
@@ -209,16 +223,8 @@ const Login = (props: any) => {
         <Text style={styles.loginTextbox}>
           You don't have account?
           <Pressable
-            onPress={() => navigate('SignUp')}
-            style={{ paddingTop: 6 }}>
-            <Text style={styles.loginText}> SignUp</Text>
-          </Pressable>
-        </Text>
-        <Text style={styles.loginTextbox}>
-          <Pressable
-            onPress={() => navigate('SignUp')}
-            style={{ paddingTop: 6 }}>
-            <Text style={styles.loginText}> Forgot Password?</Text>
+            onPress={() => navigate('Signup')}>
+            <Text style={[styles.loginText, { marginLeft: 3,  }]}>SignUp</Text>
           </Pressable>
         </Text>
       </View>

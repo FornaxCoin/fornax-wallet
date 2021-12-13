@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import {heightPercentageToDP as hp} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const FacebookImage = '../../assets/images/facebook.png';
 const CocoLineInstaImage = '../../assets/images/COCO_Line_Instagrammaga.png';
 const TwitterImage = '../../assets/images/twitter.png';
@@ -14,12 +14,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  fornaxText: {
-    fontSize: 48,
-    color: '#b27f29',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Bold',
-  },
   txnText: {
     marginLeft: 17,
     fontSize: 16,
@@ -29,11 +23,9 @@ const styles = StyleSheet.create({
     marginTop: -5,
   },
   buttonClose: {
-    // flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: '#b27f29',
     width: 240,
     alignSelf: 'center',
     marginBottom: 43,
@@ -60,18 +52,20 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignSelf: 'center',
   },
+  fornaxIcon: {
+    // width:80,
+    // height:80,
+    // width:  hp(9),
+    // height: hp(9),
+    marginBottom: 30,
+  },
   fornaxInnerBox: {
     flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: 'green',
-    // marginTop: 120,
-    marginTop: hp('10'),
+    marginTop: hp('5'),
     marginBottom: hp('4'),
-  },
-  fornaxIcon: {
-    marginBottom: 44,
   },
 });
 
@@ -81,18 +75,17 @@ const SocialMedia = (props: any) => {
   return (
     <>
       <View>
-        <Image style={styles.backIcon} source={require('../../assets/images/Iconly_Curved_Arrow.png')} />
+        <Pressable onPress={() => navigate('Dashboard')}>
+          <Image style={styles.backIcon} source={require(BackIcon)} />
+        </Pressable>
       </View>
       <View style={styles.fornaxInnerBox}>
-        <Image
-            style={styles.fornaxIcon}
-            source={require(CocoLineInstaImage)}
-        />
+        <Image style={styles.fornaxIcon} source={require(CocoLineInstaImage)} />
         <Text style={styles.textStyle}>Our Social Media</Text>
       </View>
       <View style={styles.fornaxBox}>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require('../../assets/images/facebook.png')} />
           <Text style={styles.txnText}>Facebook</Text>
@@ -101,7 +94,7 @@ const SocialMedia = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require('../../assets/images/twitter.png')} />
           <Text style={styles.txnText}>Twitter</Text>
@@ -110,7 +103,7 @@ const SocialMedia = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require('../../assets/images/instagram.png')} />
           <Text style={styles.txnText}>Instagram</Text>

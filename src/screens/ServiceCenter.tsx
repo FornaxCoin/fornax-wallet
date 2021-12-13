@@ -14,12 +14,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  fornaxText: {
-    fontSize: 48,
-    color: '#b27f29',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Bold',
-  },
   txnText: {
     marginLeft: 17,
     fontSize: 16,
@@ -29,11 +23,9 @@ const styles = StyleSheet.create({
     marginTop: -5,
   },
   buttonClose: {
-    // flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: '#b27f29',
     width: 240,
     alignSelf: 'center',
     marginBottom: 43,
@@ -55,23 +47,24 @@ const styles = StyleSheet.create({
   },
   arrowRightIcon: {
     flex: 1,
-    // backgroundColor: 'red',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
     alignSelf: 'center',
   },
   fornaxIcon: {
-    marginBottom: 44,
+    // width:80,
+    // height:80,
+    // width:  hp(9),
+    // height: hp(9),
+    marginBottom: 30,
   },
   fornaxInnerBox: {
     flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: 'green',
-    // marginTop: 120,
-    marginTop: hp('10'),
+    marginTop: hp('5'),
     marginBottom: hp('4'),
   },
 });
@@ -82,7 +75,9 @@ const ServiceCenter = (props: any) => {
   return (
     <>
       <View>
-        <Image style={styles.backIcon} source={require(BackIcon)} />
+        <Pressable onPress={() => navigate('Dashboard')}>
+          <Image style={styles.backIcon} source={require(BackIcon)} />
+        </Pressable>
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(CocoLineCallImage)} />
@@ -90,7 +85,7 @@ const ServiceCenter = (props: any) => {
       </View>
       <View style={styles.fornaxBox}>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(CriticsIcon)} />
           <Text style={styles.txnText}>Critics & Suggestions</Text>
@@ -99,7 +94,7 @@ const ServiceCenter = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(InstagramIcon)} />
           <Text style={styles.txnText}>Social Media</Text>
@@ -108,7 +103,7 @@ const ServiceCenter = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(CallingIcon)} />
           <Text style={styles.txnText}>Support</Text>

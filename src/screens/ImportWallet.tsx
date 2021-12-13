@@ -8,27 +8,27 @@ import {
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { 
+  heightPercentageToDP as hp, 
+  widthPercentageToDP as wp 
+} from 'react-native-responsive-screen';
 import _join from 'lodash/join';
-import Web3 from 'web3';
 import { setWeb3 } from '../redux/reducers/Wallet';
 import { useDispatch } from 'react-redux';
-const HDWalletProvider = require('@truffle/hdwallet-provider');
+import { getWeb3 } from '../utils/common';
+import { showMessage, hideMessage } from "react-native-flash-message";
+
+const bip39 = require('bip39');
+
 const SettingImage = '../../assets/images/Settingmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 
 const styles = StyleSheet.create({
   fornaxBox: {
-    flex: 1,
+    flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  fornaxText: {
-    fontSize: 48,
-    color: '#b27f29',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Bold',
   },
   txnText: {
     marginLeft: 17,
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
     paddingVertical: 18,
-    marginTop: hp('5'),
-    marginBottom: hp('10'),
+    marginTop: hp('1'),
+    marginBottom: hp('6'),
   },
   textStyle: {
     fontSize: 20,
@@ -61,53 +61,51 @@ const styles = StyleSheet.create({
     marginLeft: 26,
     marginTop: 32,
   },
-  arrowRightIcon: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    alignSelf: 'center',
-  },
   fornaxIcon: {
-    marginBottom: 30,
+    marginBottom: hp('3'),
   },
   fornaxInnerBox: {
     flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('5'),
-    marginBottom: hp('1'),
+    marginTop: hp('1'),
+    marginBottom: hp('2'),
   },
   fornaxMiniText: {
     fontSize: 18,
     color: '#bdbdbd',
     textAlign: 'center',
     fontFamily: 'Quicksand-Medium',
-    width: 300,
+    width: wp('80'),
   },
   seedBox: {
     borderWidth: 2,
     borderRadius: 20,
     borderStyle: 'dotted',
     borderColor: '#b27f29',
-    marginVertical: 10,
-    marginRight: 10,
+    marginVertical: hp(1),
     paddingHorizontal: 10,
-    paddingVertical: 8,
-    width: 125,
+    width: wp('30'),
+    height: wp('10'),
+  },
+  seedCountText: {
+    color: '#b27f29',
+    fontSize: 14,
+    marginRight: 8,
   },
   seedText: {
+    fontSize: 14,
+    includeFontPadding: true,
     color: '#ffffff',
     textAlign: 'center',
-    width: 80,
   },
   seedList: {
     flexDirection: 'column',
     marginBottom: 10,
   },
   seedListBox: {
-    width: 280,
+    width: wp('75'),
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -126,16 +124,9 @@ const ImportWallet = (props: any) => {
 
   const storeDataAsync = async (account: any, mnemonicPhrase: string) => {
     try {
-      // const value = await AsyncStorage.getItem('accountList');
-      // if (value) {
-      //   return;
-      //   // We have data!!
-      //   // const data: any = JSON.parse(value);
-      //   // newAccounts.push(data[0]);
-      // }
       await AsyncStorage.multiRemove(['accountList', 'mnemonicPhrase']);
       await AsyncStorage.multiSet([
-        ['accountList', JSON.stringify(account)],
+        ['accountList', JSON.stringify([account])],
         ['mnemonicPhrase', mnemonicPhrase],
       ]);
       navigate('Dashboard');
@@ -144,27 +135,40 @@ const ImportWallet = (props: any) => {
     }
   };
 
+  const getBalance = (web3: any, account: any, mnemonicPhrase: any) => {
+    web3.eth.getBalance(account?.address).then(
+      async (bal: any) => {
+        if (bal >= 0) {
+          const balance = await web3.utils.fromWei(bal, 'ether');
+          storeDataAsync({ ...account, balance }, mnemonicPhrase);
+        }
+      },
+      (error: any) => {
+        console.log(error, 'getBalance');
+      },
+    );
+  };
+
   const handleImport = async () => {
     const mnemonicPhrase = _join(seed, ' ');
-    console.log(mnemonicPhrase, 'mnemonicPhrase');
     try {
-      const provider = new HDWalletProvider({
-        mnemonic: {
-          phrase: mnemonicPhrase,
-        },
-        providerOrUrl: 'wss://node.watchfornax.com/ws',
-        network_id: 13936,
-        confirmations: 10,
-        timeoutBlocks: 200,
-        skipDryRun: true,
-      });
-      const web3 = new Web3(provider);
-      if (web3) {
-        dispatch(setWeb3(web3));
-        const account = await web3.eth.accounts.create();
-        storeDataAsync(account, mnemonicPhrase);
+      if (bip39.validateMnemonic(mnemonicPhrase.toString().toLowerCase().trim())) {
+        hideMessage();
+        const web3 = getWeb3(mnemonicPhrase);
+        if (web3) {
+          dispatch(setWeb3(web3));
+          const account = await web3.eth.accounts.create();
+          getBalance(web3, account, mnemonicPhrase);
+        }
+      } else {
+        showMessage({
+          message: "Import Phrase Failed!!!",
+          description: "Please enter correct mnemonic phrase",
+          type: "danger",
+        });
       }
     } catch (err) {
+      hideMessage();
       console.log(err);
     }
   };
@@ -172,59 +176,69 @@ const ImportWallet = (props: any) => {
   return (
     <>
       <View>
-        <Image style={styles.backIcon} source={require(BackIcon)} />
-      </View>
-      <View style={styles.fornaxInnerBox}>
-        <Image style={styles.fornaxIcon} source={require(SettingImage)} />
-        <Text style={styles.textStyle}>Import Wallet</Text>
-        <Text style={styles.fornaxMiniText}>
-          Write down your Secret Recovery Phrase
-        </Text>
+        <Pressable onPress={() => navigate('WalletSetup')}>
+          <Image style={styles.backIcon} source={require(BackIcon)} />
+        </Pressable>
       </View>
       <View style={styles.fornaxBox}>
-        <View style={styles.seedListBox}>
-          <View style={styles.seedList}>
-            {seedArray.map((sed: any, index: any) => {
-              if (index <= 5) {
-                return (
-                  <View key={index} style={styles.seedBox}>
-                    <TextInput
-                      style={styles.seedText}
-                      placeholder={sed}
-                      placeholderTextColor="#bdbdbd"
-                      onChangeText={e => handleSeeds(e, index)}
-                      value={seed[index]}
-                      autoCapitalize={'none'}
-                    />
-                  </View>
-                );
-              }
-            })}
-          </View>
-          <View style={styles.seedList}>
-            {seedArray.map((sed: any, index: any) => {
-              if (index >= 6) {
-                return (
-                  <View key={index} style={styles.seedBox}>
-                    <TextInput
-                      style={styles.seedText}
-                      placeholder={sed}
-                      placeholderTextColor="#bdbdbd"
-                      onChangeText={e => handleSeeds(e, index + 6)}
-                      value={seed[index + 6]}
-                      autoCapitalize={'none'}
-                    />
-                  </View>
-                );
-              }
-            })}
-          </View>
+        <View style={styles.fornaxInnerBox}>
+          <Image style={styles.fornaxIcon} source={require(SettingImage)} />
+          <Text style={styles.textStyle}>Import Wallet</Text>
+          <Text style={styles.fornaxMiniText}>
+            Write down your Secret Recovery Phrase
+          </Text>
         </View>
-        <Pressable
-          onPress={handleImport}
-          style={[styles.button, styles.buttonClose]}>
-          <Text style={styles.txnText}>Continue</Text>
-        </Pressable>
+        <View>
+          <View style={styles.seedListBox}>
+            <View style={styles.seedList}>
+              {seedArray.map((sed: any, index: any) => {
+                if (index <= 5) {
+                  return (
+                    <View key={index} style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center' }}>
+                      <Text style={styles.seedCountText}>{index + 1}.</Text>
+                      <View style={styles.seedBox}>
+                        <TextInput
+                          style={styles.seedText}
+                          placeholder={sed}
+                          placeholderTextColor="#bdbdbd"
+                          onChangeText={e => handleSeeds(e, index)}
+                          value={seed[index]}
+                          autoCapitalize={'none'}
+                        />
+                      </View>
+                    </View>
+                  );
+                }
+              })}
+            </View>
+            <View style={styles.seedList}>
+              {seedArray.map((sed: any, index: any) => {
+                if (index >= 6) {
+                  return (
+                    <View key={index} style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', marginLeft: 10 }}>
+                      <Text style={styles.seedCountText}>{index + 1}.</Text>
+                      <View style={styles.seedBox}>
+                        <TextInput
+                          style={styles.seedText}
+                          placeholder={sed}
+                          placeholderTextColor="#bdbdbd"
+                          onChangeText={e => handleSeeds(e, index)}
+                          value={seed[index]}
+                          autoCapitalize={'none'}
+                        />
+                      </View>
+                    </View>
+                  );
+                }
+              })}
+            </View>
+          </View>
+          <Pressable
+            onPress={handleImport}
+            style={[styles.button, styles.buttonClose]}>
+            <Text style={styles.txnText}>Continue</Text>
+          </Pressable>
+        </View>
       </View>
     </>
   );

@@ -1,5 +1,14 @@
 import * as React from 'react';
-import { Animated, View, Text, StyleSheet, Image } from 'react-native';
+import { heightPercentageToDP as hp , widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import {
+  Animated,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  Platform,
+} from 'react-native';
 const HomeImg = require('../../assets/images/Homemini.png');
 const TransferImg = require('../../assets/images/transfer.png');
 const ScanImg = require('../../assets/images/Scan.png');
@@ -21,6 +30,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   item: {
+    // backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 4.5,
@@ -31,6 +41,14 @@ const styles = StyleSheet.create({
     width: 24,
     marginBottom: 5,
   },
+  scanicon: {
+    // height: 26,
+    // width: 24,
+    // marginBottom: 50,
+    // backgroundColor: 'red',
+    position: 'absolute',
+    top:-20,
+  },
   label: {
     fontSize: 10,
     marginTop: 3,
@@ -38,34 +56,43 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     color: 'white',
   },
+  scanLabel:{
+    marginTop:32,
+  },
   scanTab: {
     width: 72,
     height: 72,
     backgroundColor: '#936ee3',
     borderRadius: 30,
+    marginLeft:-61,
     position: 'absolute',
+    // right: wp(35),
+    left: wp(50),
     top: -40,
-    left: 135,
-    right: 0,
+    // left: 134,
+    // right: 0,
     bottom: 0,
   },
   scanIcon: {
-    marginBottom: 28,
-    marginTop: -18,
+    // marginBottom: 28,
+    // marginTop: -18,
   },
 });
 
-const NavTab = () => {
+const NavTab = ({ navigate }: any) => {
+  console.log(Platform.OS, "Platform.OS");
   const routes = [
-    { key: 'home', title: 'Home', icon: HomeImg },
+    { key: 'home', title: 'Home', icon: HomeImg, navigate: 'Dashboard' },
     {
       key: 'transfer',
       title: 'Transfer',
       icon: TransferImg,
+      navigate: 'Transfer',
+      // navigate: 'ConfirmTransaction',
     },
-    { key: 'scan', title: 'Scan', icon: ScanImg },
-    { key: 'pay', title: 'Pay', icon: PayImg },
-    { key: 'topUp', title: 'Top up', icon: TopupImg },
+    { key: 'scan', title: 'Scan', icon: ScanImg, navigate: 'Scan' },
+    { key: 'pay', title: 'Pay', icon: PayImg, navigate: 'Pay' },
+    { key: 'topUp', title: 'Top up', icon: TopupImg, navigate: 'Fingerprint' },
   ];
 
   return (
@@ -75,11 +102,13 @@ const NavTab = () => {
         {routes.length > 0 &&
           routes.map((route, index) => (
             <Animated.View key={index} style={[styles.item]}>
-              <Image
-                source={route.icon}
-                style={[styles.icon, route.key === 'scan' && styles.scanIcon]}
-              />
-              <Text style={[styles.label]}>{route.title}</Text>
+              <Pressable onPress={() => navigate(route.navigate)}>
+                <Image
+                  source={route.icon}
+                  style={[styles.icon, route.key === 'scan' && styles.scanIcon && styles.scanicon]}
+                />
+                <Text style={[styles.label, route.key === 'scan' && styles.scanLabel]}>{route.title}</Text>
+              </Pressable>
             </Animated.View>
           ))}
       </View>

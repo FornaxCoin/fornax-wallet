@@ -1,24 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Pressable, Switch, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const CocoLockImage = '../../assets/images/lockmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-const CriticsIcon = '../../assets/images/critics.png';
-const InstagramIcon = '../../assets/images/COCO_Line_Instagram.png';
-const CallingIcon = '../../assets/images/COCO-Calling.png';
 const ArrowRightIcon = '../../assets/images/arrow-right.png';
+
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  fornaxText: {
-    fontSize: 48,
-    color: '#b27f29',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Bold',
   },
   txnText: {
     marginLeft: 17,
@@ -33,14 +27,11 @@ const styles = StyleSheet.create({
     color: '#73767b',
     textAlign: 'center',
     fontFamily: 'Quicksand-Medium',
-    // marginTop: -5,
   },
   buttonClose: {
-    // flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: '#b27f29',
     width: 240,
     alignSelf: 'center',
     marginBottom: 43,
@@ -62,7 +53,6 @@ const styles = StyleSheet.create({
   },
   arrowRight: {
     flex: 1,
-    // backgroundColor: 'red',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -72,16 +62,18 @@ const styles = StyleSheet.create({
     marginLeft: 17,
   },
   fornaxIcon: {
-    marginBottom: 44,
+    // width:80,
+    // height:80,
+    // width:  hp(9),
+    // height: hp(9),
+    marginBottom: 30,
   },
   fornaxInnerBox: {
     flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundColor: 'green',
-    // marginTop: 120,
-    marginTop: hp('10'),
+    marginTop: hp('5'),
     marginBottom: hp('4'),
   },
   switch: {
@@ -91,11 +83,36 @@ const styles = StyleSheet.create({
 
 const LoginSetting = (props: any) => {
   const navigate = props.navigation.navigate;
+  const [isFaceId, setIsFaceId] = useState(false);
+  const [isFingerId, setIsFingerId] = useState(false);
+
+  const checkStorage = async () => {
+    const faceId = await AsyncStorage.getItem('isfaceId');
+    const fingerId = await AsyncStorage.getItem('isfingerId');
+    setIsFaceId(faceId === 'true')
+    setIsFingerId(fingerId === 'true')
+  }
+
+  useEffect(() => {
+    checkStorage();
+  }, [])
+
+  const handleFaceId = async () => {
+    setIsFaceId(!isFaceId);
+    await AsyncStorage.setItem('isfaceId', 'true');
+  }
+
+  const handleFingerId = async () => {
+    setIsFingerId(!isFingerId);
+    await AsyncStorage.setItem('isfingerId', 'true');
+  }
 
   return (
     <>
       <View>
-        <Image style={styles.backIcon} source={require(BackIcon)} />
+        <Pressable onPress={() => navigate('WalletSetup')}>
+          <Image style={styles.backIcon} source={require(BackIcon)} />
+        </Pressable>
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(CocoLockImage)} />
@@ -103,7 +120,7 @@ const LoginSetting = (props: any) => {
       </View>
       <View style={styles.fornaxBox}>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('SetPin')}
           style={[styles.button, styles.buttonClose]}>
           <Text style={styles.txnText}>PIN</Text>
           <View style={styles.arrowRight}>
@@ -115,17 +132,18 @@ const LoginSetting = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Text style={styles.txnText}>Face ID</Text>
           <View style={styles.arrowRight}>
-            <Text style={styles.txnMiniText}>OFF</Text>
+            <Text style={styles.txnMiniText}>{isFaceId ? 'ON' : 'OFF'}</Text>
             <Switch
               style={styles.switch}
               trackColor={{ false: '#dfdfdf', true: '#363853' }}
               thumbColor={'#fff'}
               ios_backgroundColor="#dfdfdf"
-              value={false}
+              onValueChange={handleFaceId}
+              value={isFaceId}
             />
             <Image
               style={styles.arrowRightIcon}
@@ -134,17 +152,18 @@ const LoginSetting = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Signup')}
+          onPress={() => navigate('Dashboard')}
           style={[styles.button, styles.buttonClose]}>
           <Text style={styles.txnText}>Fingerprint</Text>
           <View style={styles.arrowRight}>
-            <Text style={styles.txnMiniText}>ON</Text>
+            <Text style={styles.txnMiniText}>{isFingerId ? 'ON' : 'OFF'}</Text>
             <Switch
               style={styles.switch}
               trackColor={{ false: '#e0e0e0', true: '#363853' }}
               thumbColor={'#fff'}
               ios_backgroundColor="#3e3e3e"
-              value={true}
+              onValueChange={handleFingerId}
+              value={isFingerId}
             />
             <Image
               style={styles.arrowRightIcon}
