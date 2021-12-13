@@ -44,6 +44,7 @@ const theme = {
 
 const App = () => {
   const [initRoute, setInitRoute] = useState('');
+  const [biometryType, setBiometryType] = useState('');
   const flashRef = useRef(null);
 
   const optionalConfigObject = {
@@ -57,6 +58,17 @@ const App = () => {
     unifiedErrors: false, // use unified error messages (default false)
     passcodeFallback: false,
   }
+
+  useEffect(() => {
+    TouchID.isSupported(optionalConfigObject)
+      .then(biometryType => {
+        setBiometryType(biometryType)
+      })
+      .catch(error => {
+        // Failure code
+        console.log(error);
+      });
+  }, [])
 
   const handleRoute = async () => {
     const registerUser = await AsyncStorage.getItem('registerUser');
@@ -74,7 +86,8 @@ const App = () => {
     const loginPin = await AsyncStorage.getItem('loginPin');
     const isloginPin = await AsyncStorage.getItem('isLoginPinSet');
     const accountList = await AsyncStorage.getItem('accountList');
-    if (faceId || fingerId) {
+
+    if (biometryType && (faceId || fingerId)) {
       TouchID.authenticate('Open your FornaxWallet', optionalConfigObject)
         .then((success: any) => {
           if (accountList === null) {
