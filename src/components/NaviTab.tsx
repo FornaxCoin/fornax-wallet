@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
 });
 
 const NavTab = ({ navigate }: any) => {
-  console.log(Platform.OS, "Platform.OS");
   const routes = [
     { key: 'home', title: 'Home', icon: HomeImg, navigate: 'Dashboard' },
     {

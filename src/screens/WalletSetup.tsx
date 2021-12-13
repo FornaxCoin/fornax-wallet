@@ -3,7 +3,7 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { generateMnemonic } from 'bip39';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setWeb3 } from '../redux/reducers/Wallet';
+import { setAccounts, setWeb3 } from '../redux/reducers/Wallet';
 import { useDispatch } from 'react-redux';
 import { getWeb3 } from '../utils/common';
 import Spinner from 'react-native-spinkit';
@@ -95,12 +95,10 @@ const WalletSetup = (props: any) => {
   const storeDataAsync = async (account: any, mnemonicPhrase: string) => {
     try {
       await AsyncStorage.multiRemove(['accountList', 'mnemonicPhrase']);
-      await AsyncStorage.multiSet([
-        ['accountList', JSON.stringify([account])],
-        ['mnemonicPhrase', mnemonicPhrase],
-      ]);
+      await AsyncStorage.setItem('mnemonicPhrase', mnemonicPhrase);
+      dispatch(setAccounts(account));
       setLoader(false);
-      navigate('Dashboard');
+      navigate('VerifyMnemonic');
     } catch (error) {
       setLoader(false);
       // Error saving data
