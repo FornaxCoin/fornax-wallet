@@ -55,7 +55,7 @@ const App = () => {
     cancelText: 'Cancel', // Android
     fallbackLabel: 'Show Passcode', // iOS (if empty, then label is hidden)
     unifiedErrors: false, // use unified error messages (default false)
-    passcodeFallback: false, 
+    passcodeFallback: false,
   }
 
   const handleRoute = async () => {
@@ -68,7 +68,7 @@ const App = () => {
     if (loginUser === null) {
       setInitRoute('Login');
       return;
-    } 
+    }
     const faceId = await AsyncStorage.getItem('isfaceId');
     const fingerId = await AsyncStorage.getItem('isfingerId');
     const loginPin = await AsyncStorage.getItem('loginPin');
@@ -99,7 +99,7 @@ const App = () => {
     if (loginPin && isloginPin === null) {
       setInitRoute('LoginPin');
       return;
-    } 
+    }
     if (accountList === null) {
       setInitRoute('WalletSetup');
       return;
@@ -158,7 +158,7 @@ const App = () => {
               {initRoute ? (
                 <MainStackNavigator initRoute={initRoute} />
               ) : (
-                <Text>Loading...</Text>
+                <Text>Loading....</Text>
               )}
             </View>
             <FlashMessage ref={flashRef} />
