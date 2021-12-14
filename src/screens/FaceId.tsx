@@ -2,6 +2,8 @@ import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
+const CocoFaceImage = '../../assets/images/COCO_Line_Scan-maga.png';
+const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
@@ -67,10 +69,7 @@ const FaceId = (props: any) => {
         </Pressable>
       </View>
       <View style={styles.fornaxInnerBox}>
-        <Image
-          style={styles.fornaxIcon}
-          source={require('../../assets/images/COCO_Line_Scan-maga.png')}
-        />
+        <Image style={styles.fornaxIcon} source={require(CocoFaceImage)} />
         <Text style={styles.textStyle}>Face ID</Text>
         <Text style={styles.fornaxMiniText}>Verify it's you</Text>
       </View>
