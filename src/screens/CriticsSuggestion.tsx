@@ -1,6 +1,8 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import WalletTabs from "../components/WalletTabs";
+import SuggestionTabs from "../components/SuggestionTabs";
 const CocoLineMessageImage = '../../assets/images/COCO_Line_Message.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 
@@ -35,6 +37,10 @@ const styles = StyleSheet.create({
     marginTop: hp('5'),
     marginBottom: hp('4'),
   },
+  tabBox: {
+    height: 410,
+    marginBottom: 30,
+  },
 });
 
 const CriticsSuggestion = (props: any) => {
@@ -54,7 +60,12 @@ const CriticsSuggestion = (props: any) => {
         />
         <Text style={styles.textStyle}>Critics & Suggestion</Text>
       </View>
-      <View style={styles.fornaxBox} />
+      <View style={styles.tabBox}>
+        <SuggestionTabs />
+      </View>
+      <View style={styles.fornaxBox}>
+
+      </View>
     </>
   );
 };
