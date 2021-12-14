@@ -64,7 +64,7 @@ const FaceId = (props: any) => {
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('Dashboard')}>
+        <Pressable onPress={() => navigate('LoginSetting')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>

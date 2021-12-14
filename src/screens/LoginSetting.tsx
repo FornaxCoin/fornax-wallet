@@ -110,7 +110,7 @@ const LoginSetting = (props: any) => {
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('WalletSetup')}>
+        <Pressable onPress={() => navigate('Settings')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>
@@ -132,7 +132,7 @@ const LoginSetting = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Dashboard')}
+          onPress={() => navigate('FaceId')}
           style={[styles.button, styles.buttonClose]}>
           <Text style={styles.txnText}>Face ID</Text>
           <View style={styles.arrowRight}>
@@ -152,7 +152,7 @@ const LoginSetting = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Dashboard')}
+          onPress={() => navigate('Fingerprint')}
           style={[styles.button, styles.buttonClose]}>
           <Text style={styles.txnText}>Fingerprint</Text>
           <View style={styles.arrowRight}>

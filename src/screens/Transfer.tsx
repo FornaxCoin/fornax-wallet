@@ -118,6 +118,7 @@ const Transfer = (props: any) => {
         newAcc.push({ label: acc?.address, value: acc });
         return newAcc;
       }, []);
+    console.log('Options:',options)
     setAccountOpt(options);
   }, [accounts]);
 
@@ -179,9 +180,9 @@ const Transfer = (props: any) => {
             value={txnData.to}
           />
           <Pressable onPress={() => navigate('QRScanner')}>
-            <Image 
-              style={{ height: 30, width: 30, position: 'absolute' , right: 15, bottom: 15 }} 
-              source={require(QrcodeImage)} 
+            <Image
+              style={{ height: 30, width: 30, position: 'absolute' , right: 15, bottom: 15 }}
+              source={require(QrcodeImage)}
             />
           </Pressable>
         </View>

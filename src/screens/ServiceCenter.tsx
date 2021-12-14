@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import {Alert, Button, Image, Linking, Pressable, StyleSheet, Text, View} from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const CocoLineCallImage = '../../assets/images/COCO_Line_Call.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
@@ -71,11 +71,23 @@ const styles = StyleSheet.create({
 
 const ServiceCenter = (props: any) => {
   const navigate = props.navigation.navigate;
+  const handlePress = async(url: any)=>{
+    console.log(url);
+    const supported = await Linking.canOpenURL(url);
 
+    if (supported) {
+      console.log("supported Email")
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  };
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('Dashboard')}>
+        <Pressable onPress={() => navigate('Settings')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>
@@ -85,7 +97,7 @@ const ServiceCenter = (props: any) => {
       </View>
       <View style={styles.fornaxBox}>
         <Pressable
-          onPress={() => navigate('Dashboard')}
+          onPress={() => navigate('CriticsSuggestion')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(CriticsIcon)} />
           <Text style={styles.txnText}>Critics & Suggestions</Text>
@@ -94,7 +106,7 @@ const ServiceCenter = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Dashboard')}
+          onPress={() => navigate('SocialMedia')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(InstagramIcon)} />
           <Text style={styles.txnText}>Social Media</Text>
@@ -103,7 +115,7 @@ const ServiceCenter = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Dashboard')}
+            onPress={() => handlePress('mailto:info@fornaxcoin.com')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(CallingIcon)} />
           <Text style={styles.txnText}>Support</Text>

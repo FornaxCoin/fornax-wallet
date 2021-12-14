@@ -56,7 +56,7 @@ const App = () => {
     cancelText: 'Cancel', // Android
     fallbackLabel: 'Show Passcode', // iOS (if empty, then label is hidden)
     unifiedErrors: false, // use unified error messages (default false)
-    passcodeFallback: false, 
+    passcodeFallback: false,
   }
 
   useEffect(() => {
@@ -80,14 +80,14 @@ const App = () => {
     if (loginUser === null) {
       setInitRoute('Login');
       return;
-    } 
+    }
     const faceId = await AsyncStorage.getItem('isfaceId');
     const fingerId = await AsyncStorage.getItem('isfingerId');
     const loginPin = await AsyncStorage.getItem('loginPin');
     const isloginPin = await AsyncStorage.getItem('isLoginPinSet');
     const accountList = await AsyncStorage.getItem('accountList');
 
-    if (biometryType && (faceId || fingerId)) {
+    if (isloginPin === null && biometryType && (faceId || fingerId)) {
       TouchID.authenticate('Open your FornaxWallet', optionalConfigObject)
         .then((success: any) => {
           if (accountList === null) {
@@ -112,7 +112,7 @@ const App = () => {
     if (loginPin && isloginPin === null) {
       setInitRoute('LoginPin');
       return;
-    } 
+    }
     if (accountList === null) {
       setInitRoute('WalletSetup');
       return;

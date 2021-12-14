@@ -43,7 +43,7 @@ const CriticsSuggestion = (props: any) => {
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('Dashboard')}>
+        <Pressable onPress={() => navigate('Settings')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>

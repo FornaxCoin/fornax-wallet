@@ -59,9 +59,9 @@ const Fingerprint = (props: any) => {
     cancelText: 'Cancel', // Android
     fallbackLabel: 'Show Passcode', // iOS (if empty, then label is hidden)
     unifiedErrors: false, // use unified error messages (default false)
-    passcodeFallback: false, 
+    passcodeFallback: false,
   }
-  
+
   const authenticate = () => {
     TouchID.authenticate('Open your FornaxWallet', optionalConfigObject)
       .then((success: any) => {
@@ -82,7 +82,7 @@ const Fingerprint = (props: any) => {
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('Dashboard')}>
+        <Pressable onPress={() => navigate('LoginSetting')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>

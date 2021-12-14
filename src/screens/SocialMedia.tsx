@@ -1,5 +1,5 @@
-import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, {useCallback} from 'react';
+import {Image, Pressable, Linking, StyleSheet, Text, View, Alert, Button} from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const FacebookImage = '../../assets/images/facebook.png';
 const CocoLineInstaImage = '../../assets/images/COCO_Line_Instagrammaga.png';
@@ -68,14 +68,42 @@ const styles = StyleSheet.create({
     marginBottom: hp('4'),
   },
 });
+// @ts-ignore
+const OpenURLButton = ({ url, children }) => {
+  const handlePress = useCallback(async () => {
+    // Checking if the link is supported for links with custom URL scheme.
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  }, [url]);
+
+  return <Button title={children} onPress={handlePress} />;
+};
 
 const SocialMedia = (props: any) => {
-  const navigate = props.navigation.navigate;
+  const handlePress = async(url: any)=>{
+    console.log(url);
+    const supported = await Linking.canOpenURL(url);
 
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  };
+  const navigate = props.navigation.navigate;
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('Dashboard')}>
+        <Pressable onPress={() => navigate('ServiceCenter')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>
@@ -85,7 +113,7 @@ const SocialMedia = (props: any) => {
       </View>
       <View style={styles.fornaxBox}>
         <Pressable
-          onPress={() => navigate('Dashboard')}
+            onPress={() => handlePress('https://www.facebook.com/fornaxcoin')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(FacebookImage)} />
           <Text style={styles.txnText}>Facebook</Text>
@@ -94,7 +122,7 @@ const SocialMedia = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Dashboard')}
+            onPress={() => handlePress('https://twitter.com/FornaxCoin')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(TwitterImage)} />
           <Text style={styles.txnText}>Twitter</Text>
@@ -103,7 +131,7 @@ const SocialMedia = (props: any) => {
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigate('Dashboard')}
+            onPress={() => handlePress('https://www.instagram.com/fornaxcoin/')}
           style={[styles.button, styles.buttonClose]}>
           <Image source={require(InstagramImage)} />
           <Text style={styles.txnText}>Instagram</Text>
@@ -111,6 +139,7 @@ const SocialMedia = (props: any) => {
             <Image source={require(ArrowRightIcon)} />
           </View>
         </Pressable>
+        {/*<OpenURLButton url={supportedURL}>Open Supported URL</OpenURLButton>*/}
       </View>
     </>
   );
