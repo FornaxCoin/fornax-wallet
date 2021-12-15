@@ -133,6 +133,7 @@ const QRScanner = (props: any) => {
 
   const onSuccess = async (e: any) => {
     dispatch(setTxnsInfo({ ...txnInfo, to: e.data}));
+    console.log("to:", e.data)
     const isValid = await web3.utils.isAddress(e.data);
     if(e.data && isValid) {
       hideMessage();

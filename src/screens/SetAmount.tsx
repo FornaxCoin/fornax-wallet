@@ -151,7 +151,7 @@ const SetAmount = (props: any) => {
       await AsyncStorage.setItem('accountList', JSON.stringify(_accounts));
       dispatch(setAccounts(_accounts));
       const found = accounts.find((ac: any) => ac.address === txnData?.to);
-      if (!found) {      
+      if (!found) {
         setLoader(false);
         navigate('ConfirmTransaction');
       } else if (found && account?.address === found?.address) {
@@ -179,6 +179,7 @@ const SetAmount = (props: any) => {
   };
 
   const sendTxn = async () => {
+    console.log('sendTxnTo:',txnData.to)
     try {
       const gasPrice = await web3.eth
         .getGasPrice()
@@ -247,9 +248,9 @@ const SetAmount = (props: any) => {
       cancelText: 'Cancel', // Android
       fallbackLabel: 'Show Passcode', // iOS (if empty, then label is hidden)
       unifiedErrors: false, // use unified error messages (default false)
-      passcodeFallback: false, 
+      passcodeFallback: false,
     }
-  
+
     if (faceId || fingerId) {
       TouchID.authenticate('To confirm Transaction', optionalConfigObject)
         .then((success: any) => {
@@ -269,7 +270,9 @@ const SetAmount = (props: any) => {
   }
 
   const handleTransfer = () => {
+    console.log('txnData.to:',txnData.to,parseInt(amount, 10),txnData.from?.address)
     if (txnData.from?.address && txnData.to && parseInt(amount, 10) > 0) {
+      console.log("Insided transaction")
       setLoader(true);
       confirmTxn();
     }

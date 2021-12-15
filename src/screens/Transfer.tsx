@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     width: widthPercentageToDP('90'),
     marginBottom: 20,
+    // paddingRight:20,
   },
   input: {
     fontFamily: 'Quicksand-Medium',
@@ -75,6 +76,13 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP('80'),
     color: '#000',
     paddingHorizontal: 20,
+  },
+  qrCodeImg: {
+    // backgroundColor: 'red',
+    height: 50,
+    width: 50,
+    marginTop:3,
+    marginLeft:-25,
   },
 });
 
@@ -124,6 +132,7 @@ const Transfer = (props: any) => {
 
   const handleValue = (value: string, key: string) => {
     setTxnData({ ...txnData, [key]: value });
+    console.log("TO:",value)
   };
 
   const handleSend = async () => {
@@ -179,9 +188,9 @@ const Transfer = (props: any) => {
             onChangeText={e => handleValue(e, 'to')}
             value={txnData.to}
           />
-          <Pressable onPress={() => navigate('QRScanner')}>
+          <Pressable onPress={() => navigate('QRScanner')} style={styles.qrCodeImg}>
             <Image
-              style={{ height: 30, width: 30, position: 'absolute' , right: 15, bottom: 15 }}
+              style={{ height: 30, width: 30, position: 'absolute' , right: 15, bottom: 10 }}
               source={require(QrcodeImage)}
             />
           </Pressable>
