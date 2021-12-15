@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   Pressable,
@@ -12,6 +12,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { useDispatch, useSelector } from 'react-redux';
 import { setSendTxnStatus } from '../redux/reducers/Wallet';
+import SplashScreen from "react-native-splash-screen";
+import TouchID from "react-native-touch-id";
 
 const CocoPinImage = '../../assets/images/Iconly_Curved_Passwordmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
@@ -43,13 +45,25 @@ const styles = StyleSheet.create({
   },
   backIcon: {
     marginLeft: 26,
+    visibility: 'visible',
     marginTop: 32,
+  },
+  loginTextbox: {
+    fontSize: 14,
+    color: '#bdbdbd',
+    textAlign: 'center',
+    fontFamily: 'Quicksand-Medium',
+    flexDirection: 'row',
+    alignSelf: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    marginTop: 10,
   },
   fornaxIcon: {
     // width:80,
     // height:80,
-    width:  hp(9),
-    height: hp(9),
+    // width:  hp(9),
+    // height: hp(9),
     marginBottom: 30,
   },
   fornaxInnerBox: {
@@ -57,7 +71,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('5'),
+    marginTop: hp('12'),
     marginBottom: hp('4'),
   },
   input: {
@@ -69,6 +83,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     fontSize: 16,
     width: 240,
+  },
+  loginText: {
+    fontSize: 14,
+    color: '#81c2ff',
+    fontFamily: 'Quicksand-Medium',
   },
   pinInput: {
     flexDirection: 'row',
@@ -115,14 +134,14 @@ const LoginPin = (props: any) => {
       sendTxnStatus: wallet?.sendTxnStatus,
     };
   });
-  
+
   const handlePin = (val: any) => {
     if(pin.length < 4) {
       hideMessage();
       setPin(pin + val);
     }
   };
-  
+
   const handleSetPin = async () => {
     if (pin && pin.length === 4) {
       const _pin = await AsyncStorage.getItem('loginPin')
@@ -139,7 +158,7 @@ const LoginPin = (props: any) => {
           });
         }
         return ;
-      } 
+      }
       if (_pin === pin) {
         hideMessage();
         await AsyncStorage.setItem('isLoginPinSet', pin);
@@ -171,13 +190,80 @@ const LoginPin = (props: any) => {
       });
     }
   };
-
+  const [biometryType, setBiometryType] = useState('');
+  const [nextScreen, setNextScreen] = useState('');
   const handleRemove = () => {
     setPin(pin.substring(0, pin.toString().length - 1))
   }
+  const optionalConfigObject = {
+    title: 'Fingerprint', // Android
+    imageColor: '#363853', // Android
+    imageErrorColor: '#ff0000', // Android
+    sensorDescription: 'Put your finger on the fingerprint scanner', // Android
+    sensorErrorDescription: 'Failed', // Android
+    cancelText: 'Cancel', // Android
+    fallbackLabel: 'Show Passcode', // iOS (if empty, then label is hidden)
+    unifiedErrors: false, // use unified error messages (default false)
+    passcodeFallback: false,
+  }
+  useEffect(() => {
+    TouchID.isSupported(optionalConfigObject)
+        .then(biometryType => {
+          setBiometryType(biometryType)
+          console.log("biometryType:", biometryType);
+        })
+        .catch(error => {
+          // Failure code
+          console.log(error);
+          setBiometryType('notfound')
+        });
+  }, [])
+  const handleNextScreen= async () => {
+    const registerUser = await AsyncStorage.getItem('registerUser');
+    const loginUser = await AsyncStorage.getItem('loginUser');
+    const faceId = await AsyncStorage.getItem('isfaceId');
+    const fingerId = await AsyncStorage.getItem('isfingerId');
+    const loginPin = await AsyncStorage.getItem('loginPin');
+    const isloginPin = await AsyncStorage.getItem('isLoginPinSet');
+    const accountList = await AsyncStorage.getItem('accountList');
+    if (loginPin !== null && biometryType && (faceId || fingerId)) {
+      TouchID.authenticate('Open your FornaxWallet', optionalConfigObject)
+          .then((success: any) => {
+            if (accountList === null) {
+              navigate('WalletSetup');
+              return;
+            }
+            if (registerUser && loginUser && accountList && (loginPin)) {
+              navigate('Dashboard');
+              return;
+            }
+            console.log(success, "success");
+          })
+          .catch((error: any) => {
+            console.log(error, "error");
+            if (loginPin) {
+              navigate('LoginPin');
+              return;
+            }else{
+              navigate('Login');
+              return;
+            }
+          });
+    }
+  }
+  useEffect(() => {
+    if (biometryType !== '') {
+      handleNextScreen();
+    }
+  }, [biometryType]);
 
   return (
     <>
+      {/*<View>*/}
+      {/*  <Pressable >*/}
+      {/*    <Image style={styles.backIcon} source={require(BackIcon)} />*/}
+      {/*  </Pressable>*/}
+      {/*</View>*/}
       <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(CocoPinImage)} />
         <Text style={styles.textStyle}>Enter Pin</Text>
@@ -269,6 +355,14 @@ const LoginPin = (props: any) => {
           style={[styles.button, styles.buttonClose]}>
           <Text style={styles.textStyle}>Verify PIN</Text>
         </Pressable>
+        <Text style={styles.loginTextbox}>
+          PIN forgot?
+          <Pressable
+              onPress={() => navigate('Login')}
+              style={{ paddingTop: 6 }}>
+            <Text style={styles.loginText}> Login</Text>
+          </Pressable>
+        </Text>
       </View>
     </>
   );
