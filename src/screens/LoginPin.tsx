@@ -226,7 +226,10 @@ const LoginPin = (props: any) => {
     const loginPin = await AsyncStorage.getItem('loginPin');
     const isloginPin = await AsyncStorage.getItem('isLoginPinSet');
     const accountList = await AsyncStorage.getItem('accountList');
-    if (loginPin !== null && biometryType && (faceId || fingerId)) {
+    console.log("faceId:", faceId);
+    console.log("fingerId:", fingerId);
+
+    if (loginPin !== null && biometryType && (faceId&&faceId==='true' || fingerId&&fingerId==='true')) {
       TouchID.authenticate('Open your FornaxWallet', optionalConfigObject)
           .then((success: any) => {
             if (accountList === null) {

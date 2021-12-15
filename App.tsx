@@ -76,17 +76,19 @@ const App = () => {
         const loginUser = await AsyncStorage.getItem('loginUser');
         const faceId = await AsyncStorage.getItem('isfaceId');
         const fingerId = await AsyncStorage.getItem('isfingerId');
+        const faceIdset = await AsyncStorage.getItem('isfaceIdset');
+        const fingerIdset = await AsyncStorage.getItem('isfingerIdset');
         const loginPin = await AsyncStorage.getItem('loginPin');
         const isloginPin = await AsyncStorage.getItem('isLoginPinSet');
         const accountList = await AsyncStorage.getItem('accountList');
         console.log("registerUser:", registerUser);
         console.log("loginUser:", loginUser);
-        console.log("faceId:", faceId);
-        console.log("fingerId:", fingerId);
+        console.log("faceIdset:", faceIdset);
+        console.log("fingerIdset:", fingerIdset);
         console.log("loginPin:", loginPin);
         console.log("isloginPin:", isloginPin);
         console.log("biometryType:", biometryType);
-        // console.log("accountList:", accountList);
+        console.log("accountList:", accountList);
 
         if (registerUser === null) {
             setInitRoute('Intro');
@@ -145,12 +147,17 @@ const App = () => {
     const removePin = async () => {
         await AsyncStorage.removeItem('isLoginPinSet');
     }
+    const removeAuthSet = async () => {
+        await AsyncStorage.removeItem('isfingerIdset');
+        await AsyncStorage.removeItem('isfaceIdset');
+    }
 
     useEffect(() => {
         const subscription = AppState.addEventListener("change", nextAppState => {
             console.log("Current state:", appState);
             if(appState.current.match(/unknown/)){
                 console.log("App restarted")
+                removeAuthSet().then()
             }
             if (
                 appState.current.match(/inactive|background/) &&

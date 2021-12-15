@@ -86,49 +86,41 @@ const Fingerprint = (props: any) => {
     const fingerIdset = await AsyncStorage.getItem('isfingerIdset');
     const loginPin = await AsyncStorage.getItem('loginPin');
 
-    console.log("biometryTypeBeforeScreen:", typeof biometryType);
-    let isTouchID= false;
-    if(biometryType && biometryType === true){
-      isTouchID = true;
-    }
-    console.log("isTouchID", isTouchID);
-    if(isTouchID){
-      console.log("Inside")
-      if (loginPin && biometryType) {
-        let response
-        try{
-          response = await TouchID.authenticate('Open your FornaxWallet', optionalConfigObject)
-        }catch (e) {
-          showMessage({
-            message: "Fingerprint Warning!",
-            description: "Fingerprint is not configured!",
-            type: "warning",
-          });
-        }
-        if(response){
-          console.log("LoginSetting")
-          await AsyncStorage.setItem('isfingerIdset','true')
-          if(fingerId&&fingerId==='true'){
-            await AsyncStorage.setItem('isfingerId','false')
-          }else{
-            await AsyncStorage.setItem('isfingerId','true')
-          }
-          navigate('LoginSetting');
-          return;
-        }else{
-
-        }
-      }
-    }
-    if(biometryType && biometryType !== true){
-      console.log("Showing Warning");
+    console.log("faceId:", faceId);
+    console.log("fingerIdset:", fingerIdset);
+    if(biometryType && biometryType !== 'TouchID'){
       showMessage({
         message: "Fingerprint Error",
         description: "Fingerprint is not supported in your device",
         type: "danger",
       });
     }
+    if (loginPin && biometryType && biometryType === 'TouchID') {
+      let response
+      try{
+        response = await TouchID.authenticate('Open your FornaxWallet', optionalConfigObject)
+      }catch (e) {
+        showMessage({
+          message: "Fingerprint Warning!",
+          description: "Fingerprint is not configured!",
+          type: "warning",
+        });
+      }
+      if(response){
+        console.log("LoginSetting")
+        await AsyncStorage.setItem('isfingerIdset','true')
+        if(fingerId&&fingerId==='true'){
+          await AsyncStorage.setItem('isfingerId','false')
+        }else{
+          await AsyncStorage.setItem('isfingerId','true')
+        }
+        navigate('LoginSetting');
+        return;
+      }else{
 
+      }
+    }else{
+    }
   }
   useEffect(() => {
     console.log("biometryType:",biometryType)
