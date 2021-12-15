@@ -131,8 +131,8 @@ const SetAmount = (props: any) => {
   });
 
   useEffect(() => {
-    const amt = sendTxnStatus.split('=')[2]
-    console.log(amt);
+    const amt = sendTxnStatus.split('=')[1]
+    amt && setAmount(amt);
   }, [sendTxnStatus])
 
   const storeDataAsync = async (account: any) => {
@@ -235,6 +235,10 @@ const SetAmount = (props: any) => {
   }, [accounts])
 
   const confirmTxn = async () => {
+    if (sendTxnStatus?.includes('done')) {
+      sendTxn();
+      return;
+    }
     const faceId = await AsyncStorage.getItem('isfaceId');
     const fingerId = await AsyncStorage.getItem('isfingerId');
     const isloginPin = await AsyncStorage.getItem('isLoginPinSet');

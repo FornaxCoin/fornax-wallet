@@ -146,11 +146,12 @@ const LoginPin = (props: any) => {
     if (pin && pin.length === 4) {
       const _pin = await AsyncStorage.getItem('loginPin')
       const accountList = await AsyncStorage.getItem('accountList');
-      if (sendTxnStatus && sendTxnStatus?.include('pin')) {
+      if (sendTxnStatus && sendTxnStatus?.includes('pin')) {
         if (_pin === pin) {
           dispatch(setSendTxnStatus(sendTxnStatus.replace('pin', 'done')));
           navigate('SetAmount')
         } else {
+          setPin('');
           showMessage({
             message: "Pin Failed!",
             description: "Please enter 4 digit valid Pin",
@@ -161,6 +162,7 @@ const LoginPin = (props: any) => {
       }
       if (_pin === pin) {
         hideMessage();
+        setPin('');
         await AsyncStorage.setItem('isLoginPinSet', pin);
         if (accountList === null) {
           navigate('WalletSetup');

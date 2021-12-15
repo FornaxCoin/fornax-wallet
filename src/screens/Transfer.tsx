@@ -128,6 +128,7 @@ const Transfer = (props: any) => {
 
   const handleSend = async () => {
     const isValid = await web3.utils.isAddress(txnData.to.toLowerCase().trim());
+    console.log(txnData.from?.address , isValid, "isvalidds");
     if (txnData.from?.address && isValid) {
       hideMessage();
       dispatch(setTxnsInfo(txnData));
@@ -179,7 +180,10 @@ const Transfer = (props: any) => {
             onChangeText={e => handleValue(e, 'to')}
             value={txnData.to}
           />
-          <Pressable onPress={() => navigate('QRScanner')}>
+          <Pressable onPress={() => { 
+              dispatch(setTxnsInfo(txnData));
+              navigate('QRScanner'); 
+            }}>
             <Image
               style={{ height: 30, width: 30, position: 'absolute' , right: 15, bottom: 15 }}
               source={require(QrcodeImage)}
