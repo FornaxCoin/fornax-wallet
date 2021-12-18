@@ -10,12 +10,14 @@ interface WalletState {
   txnResponse: any;
   defaultAddress: string;
   sendTxnStatus: string;
+  payTxn:any,
 }
 
 const initialState = {
   mnemonic: '',
   privateKey: '',
   ethAddress: '',
+  payTxn: null,
   web3: null,
   accounts: [],
   txnInfo: null,
@@ -28,6 +30,9 @@ const walletSlice = createSlice({
   name: 'wallet',
   initialState,
   reducers: {
+    setPayTxn(state, action){
+      state.payTxn = action.payload;
+    },
     setMnemonic(state, action) {
       state.mnemonic = action.payload;
     },
@@ -53,6 +58,7 @@ const walletSlice = createSlice({
     setSendTxnStatus(state, action) {
       state.sendTxnStatus = action.payload;
     },
+
   },
 });
 
@@ -64,6 +70,7 @@ export const {
   setTxnsInfo,
   setTxnsResponse,
   setDefaultAddress,
-  setSendTxnStatus
+  setSendTxnStatus,
+  setPayTxn,
 } = walletSlice.actions;
 export default walletSlice.reducer;

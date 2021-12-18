@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import WalletTabs from '../components/WalletTabs';
+import {setDefaultAddress} from "../redux/reducers/Wallet";
+import {useSelector} from "react-redux";
 const WalletImage = '../../assets/images/Walletmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 
@@ -53,6 +55,19 @@ const styles = StyleSheet.create({
 const Wallet = (props: any) => {
   const navigate = props.navigation.navigate;
 
+  const { accounts, web3 } = useSelector(({ wallet }: any) => {
+    return {
+      accounts: wallet?.accounts,
+      web3: wallet?.web3,
+    };
+  });
+  const [accountsCount, setAccountsCount] = useState(0);
+
+  useEffect(() => {
+    setAccountsCount(accounts.length);
+    // dispatch(setDefaultAddress(accounts[0]?.address || ''));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <View>
@@ -64,7 +79,7 @@ const Wallet = (props: any) => {
         <View style={styles.fornaxInnerBox}>
           <Image style={styles.fornaxIcon} source={require(WalletImage)} />
           <Text style={styles.textStyle}>Your Wallet</Text>
-          <Text style={styles.fornaxMiniText}>6 Accounts Connected</Text>
+          <Text style={styles.fornaxMiniText}> {(accountsCount)} Accounts Connected</Text>
         </View>
         <View style={styles.tabBox}>
           <WalletTabs />

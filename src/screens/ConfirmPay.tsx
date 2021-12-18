@@ -14,6 +14,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { showMessage, hideMessage } from "react-native-flash-message";
 
 const SendImage = '../../assets/images/transfer.png';
+const PayImage = '../../assets/images/pay.png';
 const QrcodeImage = '../../assets/images/COCO_Line_Menumini.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 // const DownArrow = '../../assets/images/Vector-arrow.png';
@@ -162,15 +163,15 @@ const Transfer = (props: any) => {
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('ConfirmPay')}>
+        <Pressable onPress={() => navigate('Dashboard')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>
       <View style={styles.fornaxInnerBox}>
-        <Image style={styles.fornaxIcon} source={require(SendImage)} />
-        <Text style={styles.textStyle}>Transfer</Text>
+        <Image style={styles.fornaxIcon} source={require(PayImage)} />
+        <Text style={styles.textStyle}>Confirm Pay</Text>
         <Text style={styles.fornaxMiniText}>
-          Import an existing wallet or create a new one
+          Confirm Payment by select Account to Pay Bills With
         </Text>
       </View>
       <View style={styles.fornaxBox}>
@@ -189,15 +190,6 @@ const Transfer = (props: any) => {
             onChangeText={e => handleValue(e, 'to')}
             value={txnData.to}
           />
-          <Pressable onPress={() => {
-            dispatch(setTxnsInfo(txnData));
-            navigate('QRScanner')
-          }} style={styles.qrCodeImg}>
-            <Image
-              style={{ height: 30, width: 30, position: 'absolute' , right: 15, bottom: 10 }}
-              source={require(QrcodeImage)}
-            />
-          </Pressable>
         </View>
       </View>
     </>
