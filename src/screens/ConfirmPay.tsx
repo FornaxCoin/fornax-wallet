@@ -104,7 +104,7 @@ const pickerSelectStyles = StyleSheet.create({
   },
 });
 
-const Transfer = (props: any) => {
+const ConfirmPay = (props: any) => {
   const dispatch = useDispatch();
   const navigate = props.navigation.navigate;
   const [accountOpt, setAccountOpt] = useState<any>([]);
@@ -196,4 +196,4 @@ const Transfer = (props: any) => {
   );
 };
 
-export default Transfer;
+export default ConfirmPay;

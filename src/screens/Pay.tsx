@@ -149,7 +149,6 @@ const Pay = (props: any) => {
                 to: data[0].split(':')[1],
                 value: data[1].split('=')[1],
             }
-
             console.log('payTxnData:', payTxnData);
             dispatch(setPayTxn({from: {...found}, data: payTxnData}));
             navigate('ConfirmPay');
