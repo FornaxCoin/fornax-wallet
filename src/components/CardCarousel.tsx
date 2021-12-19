@@ -99,7 +99,7 @@ const CardCarousel = (props: any) => {
         <Text style={styles.carouselText}>
           {(parseFloat(item?.balance) === 0.00 || parseFloat(item?.balance) === 0.0)
             ? 0
-            : parseFloat(item?.balance)?.toFixed(2)
+            : parseFloat(item?.balance)?.toFixed(6)
           }
         </Text>
         <Text

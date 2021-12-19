@@ -132,16 +132,14 @@ const SetAmount = (props: any) => {
 
     const afterPinSend = async (amt: any) => {
         setAmount(amt.toString());
-        console.log("\nFinal Amount:", amt,'length:', amt.length, typeof amt);
         if (amt && amt !== '' && amt !== undefined) {
             setLoader(true);
             await sendTxn(amt);
         }
     }
+  
     useEffect(() => {
-        const amt = sendTxnStatus.split('=')[0]
         const amt2 = sendTxnStatus.split('=')[1]
-        console.log(sendTxnStatus, "amount error", amt, amt2);
         if (sendTxnStatus.split('=')[0] === 'done') {
             afterPinSend(amt2);
         }

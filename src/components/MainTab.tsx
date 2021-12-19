@@ -119,11 +119,15 @@ const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any
             numberOfLines={1}
             ellipsizeMode="middle"
           >{getAccountName()}</Text>
-          <Text style={styles.descriptionText}>Income</Text>
+          {defaultAddress && defaultAddress.toLowerCase().trim() === item?.from.toLowerCase().trim() ? (
+            <Text style={styles.descriptionText}>Outcome</Text>          
+          ):(
+            <Text style={styles.descriptionText}>Income</Text>          
+          )}
         </View>
       </View>
       <View style={{ flexDirection: 'row', alignSelf: 'center', width: 120 }}>
-        {defaultAddress && defaultAddress === item?.from ? (
+        {defaultAddress && defaultAddress.toLowerCase().trim() === item?.from.toLowerCase().trim() ? (
           <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
         ):(
           <Text style={[styles.minusIcon, { color: '#52e34f' }]}>+</Text>
