@@ -301,6 +301,9 @@ const SetAmount = (props: any) => {
         if (isloginPin&&response===null) {
             dispatch(setSendTxnStatus('pin=' + amount))
             navigate('LoginPin')
+        }else{
+            await sendTxn('');
+            console.log("success");
         }
     }
 

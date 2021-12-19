@@ -129,7 +129,7 @@ const Pay = (props: any) => {
     const navigate = props.navigation.navigate;
     let scanner = useRef(null);
 
-    const {accounts, defaultAdress} = useSelector(({wallet}: any) => {
+    const {web3, accounts, defaultAdress} = useSelector(({wallet}: any) => {
         return {
             web3: wallet?.web3,
             accounts: wallet?.accounts,
@@ -145,9 +145,11 @@ const Pay = (props: any) => {
         const found = accounts.find((acc: any) => acc.address === defaultAdress);
         let data = e.data.split('?');
         if(data[0].split(':')[0]==='fornax'){
+            let value = data[1].split('=')[1];
+            console.log('value:', value,parseFloat(value), typeof value)
             let payTxnData = {
                 to: data[0].split(':')[1],
-                value: data[1].split('=')[1],
+                value: parseFloat(value),
             }
             console.log('payTxnData:', payTxnData);
             dispatch(setPayTxn({from: {...found}, data: payTxnData}));
