@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
 
 const ConfirmTransaction = (props: any) => {
   let viewShotRef =  useRef(null);
-  console.log(viewShotRef && viewShotRef.current)
+  // console.log(viewShotRef && viewShotRef.current)
 
   const navigate = props.navigation.navigate;
   const [timeStamp, setTimeStamp] = useState<any>(null);
@@ -163,7 +163,7 @@ const ConfirmTransaction = (props: any) => {
   });
 
   const getTimeStamp = async () => {
-    console.log("Response:", txnResponse);
+    // console.log("Response:", txnResponse);
     var _timeStamp = await web3?.eth?.getBlock(txnResponse.blockNumber)
       ?.timestamp;
     setTimeStamp({
@@ -181,7 +181,7 @@ const ConfirmTransaction = (props: any) => {
 
   const handleClipboard = async (hash: string) => {
     // Clipboard.setString(txnResponse);
-    console.log('txnResponse:',txnResponse);
+    // console.log('txnResponse:',txnResponse);
     let url=`https://watchfornax.com/transaction/${txnResponse?.transactionHash}`
     const supported = await Linking.canOpenURL(url);
 
@@ -199,7 +199,7 @@ const ConfirmTransaction = (props: any) => {
     // const viewShotRef =  useRef();
     try{
       let imageUrl = await viewShotRef.current.capture();
-      console.log('imageUrl',imageUrl)
+      // console.log('imageUrl',imageUrl)
       await Share.share({title: 'Receipt', url: imageUrl})
     }catch (e) {
 
@@ -210,6 +210,8 @@ const ConfirmTransaction = (props: any) => {
     //     await Share.share({title: 'Receipt', url: uri})
     //   })
   };
+
+  console.log(txnResponse,"txnRes");
 
   return (
     <>
@@ -266,7 +268,7 @@ const ConfirmTransaction = (props: any) => {
             </View>
             <View style={styles.footerBox}>
               <View style={styles.copyBox}>
-                <Pressable onPress={e=>handleClipboard('0xcff57f4a80ecf08fc1b7a787461e36adafa92933c28bc0ac81c7f8c43ac6c02d')}>
+                <Pressable onPress={e=>handleClipboard(txnResponse?.transactionHash)}>
                   <Image style={styles.bookmarkIcon} source={require(Bookmark)} />
                 </Pressable>
               </View>

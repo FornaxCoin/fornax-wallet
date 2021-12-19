@@ -151,7 +151,7 @@ const ImportCard = (props: any) => {
             type: "info",
           });
         } else {
-          if (privateKey.toString().trim().length === 64) {
+          if (privateKey.toString().trim().length === 64 || (privateKey.includes('0x') && privateKey.toString().trim().length === 66)) {
             const account = await web3.eth.accounts.privateKeyToAccount(
               privateKey.trim(),
               [ignoreLength],

@@ -150,6 +150,7 @@ const LoginPin = (props: any) => {
       if (sendTxnStatus && sendTxnStatus?.includes('pin')) {
         if (_pin === pin) {
           dispatch(setSendTxnStatus(sendTxnStatus.replace('pin', 'done')));
+          setPin('');
           navigate('SetAmount')
         } else {
           showMessage({
@@ -164,9 +165,11 @@ const LoginPin = (props: any) => {
         hideMessage();
         await AsyncStorage.setItem('isLoginPinSet', pin);
         if (accountList === null) {
+          setPin('');
           navigate('WalletSetup');
           return;
         }
+        setPin('');
         navigate('Dashboard')
       } else {
         showMessage({
@@ -209,15 +212,15 @@ const LoginPin = (props: any) => {
   }
   useEffect(() => {
     TouchID.isSupported(optionalConfigObject)
-        .then(biometryType => {
-          setBiometryType(biometryType)
-          console.log("biometryType:", biometryType);
-        })
-        .catch(error => {
-          // Failure code
-          console.log(error);
-          setBiometryType('notfound')
-        });
+      .then(biometryType => {
+        setBiometryType(biometryType)
+        console.log("biometryType:", biometryType);
+      })
+      .catch(error => {
+        // Failure code
+        console.log(error);
+        setBiometryType('notfound')
+      });
   }, [])
   const handleNextScreen= async () => {
     const registerUser = await AsyncStorage.getItem('registerUser');
@@ -232,27 +235,27 @@ const LoginPin = (props: any) => {
 
     if (loginPin !== null && biometryType && (faceId&&faceId==='true' || fingerId&&fingerId==='true')) {
       TouchID.authenticate('Open your FornaxWallet', optionalConfigObject)
-          .then((success: any) => {
-            if (accountList === null) {
-              navigate('WalletSetup');
-              return;
-            }
-            if (registerUser && loginUser && accountList && (loginPin)) {
-              navigate('Dashboard');
-              return;
-            }
-            console.log(success, "success");
-          })
-          .catch((error: any) => {
-            console.log(error, "error");
-            if (loginPin) {
-              navigate('LoginPin');
-              return;
-            }else{
-              navigate('Login');
-              return;
-            }
-          });
+        .then((success: any) => {
+          if (accountList === null) {
+            navigate('WalletSetup');
+            return;
+          }
+          if (registerUser && loginUser && accountList && (loginPin)) {
+            navigate('Dashboard');
+            return;
+          }
+          console.log(success, "success");
+        })
+        .catch((error: any) => {
+          console.log(error, "error");
+          if (loginPin) {
+            navigate('LoginPin');
+            return;
+          }else{
+            navigate('Login');
+            return;
+          }
+        });
     }
   }
   useEffect(() => {
