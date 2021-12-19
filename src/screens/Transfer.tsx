@@ -162,7 +162,7 @@ const Transfer = (props: any) => {
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('ConfirmPay')}>
+        <Pressable onPress={() => navigate('Dashboard')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>
