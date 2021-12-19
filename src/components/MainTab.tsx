@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   View,
   useWindowDimensions,
   Text,
   StyleSheet,
   FlatList,
+  Linking,
+  Pressable,
 } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import {
@@ -103,6 +105,20 @@ const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any
       return item?.to;
     }
   }
+  
+  const handlePress = async (hash: any) => {
+    // Checking if the link is supported for links with custom URL scheme.
+    const url = `https://watchfornax.com/transaction/${hash}`
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(url);
+    } else {
+      console.log(`Don't know how to open this URL: ${url}`);
+    }
+  };
 
   return (
     <View
@@ -111,29 +127,31 @@ const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any
         justifyContent: 'space-between',
         marginBottom: 20,
       }}>
-      <View style={{ flexDirection: 'row' }}>
-        <View style={[styles.roundIcon, { backgroundColor: '#4368c7' }]} />
-        <View>
-          <Text 
-            style={styles.symbolText}
-            numberOfLines={1}
-            ellipsizeMode="middle"
-          >{getAccountName()}</Text>
-          {defaultAddress && defaultAddress.toLowerCase().trim() === item?.from.toLowerCase().trim() ? (
-            <Text style={styles.descriptionText}>Outcome</Text>          
-          ):(
-            <Text style={styles.descriptionText}>Income</Text>          
-          )}
+      <Pressable style={{ flexDirection: 'row' }} onPress={() => handlePress(item?.transactionHash)}>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={[styles.roundIcon, { backgroundColor: '#4368c7' }]} />
+          <View>
+            <Text 
+              style={styles.symbolText}
+              numberOfLines={1}
+              ellipsizeMode="middle"
+            >{getAccountName()}</Text>
+            {defaultAddress && defaultAddress.toLowerCase().trim() === item?.from.toLowerCase().trim() ? (
+              <Text style={styles.descriptionText}>Outcome</Text>          
+            ):(
+              <Text style={styles.descriptionText}>Income</Text>          
+            )}
+          </View>
         </View>
-      </View>
-      <View style={{ flexDirection: 'row', alignSelf: 'center', width: 120 }}>
-        {defaultAddress && defaultAddress.toLowerCase().trim() === item?.from.toLowerCase().trim() ? (
-          <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
-        ):(
-          <Text style={[styles.minusIcon, { color: '#52e34f' }]}>+</Text>
-        )}
-        <Text style={styles.amountText}> $ {web3 && parseFloat(web3?.utils?.fromWei(item.value)).toFixed(2)}</Text>
-      </View>
+        <View style={{ flexDirection: 'row', alignSelf: 'center', width: 120 }}>
+          {defaultAddress && defaultAddress.toLowerCase().trim() === item?.from.toLowerCase().trim() ? (
+            <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
+          ):(
+            <Text style={[styles.minusIcon, { color: '#52e34f' }]}>+</Text>
+          )}
+          <Text style={styles.amountText}> $ {web3 && parseFloat(web3?.utils?.fromWei(item.value)).toFixed(2)}</Text>
+        </View>
+      </Pressable>
     </View>
   );
 };
