@@ -183,7 +183,7 @@ const Dashboard = (props: any) => {
         <Text style={styles.fornaxText}>Dashboard</Text>
         {!loader && (
           <>
-            {/*<ScrollView style={styles.innerContainer}>*/}
+            <ScrollView style={styles.innerContainer}>
               <View style={styles.cardCarousel}>
                 <CardCarousel navigate={navigate} />
               </View>
@@ -193,7 +193,7 @@ const Dashboard = (props: any) => {
               <View style={styles.extrahight}>
 
               </View>
-            {/*</ScrollView>*/}
+            </ScrollView>
             <View style={styles.colco}>
               <View style={styles.navTabBox}>
                 <NavTab navigate={navigate} />
