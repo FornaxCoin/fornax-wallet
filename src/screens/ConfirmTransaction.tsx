@@ -30,13 +30,17 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
   backIcon: {
-    marginLeft: 26,
-    marginTop: 32,
+    marginLeft: wp(6.3),
+    marginTop: hp(3.7),
+    // resizeMode:'contain',
+    height:hp(3),
+    width:hp(3),
   },
   fornaxIcon: {
-    // width:  hp(9),
-    // height: hp(9),
-    marginBottom: 30,
+    resizeMode: 'contain',
+    width:  hp(10),
+    height: hp(10),
+    marginBottom: hp(5.5),
   },
   fornaxInnerBox: {
     flex: 0,
@@ -47,7 +51,7 @@ const styles = StyleSheet.create({
     marginBottom: hp('4'),
   },
   txnDetailBox: {
-    paddingVertical: wp('8'),
+    paddingVertical: wp('4'),
     paddingHorizontal: hp('5'),
     backgroundColor: '#ffffff',
     width: wp('90'),
@@ -65,16 +69,17 @@ const styles = StyleSheet.create({
   divider: {
     height: 2,
     backgroundColor: '#e0e0e0',
-    marginTop: 25,
-    marginBottom: 10,
+    marginTop: hp(2),
+    marginBottom: 0,
   },
   detailSection: {
     paddingVertical: 10,
   },
   detailrow: {
+    // backgroundColor:'red',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 10,
+    marginVertical: hp(1/500)-hp(4/0.65-hp(1)),
   },
   detailText: {
     color: '#828282',
@@ -84,7 +89,7 @@ const styles = StyleSheet.create({
     color: '#363853',
     textAlign: 'center',
     fontFamily: 'Quicksand-Bold',
-    fontSize: 28,
+    fontSize: 24,
     marginBottom: 5,
   },
   sentText: {
@@ -98,14 +103,14 @@ const styles = StyleSheet.create({
   },
   footerBox: {
     position: 'absolute',
-    bottom: -35,
-    right: 30,
+    bottom: -hp(3),
+    right: wp(6),
     flexDirection: 'row',
   },
   copyBox: {
-    width: wp('17'),
-    height: hp('8'),
-    borderRadius: 50,
+    width: hp('7.1'),
+    height: hp('7.1'),
+    borderRadius: hp(5),
     backgroundColor: '#ffffff',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -121,9 +126,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   sendBox: {
-    width: wp('17'),
-    height: hp('8'),
-    borderRadius: 50,
+    width: hp('7.1'),
+    height: hp('7.1'),
+    borderRadius: hp(5),
     backgroundColor: '#363853',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -138,11 +143,15 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   boxIcon: {
-    height: 27,
+    height: hp(2.2),
+    width:hp(2.2),
+    resizeMode: 'contain',
     alignSelf: 'center',
   },
   bookmarkIcon: {
-    height: 27,
+    height: hp(2.2),
+    width:hp(2.2),
+    resizeMode: 'contain',
     alignSelf: 'center',
   },
 });

@@ -7,7 +7,11 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { heightPercentageToDP as hp, widthPercentageToDP } from 'react-native-responsive-screen';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+  widthPercentageToDP
+} from 'react-native-responsive-screen';
 import { setTxnsInfo } from '../redux/reducers/Wallet';
 import { useDispatch, useSelector } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
@@ -24,34 +28,39 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    // maxWidth:wp(76),
+    // backgroundColor: 'red',
   },
   textStyle: {
-    fontSize: 20,
-    color: '#ffffff',
+    fontSize: 24,
+    color: '#b27f29',
     lineHeight: 23,
     fontFamily: 'Quicksand-Bold',
     textAlign: 'center',
   },
   backIcon: {
-    marginLeft: 26,
-    marginTop: 32,
+    marginLeft: wp(6.3),
+    marginTop: hp(3.7),
+    // resizeMode:'contain',
+    height:hp(3),
+    width:hp(3),
   },
   fornaxIcon: {
-    // width:80,
-    // height:80,
-    // width:  hp(9),
-    // height: hp(9),
-    marginBottom: 30,
+    resizeMode: 'contain',
+    width:  hp(10.3),
+    height: hp(10.3),
+    marginBottom: hp(5.5),
   },
   fornaxInnerBox: {
     flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('5'),
+    marginTop: hp('12'),
     marginBottom: hp('4'),
   },
   fornaxMiniText: {
+    width:wp(76),
     fontSize: 16,
     color: '#bdbdbd',
     textAlign: 'center',
@@ -66,14 +75,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     color: '#bdbdbd',
     fontSize: 16,
-    width: widthPercentageToDP('90'),
+    width:wp(76),
     marginBottom: 20,
     // paddingRight:20,
   },
   input: {
     fontFamily: 'Quicksand-Medium',
     fontSize: 16,
-    width: widthPercentageToDP('80'),
+    width:wp(76),
     color: '#000',
     paddingHorizontal: 20,
   },
@@ -88,14 +97,14 @@ const styles = StyleSheet.create({
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    width: widthPercentageToDP('110'),
+    width:wp(76),
     fontSize: 16,
     color: '#000',
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
   inputAndroid: {
-    width: widthPercentageToDP('110'),
+    width: wp(76),
     fontSize: 16,
     color: '#000',
     paddingHorizontal: 20,
@@ -194,7 +203,7 @@ const Transfer = (props: any) => {
             navigate('QRScanner')
           }} style={styles.qrCodeImg}>
             <Image
-              style={{ height: 30, width: 30, position: 'absolute' , right: 15, bottom: 10 }}
+              style={{ height: 30, width: 30, position: 'absolute' , right: 35, bottom: 10 }}
               source={require(QrcodeImage)}
             />
           </Pressable>

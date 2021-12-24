@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import WalletTabs from "../components/WalletTabs";
 import SuggestionTabs from "../components/SuggestionTabs";
 const CocoLineMessageImage = '../../assets/images/COCO_Line_Message.png';
@@ -21,25 +21,31 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   backIcon: {
-    marginLeft: 26,
-    marginTop: 32,
+    marginLeft: wp(6.3),
+    marginTop: hp(3.7),
+    // resizeMode:'contain',
+    height:hp(3),
+    width:hp(3),
   },
   fornaxIcon: {
-    // width:  hp(9),
-    // height: hp(9),
-    marginBottom: 30,
+    resizeMode: 'contain',
+    width:  hp(6.5),
+    height: hp(6.5),
+    marginBottom: hp(5.5),
   },
   fornaxInnerBox: {
     flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('5'),
+    marginTop: hp('12'),
     marginBottom: hp('4'),
   },
   tabBox: {
-    height: 410,
-    marginBottom: 30,
+    // backgroundColor:'red',
+    height: hp(55),
+    // width: wp(89.4),
+    // marginBottom: 30,
   },
 });
 
@@ -49,7 +55,7 @@ const CriticsSuggestion = (props: any) => {
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('Settings')}>
+        <Pressable onPress={() => navigate('ServiceCenter')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>

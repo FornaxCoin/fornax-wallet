@@ -7,7 +7,7 @@ import {
     TextInput,
     View,
 } from 'react-native';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setAccounts, setSendTxnStatus, setTxnsInfo, setTxnsResponse} from '../redux/reducers/Wallet';
@@ -27,12 +27,13 @@ const styles = StyleSheet.create({
     },
     buttonClose: {
         backgroundColor: '#b27f29',
-        width: 240,
+        width: wp(49.3),
+        height:hp(6.6),
         alignSelf: 'center',
+        justifyContent:'center',
     },
     button: {
-        borderRadius: 20,
-        paddingVertical: 18,
+        borderRadius: hp(2.4),
     },
     textStyle: {
         fontSize: 20,
@@ -42,11 +43,17 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     backIcon: {
-        marginLeft: 26,
-        marginTop: 32,
+        marginLeft: wp(6.3),
+        marginTop: hp(3.7),
+        // resizeMode:'contain',
+        height:hp(3),
+        width:hp(3),
     },
     fornaxIcon: {
-        marginBottom: 44,
+        resizeMode: 'contain',
+        width:  hp(6.5),
+        height: hp(6.5),
+        marginBottom: hp(5.5),
     },
     fornaxInnerBox: {
         flex: 0,
@@ -65,7 +72,7 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         paddingHorizontal: 10,
         fontSize: 16,
-        width: 240,
+        width: wp(58),
     },
     pinInput: {
         flexDirection: 'row',
@@ -74,9 +81,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     NumPad: {
-        width: 240,
+        width: wp(58),
         marginTop: 20,
-        marginBottom: 30,
+        marginBottom: hp(3),
     },
     NumRow: {
         flexDirection: 'row',
@@ -88,7 +95,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     num: {
-        paddingVertical: 20,
+        paddingVertical: hp(1.8),
     },
     crossIcon: {
         flexDirection: 'column',
@@ -137,7 +144,7 @@ const SetAmount = (props: any) => {
             await sendTxn(amt);
         }
     }
-  
+
     useEffect(() => {
         const amt2 = sendTxnStatus.split('=')[1]
         if (sendTxnStatus.split('=')[0] === 'done') {

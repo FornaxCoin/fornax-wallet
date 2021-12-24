@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import {
-  // heightPercentageToDP as hp,
+  heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Quicksand-Medium',
     color: 'white',
     fontSize: 28,
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingTop: 0,
+    paddingBottom: 0,
     textAlign: 'center',
   },
   scrollTable: {
@@ -67,34 +67,38 @@ const styles = StyleSheet.create({
   bankBox: {
     backgroundColor: '#ffffff',
     borderRadius: 20,
-    width: wp('80'),
+    height:hp(7.9),
+    width: wp(67.6),
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems:'center',
     paddingHorizontal: 10,
     paddingVertical: 10,
   },
   roundBox: {
-    height: 50,
-    width: 50,
-    borderRadius: 20,
+    height: hp(4.4),
+    width:  hp(4.4),
+    borderRadius: hp(1.9),
     marginLeft: 5,
     marginRight: 15,
   },
   downIconBorder: {
-    width: 25,
-    height: 25,
-    borderColor: '#363853',
-    borderWidth: 2,
-    borderRadius: 10,
+    width: hp(2.2),
+    height: hp(2.2),
+    // borderColor: '#363853',
+    // borderWidth: 2,
+    // borderRadius: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 10,
+    // marginTop: 10,
     marginRight: 15,
   },
   downIcon: {
-    height: 5,
+    width: hp(2.2),
+    height: hp(2.2),
+    resizeMode:'contain',
   },
   extrahight: {
     height:100,
@@ -106,12 +110,12 @@ const FirstRoute = () => (
     <View style={{ flex: 1, backgroundColor: 'transparent' }}>
       <View
         style={{
-          marginTop: 30,
-          marginBottom: 20,
+          marginTop: hp(3),
+          marginBottom: 0,
         }}>
         <Text style={styles.amountText}>FRX 830.164</Text>
         <Text style={styles.descriptionText}>This Month</Text>
-        <View style={{ marginTop: 10 }}>
+        <View style={{ marginTop: 10, justifyContent:'center',alignItems: 'center',}}>
           <View style={styles.bankBox}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={[styles.roundBox, { backgroundColor: '#4368c7' }]} />
@@ -139,9 +143,7 @@ const FirstRoute = () => (
               <Image source={require(DownArrowImg)} style={styles.downIcon} />
             </View>
           </View>
-          <View style={styles.extrahight}>
-
-          </View>
+          <View style={styles.extrahight}/>
         </View>
       </View>
     </View>

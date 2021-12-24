@@ -10,6 +10,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { validateEmail } from '../utils/common';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 const EyeSlashImg = '../../assets/images/Eye-slashmini.png';
 
 const styles = StyleSheet.create({
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     flexDirection: 'column',
-    maxWidth: 360,
+    maxWidth: wp(72),
   },
   createAccText: {
     fontSize: 22,
@@ -28,8 +29,10 @@ const styles = StyleSheet.create({
     lineHeight: 35,
   },
   inputBox: {
+    flex:0,
     flexDirection: 'row',
-    marginVertical: 13,
+    marginVertical: hp(2),
+    justifyContent:'space-between',
     alignContent: 'center',
     alignItems: 'center',
   },
@@ -48,7 +51,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     paddingHorizontal: 10,
     fontSize: 16,
-    width: 200,
+    width: wp(40.2),
     marginLeft: 30,
   },
   loginTextbox: {
@@ -70,14 +73,14 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: '#b27f29',
-    width: 240,
+    width: wp(58),
     alignSelf: 'center',
-    marginTop: 50,
-    marginBottom: 10,
+    marginTop: 25,
+    height: hp(7.3),
+    justifyContent: 'center',
   },
   button: {
-    borderRadius: 20,
-    paddingVertical: 20,
+    borderRadius: hp(2.4),
   },
   textStyle: {
     fontSize: 20,
@@ -120,6 +123,12 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     fontFamily: 'Quicksand-Bold',
     textAlign: 'center',
+  },
+  pinEye: {
+    height:hp(2),
+    width: hp(2),
+    resizeMode: 'contain',
+    // marginLeft: -10,
   },
 });
 
@@ -171,7 +180,7 @@ const Login = (props: any) => {
       console.log('Login Error', err);
     }
   };
-  
+
   const onBlurEmail = () => {
     if(!validateEmail(user.email)) {
       showMessage({
@@ -211,8 +220,8 @@ const Login = (props: any) => {
             onChangeText={e => setUser({ ...user, password: e })}
             value={user.password}
           />
-          <Pressable onPress={() => setShowPass(!showPass)} style={{ marginBottom: 20, marginRight: 10 }}>
-            <Image source={require(EyeSlashImg)} style={{ width: 20, position: 'absolute', right: 0 }} />
+          <Pressable onPress={() => setShowPass(!showPass)} style={{ position: 'absolute', right: 0 }}>
+            <Image source={require(EyeSlashImg)} style={styles.pinEye} />
           </Pressable>
         </View>
         <Pressable

@@ -1,14 +1,15 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 165,
+    // justifyContent: 'center',
+    marginTop:hp(40),
   },
   fornaxText: {
     fontSize: 48,
@@ -21,17 +22,18 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     textAlign: 'center',
     fontFamily: 'Quicksand-Medium',
-    marginTop: 4,
+    marginTop: 0,
   },
   buttonClose: {
     backgroundColor: '#b27f29',
-    width: 240,
+    width: wp(58),
     alignSelf: 'center',
-    marginTop: 185,
+    marginTop: hp(28),
+    height: hp(7.3),
+    justifyContent: 'center',
   },
   button: {
-    borderRadius: 20,
-    paddingVertical: 18,
+    borderRadius: hp(2.4),
   },
   textStyle: {
     fontSize: 20,

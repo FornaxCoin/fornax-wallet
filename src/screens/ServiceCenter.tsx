@@ -1,6 +1,6 @@
 import React from 'react';
 import {Alert, Button, Image, Linking, Pressable, StyleSheet, Text, View} from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 const CocoLineCallImage = '../../assets/images/COCO_Line_Call.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const CriticsIcon = '../../assets/images/critics.png';
@@ -23,15 +23,17 @@ const styles = StyleSheet.create({
     marginTop: -5,
   },
   buttonClose: {
+    // backgroundColor:'red',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    width: 240,
+    width: wp(65.5),
     alignSelf: 'center',
-    marginBottom: 43,
+    marginBottom: hp(5.5),
+    height:hp(2.6),
   },
   button: {
-    borderRadius: 20,
+    borderRadius: 0,
     paddingVertical: 0,
   },
   textStyle: {
@@ -42,8 +44,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   backIcon: {
-    marginLeft: 26,
-    marginTop: 32,
+    marginLeft: wp(6.3),
+    marginTop: hp(3.7),
+    // resizeMode:'contain',
+    height:hp(3),
+    width:hp(3),
   },
   arrowRightIcon: {
     flex: 1,
@@ -53,20 +58,28 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   fornaxIcon: {
-    // width:80,
-    // height:80,
-    // width:  hp(9),
-    // height: hp(9),
-    marginBottom: 30,
+    resizeMode: 'contain',
+    width:  hp(6.5),
+    height: hp(6.5),
+    marginBottom: hp(5.5),
   },
   fornaxInnerBox: {
     flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('5'),
+    marginTop: hp('12'),
     marginBottom: hp('4'),
   },
+  innerIcons:{
+    height:hp(2.6),
+    width: wp(5.8),
+    resizeMode: 'contain',
+  },
+  arrowIcon:{
+    height:hp(1),
+    resizeMode: 'contain',
+  }
 });
 
 const ServiceCenter = (props: any) => {
@@ -99,25 +112,25 @@ const ServiceCenter = (props: any) => {
         <Pressable
           onPress={() => navigate('CriticsSuggestion')}
           style={[styles.button, styles.buttonClose]}>
-          <Image source={require(CriticsIcon)} />
+          <Image source={require(CriticsIcon)} style={styles.innerIcons}/>
           <Text style={styles.txnText}>Critics & Suggestions</Text>
           <View style={styles.arrowRightIcon}>
-            <Image source={require(ArrowRightIcon)} />
+            <Image source={require(ArrowRightIcon)} style={styles.arrowIcon}/>
           </View>
         </Pressable>
         <Pressable
           onPress={() => navigate('SocialMedia')}
           style={[styles.button, styles.buttonClose]}>
-          <Image source={require(InstagramIcon)} />
+          <Image source={require(InstagramIcon)} style={styles.innerIcons}/>
           <Text style={styles.txnText}>Social Media</Text>
           <View style={styles.arrowRightIcon}>
-            <Image source={require(ArrowRightIcon)} />
+            <Image source={require(ArrowRightIcon)} style={styles.arrowIcon}/>
           </View>
         </Pressable>
         <Pressable
             onPress={() => handlePress('mailto:info@fornaxcoin.com')}
           style={[styles.button, styles.buttonClose]}>
-          <Image source={require(CallingIcon)} />
+          <Image source={require(CallingIcon)} style={styles.innerIcons}/>
           <Text style={styles.txnText}>Support</Text>
           {/*<View style={styles.arrowRightIcon}>*/}
           {/*  <Image source={require(ArrowRightIcon)} />*/}

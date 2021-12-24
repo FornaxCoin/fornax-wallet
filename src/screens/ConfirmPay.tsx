@@ -7,7 +7,7 @@ import {
     TextInput,
     View,
 } from 'react-native';
-import {heightPercentageToDP as hp, widthPercentageToDP} from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {setAccounts, setPayTxn, setTxnsInfo, setTxnsResponse} from '../redux/reducers/Wallet';
 import {useDispatch, useSelector} from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
@@ -37,18 +37,20 @@ const styles = StyleSheet.create({
     },
     text: {
         marginBottom: 15,
-        width: widthPercentageToDP('90'),
+        width: wp('90'),
     },
     backIcon: {
-        marginLeft: 26,
-        marginTop: 32,
+        marginLeft: wp(6.3),
+        marginTop: hp(3.7),
+        // resizeMode:'contain',
+        height:hp(3),
+        width:hp(3),
     },
     fornaxIcon: {
-        // width:80,
-        // height:80,
-        // width:  hp(9),
-        // height: hp(9),
-        marginBottom: 30,
+        resizeMode: 'contain',
+        width:  hp(6.5),
+        height: hp(6.5),
+        marginBottom: hp(5.5),
     },
     fornaxInnerBox: {
         flex: 0,
@@ -63,7 +65,7 @@ const styles = StyleSheet.create({
         color: '#bdbdbd',
         textAlign: 'center',
         fontFamily: 'Quicksand-Medium',
-        width: widthPercentageToDP(80),
+        width: wp(80),
     },
     inputBox: {
         flexDirection: 'row',
@@ -74,14 +76,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         color: '#bdbdbd',
         fontSize: 16,
-        width: widthPercentageToDP('90'),
+        width: wp('90'),
         marginBottom: 20,
         // paddingRight:20,
     },
     input: {
         fontFamily: 'Quicksand-Medium',
         fontSize: 16,
-        width: widthPercentageToDP('90'),
+        width: wp('90'),
         color: '#000',
         paddingHorizontal: 20,
     },
@@ -119,14 +121,14 @@ const styles = StyleSheet.create({
 
 const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
-        width: widthPercentageToDP('110'),
+        width: wp('110'),
         fontSize: 16,
         color: '#000',
         paddingHorizontal: 20,
         paddingVertical: 20,
     },
     inputAndroid: {
-        width: widthPercentageToDP('110'),
+        width: wp('110'),
         fontSize: 16,
         color: '#000',
         paddingHorizontal: 20,

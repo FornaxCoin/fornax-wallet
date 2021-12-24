@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {Image, Pressable, Linking, StyleSheet, Text, View, Alert, Button} from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 const FacebookImage = '../../assets/images/facebook.png';
 const CocoLineInstaImage = '../../assets/images/COCO_Line_Instagrammaga.png';
 const TwitterImage = '../../assets/images/twitter.png';
@@ -26,12 +26,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    width: 240,
+    width: wp(65.5),
     alignSelf: 'center',
-    marginBottom: 43,
+    marginBottom: hp(5.5),
+    height:hp(2.6),
   },
   button: {
-    borderRadius: 20,
+    borderRadius: 0,
     paddingVertical: 0,
   },
   textStyle: {
@@ -42,8 +43,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   backIcon: {
-    marginLeft: 26,
-    marginTop: 32,
+    marginLeft: wp(6.3),
+    marginTop: hp(3.7),
+    // resizeMode:'contain',
+    height:hp(3),
+    width:hp(3),
   },
   arrowRightIcon: {
     flex: 1,
@@ -53,20 +57,28 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   fornaxIcon: {
-    // width:80,
-    // height:80,
-    // width:  hp(9),
-    // height: hp(9),
-    marginBottom: 30,
+    resizeMode: 'contain',
+    width:  hp(6.5),
+    height: hp(6.5),
+    marginBottom: hp(5.5),
   },
   fornaxInnerBox: {
     flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('5'),
+    marginTop: hp('12'),
     marginBottom: hp('4'),
   },
+  innerIcons:{
+    height:hp(2.6),
+    width: wp(5.8),
+    resizeMode: 'contain',
+  },
+  arrowIcon:{
+    height:hp(1),
+    resizeMode: 'contain',
+  }
 });
 
 
@@ -99,28 +111,28 @@ const SocialMedia = (props: any) => {
         <Pressable
             onPress={() => handlePress('https://www.facebook.com/fornaxcoin')}
           style={[styles.button, styles.buttonClose]}>
-          <Image source={require(FacebookImage)} />
+          <Image source={require(FacebookImage)} style={styles.innerIcons}/>
           <Text style={styles.txnText}>Facebook</Text>
           <View style={styles.arrowRightIcon}>
-            <Image source={require(ArrowRightIcon)} />
+            <Image source={require(ArrowRightIcon)} style={styles.arrowIcon}/>
           </View>
         </Pressable>
         <Pressable
             onPress={() => handlePress('https://twitter.com/FornaxCoin')}
           style={[styles.button, styles.buttonClose]}>
-          <Image source={require(TwitterImage)} />
+          <Image source={require(TwitterImage)} style={styles.innerIcons}/>
           <Text style={styles.txnText}>Twitter</Text>
           <View style={styles.arrowRightIcon}>
-            <Image source={require(ArrowRightIcon)} />
+            <Image source={require(ArrowRightIcon)} style={styles.arrowIcon}/>
           </View>
         </Pressable>
         <Pressable
             onPress={() => handlePress('https://www.instagram.com/fornaxcoin/')}
           style={[styles.button, styles.buttonClose]}>
-          <Image source={require(InstagramImage)} />
+          <Image source={require(InstagramImage)} style={styles.innerIcons}/>
           <Text style={styles.txnText}>Instagram</Text>
           <View style={styles.arrowRightIcon}>
-            <Image source={require(ArrowRightIcon)} />
+            <Image source={require(ArrowRightIcon)} style={styles.arrowIcon}/>
           </View>
         </Pressable>
         {/*<OpenURLButton url={supportedURL}>Open Supported URL</OpenURLButton>*/}

@@ -11,11 +11,12 @@ import {showMessage} from "react-native-flash-message";
 
 const PayImage = '../../assets/images/pay.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-const qrCodeWidth = hp('34');
+const qrCodeWidth = hp('26');
 const styles = StyleSheet.create({
     fornaxBox: {
-        flex: 0,
+        flex: 1,
         flexDirection: 'column',
+        alignItems: 'center',
         justifyContent: 'flex-start',
     },
     textStyle: {
@@ -26,16 +27,17 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     backIcon: {
-        marginLeft: 26,
-        marginTop: 32,
+        marginLeft: wp(6.3),
+        marginTop: hp(3.7),
+        // resizeMode:'contain',
+        height:hp(3),
+        width:hp(3),
     },
     fornaxIcon: {
-        // width:80,
-        // height:80,
-        // width:  hp(9),
-        // height: hp(9),
-        // marginBottom: 30,
-        marginBottom: hp(3),
+        resizeMode: 'contain',
+        width:  hp(10.3),
+        height: hp(10.3),
+        marginBottom: hp(5.5),
     },
     fornaxInnerBox: {
         flex: 0,

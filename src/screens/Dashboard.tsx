@@ -18,8 +18,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     // justifyContent: 'space-between',
-    marginTop: 30,
-    marginHorizontal: 20,
+    // marginTop: 30,
+    marginTop: hp(3.3),
+    // marginHorizontal: 20,
+    marginHorizontal: wp(5.3),
     zIndex: 0,
   },
   navBar: {
@@ -29,32 +31,44 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   bellImg: {
-    width: 24,
-    height: 26,
-    marginHorizontal: 27,
+    // width: 24,
+    // height: 26,
+    // marginHorizontal: 27,
+    width: hp(3.3),
+    resizeMode:'contain',
+    height: hp(3.3),
+    marginHorizontal: wp(5.3),
   },
   settingImg: {
-    width: 26,
-    height: 26,
+    // width: 25,
+    resizeMode:'contain',
+
+    width: hp(3.3),
+    // height: 26,
+    height: hp(3.3),
   },
   fornaxText: {
-    fontSize: 28,
+    // fontSize: 28,
+    fontSize: hp(3.3),
     color: '#b27f29',
     textAlign: 'left',
     fontFamily: 'Quicksand-Bold',
-    marginTop: 5,
-    marginBottom: 5,
+    // marginTop: 5,
+    marginTop: hp(6),
+    // marginBottom: 5,
+    marginBottom: hp(3.5),
+    marginLeft: hp(2),
   },
   cardCarousel: {
-    height:216,
+    height:hp(27.2),
     // backgroundColor:'red',
-    width: 450,
+    // width: 450,
+    // height:216,
   },
   tabBox: {
     // height: 310,
     // backgroundColor:'red',
-    height: hp(45),
-    marginBottom: 30,
+    height: hp(34.5),
   },
   badge: {
     width: 7,
@@ -183,7 +197,7 @@ const Dashboard = (props: any) => {
         <Text style={styles.fornaxText}>Dashboard</Text>
         {!loader && (
           <>
-            <ScrollView style={styles.innerContainer}>
+            {/*<ScrollView style={styles.innerContainer}>*/}
               <View style={styles.cardCarousel}>
                 <CardCarousel navigate={navigate} />
               </View>
@@ -193,7 +207,7 @@ const Dashboard = (props: any) => {
               <View style={styles.extrahight}>
 
               </View>
-            </ScrollView>
+            {/*</ScrollView>*/}
             <View style={styles.colco}>
               <View style={styles.navTabBox}>
                 <NavTab navigate={navigate} />

@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAccounts } from '../redux/reducers/Wallet';
 import { showMessage, hideMessage } from "react-native-flash-message";
@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   txnText: {
-    marginLeft: 17,
     fontSize: 16,
     color: '#ffffff',
     textAlign: 'center',
@@ -35,14 +34,15 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: '#b27f29',
-    width: 240,
+    width: wp(49.3),
+    height:hp(6.6),
     alignSelf: 'center',
+    justifyContent:'center',
   },
   button: {
-    borderRadius: 20,
-    paddingVertical: 18,
+    borderRadius: hp(2.4),
     marginTop: hp('5'),
-    marginBottom: hp('10'),
+    // marginBottom: hp('10'),
   },
   textStyle: {
     fontSize: 20,
@@ -53,8 +53,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   backIcon: {
-    marginLeft: 26,
-    marginTop: 32,
+    marginLeft: wp(6.3),
+    marginTop: hp(3.7),
+    // resizeMode:'contain',
+    height:hp(3),
+    width:hp(3),
   },
   fornaxIcon: {
     marginBottom: 30,
@@ -64,13 +67,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('5'),
+    marginTop: hp('12'),
     marginBottom: hp('4'),
   },
   inputBox: {
-    width: 300,
-    marginVertical: 13,
-    marginTop: 300,
+    width: wp(75),
+    marginVertical: 0,
+    marginTop: hp(20),
   },
   inputLabel: {
     fontSize: 16,
@@ -92,6 +95,10 @@ const styles = StyleSheet.create({
     zIndex: -99,
     position: 'absolute',
     alignSelf: 'center',
+  },
+  card:{
+    height:hp(39.5),
+    resizeMode: 'contain',
   },
 });
 
@@ -186,7 +193,7 @@ const ImportCard = (props: any) => {
       <View style={styles.fornaxInnerBox}>
         <View>
           <Image style={styles.center} source={require(backLines)} />
-          <Image style={styles.center} source={require(backCard)} />
+          <Image style={[styles.center,styles.card]} source={require(backCard)} />
         </View>
         <Text style={styles.textStyle}>Import Card</Text>
       </View>

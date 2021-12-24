@@ -7,7 +7,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp , widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,12 +29,13 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: '#b27f29',
-    width: 240,
+    width: wp(49.3),
+    height:hp(6.6),
     alignSelf: 'center',
+    justifyContent:'center',
   },
   button: {
-    borderRadius: 20,
-    paddingVertical: 18,
+    borderRadius: hp(2.4),
   },
   textStyle: {
     fontSize: 20,
@@ -44,9 +45,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   backIcon: {
-    marginLeft: 26,
+    marginLeft: wp(6.3),
+    marginTop: hp(3.7),
+    // resizeMode:'contain',
+    height:hp(3),
+    width:hp(3),
     visibility: 'visible',
-    marginTop: 32,
   },
   loginTextbox: {
     fontSize: 14,
@@ -60,11 +64,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   fornaxIcon: {
-    // width:80,
-    // height:80,
-    // width:  hp(9),
-    // height: hp(9),
-    marginBottom: 30,
+    resizeMode: 'contain',
+    width:  hp(6.5),
+    height: hp(6.5),
+    marginBottom: hp(5.5),
   },
   fornaxInnerBox: {
     flex: 0,
@@ -82,7 +85,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     paddingHorizontal: 10,
     fontSize: 16,
-    width: 240,
+    width: wp(58),
   },
   loginText: {
     fontSize: 14,
@@ -96,13 +99,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   pinEye: {
-    width: 20,
+    height:hp(2),
+    width: hp(2),
+    resizeMode: 'contain',
     marginLeft: -20,
   },
   NumPad: {
-    width: 240,
+    width: wp(58),
     marginTop: 20,
-    marginBottom: 30,
+    marginBottom: hp(3),
   },
   NumRow: {
     flexDirection: 'row',
@@ -114,7 +119,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   num: {
-    paddingVertical: 20,
+    paddingVertical: hp(1.8),
   },
   crossIcon: {
     flexDirection: 'column',
@@ -285,8 +290,8 @@ const LoginPin = (props: any) => {
             secureTextEntry={showPass}
             placeholderTextColor="#bdbdbd"
           />
-          <Pressable onPress={() => setShowPass(!showPass)} style={styles.pinEye}>
-            <Image source={require(EyeSlashIcon)} />
+          <Pressable onPress={() => setShowPass(!showPass)} >
+            <Image source={require(EyeSlashIcon)} style={styles.pinEye}/>
           </Pressable>
         </View>
         <View style={styles.NumPad}>

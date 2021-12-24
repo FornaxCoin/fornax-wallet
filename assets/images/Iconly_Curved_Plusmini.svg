@@ -1,0 +1,17 @@
+<svg id="Iconly_Curved_Plus" data-name="Iconly/Curved/Plus" xmlns="http://www.w3.org/2000/svg" width="25.219" height="25.219" viewBox="0 0 25.219 25.219">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 2.5px;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <g id="Plus">
+    <path id="Stroke_1" data-name="Stroke 1" class="cls-1" d="M343.984,792.154v-8.34" transform="translate(-331.375 -775.375)"/>
+    <path id="Stroke_2" data-name="Stroke 2" class="cls-1" d="M339.81,787.984h8.349" transform="translate(-331.375 -775.375)"/>
+    <path id="Stroke_3" data-name="Stroke 3" class="cls-1" d="M332.625,787.984c0-8.519,2.84-11.359,11.359-11.359s11.36,2.84,11.36,11.359-2.84,11.36-11.36,11.36S332.625,796.5,332.625,787.984Z" transform="translate(-331.375 -775.375)"/>
+  </g>
+</svg>

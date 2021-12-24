@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import WalletTabs from '../components/WalletTabs';
 import {setDefaultAddress} from "../redux/reducers/Wallet";
 import {useSelector} from "react-redux";
@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
     flexDirection: 'column',
-    marginHorizontal: 30,
   },
   textStyle: {
     fontSize: 20,
@@ -22,22 +21,24 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   backIcon: {
-    marginLeft: 26,
-    marginTop: 32,
+    marginLeft: wp(6.3),
+    marginTop: hp(3.7),
+    // resizeMode:'contain',
+    height:hp(3),
+    width:hp(3),
   },
   fornaxIcon: {
-    // width:80,
-    // height:80,
-    // width:  hp(9),
-    // height: hp(9),
-    marginBottom: 30,
+    resizeMode: 'contain',
+    width:  hp(6.5),
+    height: hp(6.5),
+    marginBottom: hp(5.5),
   },
   fornaxInnerBox: {
     flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('5'),
+    marginTop: hp('12'),
     marginBottom: hp('4'),
   },
   fornaxMiniText: {
@@ -49,6 +50,7 @@ const styles = StyleSheet.create({
   tabBox: {
     height: 410,
     marginBottom: 30,
+    // backgroundColor: 'red',
   },
 });
 

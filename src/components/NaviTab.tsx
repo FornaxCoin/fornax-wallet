@@ -10,9 +10,9 @@ import {
   Platform,
 } from 'react-native';
 const HomeImg = require('../../assets/images/Homemini.png');
-const TransferImg = require('../../assets/images/transfer.png');
-const ScanImg = require('../../assets/images/Scan.png');
-const PayImg = require('../../assets/images/pay.png');
+const TransferImg = require('../../assets/images/Iconly_Curved_Plane.png');
+const ScanImg = require('../../assets/images/Scanmini.png');
+const PayImg = require('../../assets/images/Iconly_Curved_Upload.png');
 const TopupImg = require('../../assets/images/Iconly_Curved_Plusmini.png');
 
 const styles = StyleSheet.create({
@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: '#363853',
-    borderRadius: 30,
-    padding: 10,
+    borderRadius: hp(3),
+    padding: hp(1),
   },
   tab: {
     flex: 1,
@@ -35,11 +35,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: 4.5,
     marginHorizontal: 10,
+    flex: 0,
+    flexDirection: 'column',
   },
   icon: {
+    resizeMode:"contain",
     height: 26,
-    width: 24,
+    width: 26,
     marginBottom: 5,
+    // backgroundColor:'green',
   },
   scanicon: {
     // height: 26,
@@ -47,7 +51,8 @@ const styles = StyleSheet.create({
     // marginBottom: 50,
     // backgroundColor: 'red',
     position: 'absolute',
-    top:-20,
+    top:-hp(2.7),
+    left: -26/2,
   },
   label: {
     fontSize: 10,
@@ -60,18 +65,15 @@ const styles = StyleSheet.create({
     marginTop:32,
   },
   scanTab: {
-    width: 72,
-    height: 72,
+    width: hp(8),
+    height: hp(8),
     backgroundColor: '#936ee3',
-    borderRadius: 30,
-    marginLeft:-61,
+    borderRadius: hp(3.5),
     position: 'absolute',
-    // right: wp(35),
-    left: wp(50),
-    top: -40,
-    // left: 134,
+    right: 0,
+    left: -hp(8)/2,
+    top: -hp(5),
     // right: 0,
-    bottom: 0,
   },
   scanIcon: {
     // marginBottom: 28,
@@ -97,15 +99,18 @@ const NavTab = ({ navigate }: any) => {
   return (
     <View style={styles.tabbar}>
       <View style={styles.tab}>
-        <View style={styles.scanTab} />
+        {/*<View style={styles.scanTab} />*/}
         {routes.length > 0 &&
           routes.map((route, index) => (
-            <Animated.View key={index} style={[styles.item]}>
-              <Pressable onPress={() => navigate(route.navigate)}>
-                <Image
-                  source={route.icon}
-                  style={[styles.icon, route.key === 'scan' && styles.scanIcon && styles.scanicon]}
-                />
+            <Animated.View key={index}>
+              <Pressable onPress={() => navigate(route.navigate)} style={[styles.item]}>
+                <View style={{position:"relative"}}>
+                  <>{route.key === 'scan'&&(<View style={styles.scanTab} />)}</>
+                  <Image
+                      source={route.icon}
+                      style={[styles.icon, route.key === 'scan' && styles.scanIcon && styles.scanicon]}
+                  />
+                </View>
                 <Text style={[styles.label, route.key === 'scan' && styles.scanLabel]}>{route.title}</Text>
               </Pressable>
             </Animated.View>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Image, Pressable, Switch, StyleSheet, Text, View } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CocoLockImage = '../../assets/images/lockmaga.png';
@@ -32,12 +32,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    width: 240,
+    width: wp(65.5),
     alignSelf: 'center',
-    marginBottom: 43,
+    marginBottom: hp(5.5),
+    height:hp(2.6),
   },
   button: {
-    borderRadius: 20,
+    borderRadius: 0,
     paddingVertical: 0,
   },
   textStyle: {
@@ -48,8 +49,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   backIcon: {
-    marginLeft: 26,
-    marginTop: 32,
+    marginLeft: wp(6.3),
+    marginTop: hp(3.7),
+    // resizeMode:'contain',
+    height:hp(3),
+    width:hp(3),
   },
   arrowRight: {
     flex: 1,
@@ -60,20 +64,22 @@ const styles = StyleSheet.create({
   },
   arrowRightIcon: {
     marginLeft: 17,
+    height:hp(1),
+    resizeMode: 'contain',
   },
   fornaxIcon: {
-    // width:80,
-    // height:80,
-    // width:  hp(9),
-    // height: hp(9),
-    marginBottom: 30,
+    resizeMode: 'contain',
+    width:  hp(6.5),
+    height: hp(6.5),
+    marginBottom: hp(5.5),
   },
   fornaxInnerBox: {
     flex: 0,
+    // backgroundColor: 'red',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('5'),
+    marginTop: hp('12'),
     marginBottom: hp('4'),
   },
   switch: {

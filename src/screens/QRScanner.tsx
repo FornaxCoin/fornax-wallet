@@ -11,11 +11,11 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 
 const PayImage = '../../assets/images/pay.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-const  qrCodeWidth = hp('34');
+const  qrCodeWidth = hp('26');
 
 const styles = StyleSheet.create({
   fornaxBox: {
-    flex: 0,
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
   },
@@ -27,11 +27,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   backIcon: {
-    marginLeft: 26,
-    marginTop: 32,
+    marginLeft: wp(6.3),
+    marginTop: hp(3.7),
+    height:hp(3),
+    width:hp(3),
   },
   fornaxIcon: {
-    marginBottom: hp(3),
+    resizeMode: 'contain',
+    width:  hp(10.3),
+    height: hp(10.3),
+    marginBottom: hp(5.5),
   },
   fornaxInnerBox: {
     flex: 0,
@@ -69,7 +74,7 @@ const styles = StyleSheet.create({
   qrCodeImg: {
     alignItems: 'center',
     alignSelf: 'center',
-    marginBottom: 20,
+    // marginBottom: 20,
     height:qrCodeWidth,
     width: qrCodeWidth,
     borderWidth: 5,
@@ -153,12 +158,12 @@ const QRScanner = (props: any) => {
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>
+      <View style={styles.fornaxInnerBox}>
+        <Image style={styles.fornaxIcon} source={require(PayImage)} />
+        <Text style={styles.textStyle}>Scan QR code</Text>
+        <Text style={styles.fornaxMiniText}>Please move your camera {"\n"} over the QR Code</Text>
+      </View>
       <View style={styles.fornaxBox}>
-        <View style={styles.fornaxInnerBox}>
-          <Image style={styles.fornaxIcon} source={require(PayImage)} />
-          <Text style={styles.textStyle}>Scan QR code</Text>
-          <Text style={styles.fornaxMiniText}>Please move your camera {"\n"} over the QR Code</Text>
-        </View>
         <View style={styles.qrCodeImg}>
           <QRCodeScanner
             reactivate={true}

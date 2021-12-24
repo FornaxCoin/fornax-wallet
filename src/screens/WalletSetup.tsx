@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import { generateMnemonic } from 'bip39';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setAccounts, setWeb3 } from '../redux/reducers/Wallet';
@@ -16,14 +16,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     zIndex: 0
   },
   secondaryTxnText: {
     color: '#363853',
   },
   txnText: {
-    marginLeft: 17,
     fontSize: 16,
     color: '#ffffff',
     textAlign: 'center',
@@ -32,18 +31,18 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: '#b27f29',
-    width: 240,
+    width: wp(65.5),
     alignSelf: 'center',
     marginTop: 25,
   },
   button: {
-    borderRadius: 20,
-    paddingVertical: 18,
+    borderRadius: hp(2.4),
+    paddingVertical: hp(2),
   },
   secondaryButton: {
     backgroundColor: '#fff',
     color: '#b27f29',
-    marginTop: hp('30'),
+    marginTop: hp('25'),
   },
   textStyle: {
     fontSize: 20,
@@ -53,19 +52,24 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   backIcon: {
-    marginLeft: 26,
-    marginTop: 32,
+    marginLeft: wp(6.3),
+    marginTop: hp(3.7),
+    height:hp(3),
+    width:hp(3),
   },
   fornaxIcon: {
-    marginBottom: 44,
+    resizeMode: 'contain',
+    width:  hp(6.5),
+    height: hp(6.5),
+    marginBottom: hp(5.5),
   },
   fornaxInnerBox: {
     flex: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: hp('5'),
-    marginBottom: hp('4'),
+    marginTop: hp('12'),
+    marginBottom: hp('0'),
   },
   fornaxMiniText: {
     fontSize: 16,

@@ -8,20 +8,23 @@ import {
   View,
 } from 'react-native';
 import PhoneModal from '../components/Modal';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { validateEmail } from '../utils/common';
 import { widthPercentageToDP } from 'react-native-responsive-screen';
+import { backgroundColor } from 'html2canvas/dist/types/css/property-descriptors/background-color';
 const SendImg = '../../assets/images/Iconly_Curved_Send.png';
 const EyeSlashImg = '../../assets/images/Eye-slashmini.png';
 
 const styles = StyleSheet.create({
   fornaxBox: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignSelf: 'center',
     flexDirection: 'column',
-    maxWidth: 360,
+    maxWidth: wp(72),
+    marginTop:hp(15),
   },
   createAccText: {
     fontSize: 22,
@@ -31,8 +34,10 @@ const styles = StyleSheet.create({
     lineHeight: 35,
   },
   inputBox: {
+    flex:0,
     flexDirection: 'row',
-    marginVertical: 13,
+    marginVertical: hp(2),
+    justifyContent:'space-between',
     alignContent: 'center',
     alignItems: 'center',
   },
@@ -51,7 +56,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     paddingHorizontal: 10,
     fontSize: 16,
-    width: 200,
+    width: wp(40.2),
     marginLeft: 30,
   },
   loginTextbox: {
@@ -63,23 +68,25 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     alignContent: 'center',
+    justifyContent: 'center',
     marginTop: 10,
   },
   loginText: {
     fontSize: 14,
     color: '#81c2ff',
     fontFamily: 'Quicksand-Medium',
+    paddingTop: 6,
   },
   buttonClose: {
     backgroundColor: '#b27f29',
-    width: 240,
+    width: wp(58),
     alignSelf: 'center',
-    marginTop: 50,
-    marginBottom: 10,
+    marginTop: 25,
+    height: hp(7.3),
+    justifyContent: 'center',
   },
   button: {
-    borderRadius: 20,
-    paddingVertical: 20,
+    borderRadius: hp(2.4),
   },
   textStyle: {
     fontSize: 20,
@@ -122,6 +129,12 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     fontFamily: 'Quicksand-Bold',
     textAlign: 'center',
+  },
+  pinEye: {
+    height:hp(2),
+    width: hp(2),
+    resizeMode: 'contain',
+    // marginLeft: -10,
   },
 });
 
@@ -171,7 +184,7 @@ const SignUp = (props: any) => {
             description: "Please enter password length atleast 6 or more for registration",
             type: "warning",
           });
-          return; 
+          return;
         }
         hideMessage();
         await AsyncStorage.setItem('registerUser', JSON.stringify(user));
@@ -226,7 +239,7 @@ const SignUp = (props: any) => {
         )}
         <View style={{ marginBottom: 50 }}>
           <Text style={styles.createAccText}>Create an account,</Text>
-          <Text style={[styles.createAccText, { width: widthPercentageToDP('85')}]}>
+          <Text style={[styles.createAccText]}>
             and enjoy transactions in an easier way
           </Text>
         </View>
@@ -256,7 +269,7 @@ const SignUp = (props: any) => {
         <View style={styles.inputBox}>
           <Text style={styles.inputLabel}>Password</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input,{position:'relative'}]}
             placeholder="xxxxxxxx"
             secureTextEntry={showPass}
             placeholderTextColor="#bdbdbd"
@@ -264,8 +277,8 @@ const SignUp = (props: any) => {
             onBlur={onBlurPassword}
             value={user.password}
           />
-          <Pressable onPress={() => setShowPass(!showPass)} style={{ marginBottom: 20, marginRight: 10 }}>
-            <Image source={require(EyeSlashImg)} style={{ width: 20, position: 'absolute', right: 0 }} />
+          <Pressable onPress={() => setShowPass(!showPass)} style={{position: 'absolute', right: 0 , marginBottom: 0, marginRight: 0 }}>
+            <Image source={require(EyeSlashImg)} style={styles.pinEye} />
           </Pressable>
         </View>
         <Pressable

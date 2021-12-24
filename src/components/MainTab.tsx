@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import {
-  // heightPercentageToDP as hp,
+  heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import _ from 'lodash';
@@ -29,8 +29,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   roundIcon: {
-    height: 60,
-    width: 60,
+    // height: 60,
+    // width: 60,
+    height: hp(4.4),
+    width: hp(4.4),
     backgroundColor: '#936ee3',
     borderRadius: 30,
     marginLeft: 5,
@@ -74,8 +76,8 @@ const styles = StyleSheet.create({
   footerBox: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 10,
-    marginBottom: 5
+    // marginTop: 10,
+    // marginBottom: 0
   },
   incomeText: {
     fontSize: 14,
@@ -105,7 +107,7 @@ const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any
       return item?.to;
     }
   }
-  
+
   const handlePress = async (hash: any) => {
     // Checking if the link is supported for links with custom URL scheme.
     const url = `https://watchfornax.com/transaction/${hash}`
@@ -131,15 +133,15 @@ const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any
         <View style={{ flexDirection: 'row' }}>
           <View style={[styles.roundIcon, { backgroundColor: '#4368c7' }]} />
           <View>
-            <Text 
+            <Text
               style={styles.symbolText}
               numberOfLines={1}
               ellipsizeMode="middle"
             >{getAccountName()}</Text>
             {defaultAddress && defaultAddress.toLowerCase().trim() === item?.from.toLowerCase().trim() ? (
-              <Text style={styles.descriptionText}>Outcome</Text>          
+              <Text style={styles.descriptionText}>Outcome</Text>
             ):(
-              <Text style={styles.descriptionText}>Income</Text>          
+              <Text style={styles.descriptionText}>Income</Text>
             )}
           </View>
         </View>
@@ -193,7 +195,7 @@ const TransactionList = () => {
     }
     if (data) {
       setLoader(false);
-      data?.transactionsByAddressWithPagination?.transactions?.length > 0 && 
+      data?.transactionsByAddressWithPagination?.transactions?.length > 0 &&
       setTxnList([..._.uniqBy(data?.transactionsByAddressWithPagination?.transactions, 'id')]);
     }
   }, [data, loading]);
@@ -271,7 +273,7 @@ const SavingTxnList = () => {
         }, {
           value: parseInt(web3.utils.fromWei(txn.toTotal, 'ether'), 10),
           frontColor: '#936ee3',
-        })      
+        })
         return newtxn;
       }, []);
       setLoader(false);
@@ -280,14 +282,15 @@ const SavingTxnList = () => {
   }, [data, loading]);
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent', marginTop: 5, marginBottom: 20, marginLeft: -20 }}>
+    <View style={{ flex: 0, justifyContent: 'flex-end', alignItems: 'center', backgroundColor: 'transparent', marginTop: 0, marginBottom: 0, marginLeft: -20 }}>
       <Spinner isVisible={loader} size={50} type={'9CubeGrid'} color="#b27f29"/>
-      <View style={{ marginBottom: 15 }}>
-        {!loader && txnList.length > 0 && 
+      <View style={{ marginBottom: 15,}}>
+        {!loader && txnList.length > 0 &&
           <BarChart
             data={txnList}
             barWidth={10}
             spacing={24}
+            height={hp(16)+hp(8)}
             roundedTop
             roundedBottom
             hideRules
