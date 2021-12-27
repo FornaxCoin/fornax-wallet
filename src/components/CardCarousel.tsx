@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Carousel from 'react-native-snap-carousel';
+import {showMessage, hideMessage} from "react-native-flash-message";
 import { useDispatch, useSelector } from 'react-redux';
 import { setDefaultAddress } from '../redux/reducers/Wallet';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
@@ -84,6 +85,11 @@ const CardCarousel = (props: any) => {
     });
 
     const handleClipboard = (address: string) => {
+        showMessage({
+            message: "Coppied",
+            type: "success",
+            position: "top",
+        });
         Clipboard.setString(address);
     };
 

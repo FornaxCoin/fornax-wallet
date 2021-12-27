@@ -156,6 +156,7 @@ const SetPin = (props: any) => {
           <TextInput
             style={styles.input}
             value={pin}
+            editable = {false}
             onChange={handlePin}
             placeholder="xxxx"
             secureTextEntry={showPass}

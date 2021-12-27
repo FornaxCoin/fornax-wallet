@@ -1,15 +1,18 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
+
 
 const styles = StyleSheet.create({
   modalView: {
     flex: 1,
     backgroundColor: '#ffffff',
-    marginVertical: 110,
+    marginVertical: hp(23),
+    // height: hp(75),
     paddingHorizontal: 41,
     borderRadius: 40,
-    width: 300,
+    width: wp(74.9),
     alignSelf: 'center',
     justifyContent: 'center',
     alignContent: 'center',

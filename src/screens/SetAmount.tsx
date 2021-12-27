@@ -9,10 +9,12 @@ import {
 } from 'react-native';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {useDispatch, useSelector} from 'react-redux';
+import PhoneModal from '../components/Modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setAccounts, setSendTxnStatus, setTxnsInfo, setTxnsResponse} from '../redux/reducers/Wallet';
 import Spinner from 'react-native-spinkit';
 import TouchID from 'react-native-touch-id';
+const sendImg = '../../assets/images/sendFail.png';
 
 const CocoPinImage = '../../assets/images/Iconly_Curved_Passwordmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
@@ -114,9 +116,67 @@ const styles = StyleSheet.create({
         bottom: 0,
         top: 0
     },
+    verifyModalBox: {
+        flexDirection:'column',
+        justifyContent: 'space-around',
+        height:hp(45),
+        width:wp(75),
+        alignContent: 'center',
+        alignSelf: 'center',
+        textAlign: 'center',
+    },
+    topImg: {
+        height: hp(6.6),
+        width: wp(16.8),
+        alignSelf: 'center',
+        resizeMode: 'contain',
+    },
+    verifyText: {
+        fontSize: 16,
+        fontFamily: 'Quicksand-Medium',
+        textAlign: 'center',
+        color: '#000000',
+        lineHeight: 25,
+        paddingHorizontal:30,
+    },
+    buttonCode: {
+        backgroundColor: '#363853',
+        justifyContent: 'center',
+        width: wp(44.7),
+        height:hp(6.7),
+        alignSelf: 'center',
+        borderRadius: 20,
+    },
+    codeText: {
+        fontSize: 20,
+        color: '#ffffff',
+        lineHeight: 23,
+        fontFamily: 'Quicksand-Bold',
+        textAlign: 'center',
+    },
 });
 
+//
+const VerifyModal = ({ isModalVisible, setModalVisible, navigate }: any) => {
+    return (
+        <>
+            <View style={styles.verifyModalBox}>
+                <Image source={require(sendImg)} style={styles.topImg} />
+                <Text style={styles.verifyText}>
+                    Your transaction failed, the data you entered is incorrect, please check again
+                </Text>
+                <Pressable
+                    onPress={()=>{setModalVisible(!isModalVisible);navigate('Dashboard');}}
+                    style={styles.buttonCode}>
+                    <Text style={styles.codeText}>Check Again</Text>
+                </Pressable>
+            </View>
+        </>
+    );
+};
+
 const SetAmount = (props: any) => {
+    const [isModalVisible, setModalVisible] = useState(false);
     const dispatch = useDispatch();
     const [loader, setLoader] = useState(false);
     const navigate = props.navigation.navigate;
@@ -124,7 +184,12 @@ const SetAmount = (props: any) => {
     const [accIndex, setAccIndex] = useState(-1);
 
     const handleAmonut = (val: any) => {
-        setAmount(amount + val);
+        if(val==='.'&&!amount.includes('.')&&amount.length>0){
+            setAmount(amount + val);
+        }
+        if(val!=='.'){
+            setAmount(amount + val);
+        }
         dispatch(setTxnsInfo({...txnData, amount}));
     };
 
@@ -220,13 +285,13 @@ const SetAmount = (props: any) => {
             setAmount('')
             console.log('\nSENDING AMOUNT ==>>', finalAmount);
             if(finalAmount) {
-                web3.eth
+                await web3.eth
                     .sendTransaction({
                         from: txnData.from?.address,
                         to: txnData.to,
                         value: web3.utils.toWei(finalAmount, 'ether'),
                         gasPrice: gasPrice,
-                        gas: 21000,
+                        gas: 53000,
                         nonce: nonce,
                     })
                     .on('transactionHash', function (hash: any) {
@@ -251,13 +316,19 @@ const SetAmount = (props: any) => {
                     //     //     getBalance(found);
                     //     // }
                     // })
-                    .on('error', (console.error));
+                    .on('error', (err:any)=>{
+                        console.log("error: first error",err)
+                            setLoader(false);
+                            setModalVisible(!isModalVisible);
+                    });
             }else{
-                console.log("error");
+                setLoader(false);
+                setModalVisible(!isModalVisible);
+                console.log("error last");
                 return
             }
         } catch (err) {
-            console.log(err);
+            console.log("error: last last",err);
             setLoader(false);
         }
     };
@@ -307,8 +378,13 @@ const SetAmount = (props: any) => {
             dispatch(setSendTxnStatus('pin=' + amount))
             navigate('LoginPin')
         }else{
-            await sendTxn('');
-            console.log("success");
+            if(response!==null){
+
+            }else{
+                console.log('Error: ==> isloginPin:',isloginPin)
+                await sendTxn('');
+                console.log("success");
+            }
         }
     }
 
@@ -328,6 +404,13 @@ const SetAmount = (props: any) => {
                     <Spinner isVisible={true} size={50} type={'9CubeGrid'} color="#b27f29"/>
                 </View>
             )}
+            <PhoneModal isModalVisible={isModalVisible}>
+                <VerifyModal
+                    isModalVisible={isModalVisible}
+                    setModalVisible={setModalVisible}
+                    navigate={navigate}
+                />
+            </PhoneModal>
             <View style={{zIndex: 0}}>
                 <Pressable onPress={() => navigate('Transfer')}>
                     <Image style={styles.backIcon} source={require(BackIcon)}/>
@@ -343,6 +426,7 @@ const SetAmount = (props: any) => {
                     <TextInput
                         style={styles.input}
                         value={amount}
+                        editable = {false}
                         placeholder="0"
                         placeholderTextColor="#bdbdbd"
                     />

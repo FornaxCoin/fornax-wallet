@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: hp('5'),
     backgroundColor: '#ffffff',
     width: wp('90'),
-    height: hp('45'),
+    height: hp('50'),
     borderRadius: 30,
     shadowColor: "#000000",
     shadowOffset: {
@@ -184,6 +184,7 @@ const ConfirmTransaction = (props: any) => {
   useEffect(() => {
     if (web3 && txnResponse) {
       getTimeStamp();
+      console.log("All Values: ",parseInt(txnResponse?.gasUsed), parseInt(txnResponse?.gasPrice), 'amount:',parseInt(txnResponse?.amount), 'final Amount:',parseInt(web3.utils.toWei(txnResponse?.finalAmount,'ether')))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [web3, txnResponse]);
@@ -259,7 +260,7 @@ const ConfirmTransaction = (props: any) => {
               <View style={styles.detailrow}>
                 <Text style={styles.detailText}>Date</Text>
                 <Text style={[styles.detailText, styles.valueText]}>
-                  {timeStamp?.date || '1 july 2021'}
+                  {timeStamp?.date || '24 December 2021'}
                 </Text>
               </View>
               <View style={styles.detailrow}>
@@ -271,7 +272,7 @@ const ConfirmTransaction = (props: any) => {
               <View style={styles.detailrow}>
                 <Text style={styles.detailText}>Total</Text>
                 <Text style={[styles.detailText, styles.valueText]}>
-                  FRX {(parseInt(txnResponse?.gasUsed, 10) * parseInt(txnResponse?.gasPrice, 10)) + parseInt(txnResponse?.amount, 10) || 0}
+                  FRX {web3.utils.fromWei(((parseInt(txnResponse?.gasUsed) * parseInt(txnResponse?.gasPrice)) + parseInt(web3.utils.toWei(txnResponse?.finalAmount,'ether'))).toString(),'ether') || '0'}
                 </Text>
               </View>
             </View>

@@ -8,9 +8,9 @@ import {
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { 
-  heightPercentageToDP as hp, 
-  widthPercentageToDP as wp 
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
 } from 'react-native-responsive-screen';
 import _join from 'lodash/join';
 import { setWeb3 } from '../redux/reducers/Wallet';
@@ -40,12 +40,13 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: '#b27f29',
-    width: 240,
+    width: wp(49.3),
+    height:hp(6.6),
     alignSelf: 'center',
+    justifyContent:'center',
   },
   button: {
-    borderRadius: 20,
-    paddingVertical: 18,
+    borderRadius: hp(2.4),
     marginTop: hp('1'),
     marginBottom: hp('6'),
   },
@@ -58,11 +59,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   backIcon: {
-    marginLeft: 26,
-    marginTop: 32,
+    marginLeft: wp(6.3),
+    marginTop: hp(3.7),
+    height:hp(3),
+    width:hp(3),
   },
   fornaxIcon: {
-    marginBottom: hp('3'),
+    resizeMode: 'contain',
+    width:  hp(6.5),
+    height: hp(6.5),
+    marginBottom: hp(5.5),
   },
   fornaxInnerBox: {
     flex: 0,
@@ -82,12 +88,13 @@ const styles = StyleSheet.create({
   seedBox: {
     borderWidth: 2,
     borderRadius: 20,
+    justifyContent:'center',
     borderStyle: 'dotted',
     borderColor: '#b27f29',
     marginVertical: hp(1),
     paddingHorizontal: 10,
     width: wp('30'),
-    height: wp('10'),
+    height: hp('5'),
   },
   seedCountText: {
     color: '#b27f29',
@@ -99,6 +106,8 @@ const styles = StyleSheet.create({
     includeFontPadding: true,
     color: '#ffffff',
     textAlign: 'center',
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   seedList: {
     flexDirection: 'column',
@@ -199,7 +208,7 @@ const ImportWallet = (props: any) => {
                       <View style={styles.seedBox}>
                         <TextInput
                           style={styles.seedText}
-                          placeholder={sed}
+                          // placeholder={sed}
                           placeholderTextColor="#bdbdbd"
                           onChangeText={e => handleSeeds(e, index)}
                           value={seed[index]}

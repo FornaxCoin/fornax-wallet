@@ -150,7 +150,7 @@ const WalletSetup = (props: any) => {
       )}
       <View style={{ zIndex: 0 }}>
         <Pressable onPress={() => navigate('Dashboard')}>
-          <Image style={styles.backIcon} source={require(BackIcon)} />
+          {/*<Image style={styles.backIcon} source={require(BackIcon)} />*/}
         </Pressable>
       </View>
       <View style={styles.fornaxBox}>
