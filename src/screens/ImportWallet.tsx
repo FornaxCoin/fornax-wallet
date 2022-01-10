@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Image,
-  Pressable,
+  Pressable, ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -189,66 +189,68 @@ const ImportWallet = (props: any) => {
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>
-      <View style={styles.fornaxBox}>
-        <View style={styles.fornaxInnerBox}>
-          <Image style={styles.fornaxIcon} source={require(SettingImage)} />
-          <Text style={styles.textStyle}>Import Wallet</Text>
-          <Text style={styles.fornaxMiniText}>
-            Write down your Secret Recovery Phrase
-          </Text>
-        </View>
-        <View>
-          <View style={styles.seedListBox}>
-            <View style={styles.seedList}>
-              {seedArray.map((sed: any, index: any) => {
-                if (index <= 5) {
-                  return (
-                    <View key={index} style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center' }}>
-                      <Text style={styles.seedCountText}>{index + 1}.</Text>
-                      <View style={styles.seedBox}>
-                        <TextInput
-                          style={styles.seedText}
-                          // placeholder={sed}
-                          placeholderTextColor="#bdbdbd"
-                          onChangeText={e => handleSeeds(e, index)}
-                          value={seed[index]}
-                          autoCapitalize={'none'}
-                        />
-                      </View>
-                    </View>
-                  );
-                }
-              })}
-            </View>
-            <View style={styles.seedList}>
-              {seedArray.map((sed: any, index: any) => {
-                if (index >= 6) {
-                  return (
-                    <View key={index} style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', marginLeft: 10 }}>
-                      <Text style={styles.seedCountText}>{index + 1}.</Text>
-                      <View style={styles.seedBox}>
-                        <TextInput
-                          style={styles.seedText}
-                          placeholder={sed}
-                          placeholderTextColor="#bdbdbd"
-                          onChangeText={e => handleSeeds(e, index)}
-                          value={seed[index]}
-                          autoCapitalize={'none'}
-                        />
-                      </View>
-                    </View>
-                  );
-                }
-              })}
-            </View>
+      <ScrollView>
+        <View style={styles.fornaxBox}>
+          <View style={styles.fornaxInnerBox}>
+            <Image style={styles.fornaxIcon} source={require(SettingImage)} />
+            <Text style={styles.textStyle}>Import Wallet</Text>
+            <Text style={styles.fornaxMiniText}>
+              Write down your Secret Recovery Phrase
+            </Text>
           </View>
-          <Pressable
-            onPress={handleImport}
-            style={[styles.button, styles.buttonClose]}>
-            <Text style={styles.txnText}>Continue</Text>
-          </Pressable>
+          <View>
+            <View style={styles.seedListBox}>
+              <View style={styles.seedList}>
+                {seedArray.map((sed: any, index: any) => {
+                  if (index <= 5) {
+                    return (
+                        <View key={index} style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center' }}>
+                          <Text style={styles.seedCountText}>{index + 1}.</Text>
+                          <View style={styles.seedBox}>
+                            <TextInput
+                                style={styles.seedText}
+                                // placeholder={sed}
+                                placeholderTextColor="#bdbdbd"
+                                onChangeText={e => handleSeeds(e, index)}
+                                value={seed[index]}
+                                autoCapitalize={'none'}
+                            />
+                          </View>
+                        </View>
+                    );
+                  }
+                })}
+              </View>
+              <View style={styles.seedList}>
+                {seedArray.map((sed: any, index: any) => {
+                  if (index >= 6) {
+                    return (
+                        <View key={index} style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', marginLeft: 10 }}>
+                          <Text style={styles.seedCountText}>{index + 1}.</Text>
+                          <View style={styles.seedBox}>
+                            <TextInput
+                                style={styles.seedText}
+                                placeholder={sed}
+                                placeholderTextColor="#bdbdbd"
+                                onChangeText={e => handleSeeds(e, index)}
+                                value={seed[index]}
+                                autoCapitalize={'none'}
+                            />
+                          </View>
+                        </View>
+                    );
+                  }
+                })}
+              </View>
+            </View>
+            <Pressable
+                onPress={handleImport}
+                style={[styles.button, styles.buttonClose]}>
+              <Text style={styles.txnText}>Continue</Text>
+            </Pressable>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </>
   );
 };

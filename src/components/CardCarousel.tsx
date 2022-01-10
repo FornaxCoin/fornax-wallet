@@ -16,33 +16,20 @@ import { setDefaultAddress } from '../redux/reducers/Wallet';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
 import { position } from 'html2canvas/dist/types/css/property-descriptors/position';
 
-// const BgImage = '../../assets/images/Group_35card.png';
 const BgImage = '../../assets/images/Mask.png';
 const plusImg = '../../assets/images/Plusmini.png';
 const copyImg = '../../assets/images/copy.png';
+const keyImg = '../../assets/images/key.png';
 
 const styles = StyleSheet.create({
     carouselBox: {
-        // height: 220,
-        // marginLeft: -40,
-        // marginRight: 50,
         paddingHorizontal: 40,
-        // flexDirection: 'column',
         paddingTop: 45,
-
         backgroundColor: '#936ee3',
-        // paddingRight:20,
-
-        // resizeMode:'stretch',
         height:hp(25.8),
         borderRadius: hp(5),
-        // marginLeft: wp(0),
-        // marginRight: wp(0),
-        // paddingHorizontal: wp(10.9),
         flexDirection: 'column',
-        // alignItems: 'center',
         position:"relative",
-        // paddingTop: hp(5),
     },
     carouselText: {
         fontSize: 16,
@@ -54,19 +41,17 @@ const styles = StyleSheet.create({
     },
     addBtn: {
         backgroundColor: '#363853',
-        // padding: 13,
         padding: hp(1.3),
         position: 'absolute',
-        // bottom: 5,
         bottom: hp(-1.3),
         right: wp(3.9),
-        // borderRadius: 20,
         borderRadius: hp(2.5),
     },
     copyIcon: {
         height: 20,
         width: 20,
         marginLeft: 5,
+        resizeMode: 'contain',
 
     },
 });
@@ -114,7 +99,6 @@ const CardCarousel = (props: any) => {
 
     useEffect(() => {
         dispatch(setDefaultAddress(accounts[0]?.address || ''));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [accounts]);
 
     const _renderItem = ({ item, index }: any) => {
@@ -141,6 +125,9 @@ const CardCarousel = (props: any) => {
                     </Text>
                     <Pressable onPress={() => handleClipboard(item?.address)} style={{position:"absolute",right:0}}>
                         <Image source={require(copyImg)} style={styles.copyIcon} />
+                    </Pressable>
+                    <Pressable onPress={() => handleClipboard(item?.privateKey)} style={{position:"absolute",right:40}}>
+                        <Image source={require(keyImg)} style={styles.copyIcon} />
                     </Pressable>
                 </View>
                 <View style={styles.addBtn}>
@@ -169,10 +156,8 @@ const CardCarousel = (props: any) => {
                             layout={'default'}
                             ref={carouselRef}
                             data={accounts}
-                            // sliderWidth={410}
                             sliderWidth={wp(100)}
                             removeClippedSubviews={false}
-                            // itemWidth={wp(100)}
                             itemWidth={wp(78.5)}
                             renderItem={_renderItem}
                             onSnapToItem={index => handleActiveIndex(index)}

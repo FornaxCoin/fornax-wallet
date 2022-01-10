@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Image,
-  Pressable,
+  Pressable, ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -151,25 +151,33 @@ const ImportCard = (props: any) => {
       if (web3) {
         const found = accounts.length > 0 && accounts.find((acc: any) => acc.privateKey === privateKey)
         if(found) {
-          getBalance(found);
+          await getBalance(found);
           showMessage({
             message: "Adress already Exist!",
             description: "This address is already exist",
             type: "info",
           });
         } else {
-          if (privateKey.toString().trim().length === 64 || (privateKey.includes('0x') && privateKey.toString().trim().length === 66)) {
-            const account = await web3.eth.accounts.privateKeyToAccount(
-              privateKey.trim(),
-              [ignoreLength],
-            );
-            getBalance(account);
-          } else {
+          if(privateKey.toString().trim().length === 0){
             showMessage({
-              message: "Private Key Invalid!",
-              description: "Please enter valid Private key!",
+              message: "Insert Private Key!",
+              description: "Please enter Private key!",
               type: "info",
             });
+          }else{
+            if (privateKey.toString().trim().length === 64 || (privateKey.includes('0x') && privateKey.toString().trim().length === 66)) {
+              const account = await web3.eth.accounts.privateKeyToAccount(
+                  privateKey.trim(),
+                  [ignoreLength],
+              );
+              await getBalance(account);
+            } else {
+              showMessage({
+                message: "Private Key Invalid!",
+                description: "Please enter valid Private key!",
+                type: "info",
+              });
+            }
           }
         }
       }
@@ -190,30 +198,32 @@ const ImportCard = (props: any) => {
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>
-      <View style={styles.fornaxInnerBox}>
-        <View>
-          <Image style={styles.center} source={require(backLines)} />
-          <Image style={[styles.center,styles.card]} source={require(backCard)} />
+      {/*<ScrollView>*/}
+        <View style={styles.fornaxInnerBox}>
+          <View>
+            <Image style={styles.center} source={require(backLines)} />
+            <Image style={[styles.center,styles.card]} source={require(backCard)} />
+          </View>
+          <Text style={styles.textStyle}>Import Card</Text>
         </View>
-        <Text style={styles.textStyle}>Import Card</Text>
-      </View>
-      <View style={styles.fornaxBox}>
-        <View style={styles.inputBox}>
-          <Text style={styles.inputLabel}>Private Key</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Private Key"
-            placeholderTextColor="#bdbdbd"
-            onChangeText={e => setPrivateKey(e)}
-            value={privateKey}
-          />
+        <View style={styles.fornaxBox}>
+          <View style={styles.inputBox}>
+            <Text style={styles.inputLabel}>Private Key</Text>
+            <TextInput
+                style={styles.input}
+                placeholder="Private Key"
+                placeholderTextColor="#bdbdbd"
+                onChangeText={e => setPrivateKey(e)}
+                value={privateKey}
+            />
+          </View>
+          <Pressable
+              onPress={handleImport}
+              style={[styles.button, styles.buttonClose]}>
+            <Text style={styles.txnText}>Continue</Text>
+          </Pressable>
         </View>
-        <Pressable
-          onPress={handleImport}
-          style={[styles.button, styles.buttonClose]}>
-          <Text style={styles.txnText}>Continue</Text>
-        </Pressable>
-      </View>
+      {/*</ScrollView>*/}
     </>
   );
 };

@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     marginVertical: hp(23),
-    // height: hp(75),
     paddingHorizontal: 41,
     borderRadius: 40,
     width: wp(74.9),

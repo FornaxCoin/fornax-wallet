@@ -8,6 +8,7 @@ import LoginSetting from '../screens/LoginSetting';
 import WalletSetup from '../screens/WalletSetup';
 import ImportWallet from '../screens/ImportWallet';
 import Wallet from '../screens/Wallet';
+import Tokens from '../screens/Tokens';
 import Dashboard from '../screens/Dashboard';
 import Scan from '../screens/Scan';
 import Pay from '../screens/Pay';

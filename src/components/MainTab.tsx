@@ -29,8 +29,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   roundIcon: {
-    // height: 60,
-    // width: 60,
     height: hp(4.4),
     width: hp(4.4),
     backgroundColor: '#936ee3',
@@ -76,8 +74,6 @@ const styles = StyleSheet.create({
   footerBox: {
     flexDirection: 'row',
     justifyContent: 'center',
-    // marginTop: 10,
-    // marginBottom: 0
   },
   incomeText: {
     fontSize: 14,
@@ -109,13 +105,10 @@ const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any
   }
 
   const handlePress = async (hash: any) => {
-    // Checking if the link is supported for links with custom URL scheme.
     const url = `https://watchfornax.com/transaction/${hash}`
     const supported = await Linking.canOpenURL(url);
 
     if (supported) {
-      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
-      // by some browser in the mobile
       await Linking.openURL(url);
     } else {
       console.log(`Don't know how to open this URL: ${url}`);

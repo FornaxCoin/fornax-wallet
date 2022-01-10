@@ -126,7 +126,7 @@ const WalletSetup = (props: any) => {
   };
 
   const handleCreateWallet = async () => {
-    setLoader(true);
+    await setLoader(true);
     try {
       const mnemonicPhrase = await generateMnemonic();
       const web3 = getWeb3(mnemonicPhrase);

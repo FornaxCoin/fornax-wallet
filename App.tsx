@@ -128,7 +128,7 @@ const App = () => {
             return;
         }
         if (loginPin) {
-            setInitRoute('LoginPin');
+            setInitRoute('Tokens');
             return;
         }
         if (accountList === null) {
@@ -155,7 +155,7 @@ const App = () => {
     useEffect(() => {
         const subscription = AppState.addEventListener("change", nextAppState => {
             console.log("Current state:", appState);
-            if(appState.current.match(/unknown/)){
+            if (appState.current.match(/unknown/)) {
                 console.log("App restarted")
                 removeAuthSet().then()
             }
@@ -178,7 +178,7 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-            handleRoute();
+        handleRoute();
     }, []);
 
     useEffect(() => {

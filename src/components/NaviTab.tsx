@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   item: {
-    // backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 4.5,
@@ -43,13 +42,8 @@ const styles = StyleSheet.create({
     height: 26,
     width: 26,
     marginBottom: 5,
-    // backgroundColor:'green',
   },
   scanicon: {
-    // height: 26,
-    // width: 24,
-    // marginBottom: 50,
-    // backgroundColor: 'red',
     position: 'absolute',
     top:-hp(2.7),
     left: -26/2,
@@ -73,11 +67,8 @@ const styles = StyleSheet.create({
     right: 0,
     left: -hp(8)/2,
     top: -hp(5),
-    // right: 0,
   },
   scanIcon: {
-    // marginBottom: 28,
-    // marginTop: -18,
   },
 });
 
@@ -89,7 +80,6 @@ const NavTab = ({ navigate }: any) => {
       title: 'Transfer',
       icon: TransferImg,
       navigate: 'Transfer',
-      // navigate: 'ConfirmTransaction',
     },
     { key: 'scan', title: 'Scan', icon: ScanImg, navigate: 'Scan' },
     { key: 'pay', title: 'Pay', icon: PayImg, navigate: 'Pay' },
