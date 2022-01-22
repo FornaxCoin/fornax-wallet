@@ -15,6 +15,7 @@ interface WalletState {
     sendTxnStatus: string;
     payTxn: any,
     tokens: any,
+    explorers: any,
 }
 
 const initialState = {
@@ -31,7 +32,12 @@ const initialState = {
     defaultAddress: '',
     txnResponse: null,
     sendTxnStatus: '',
-    tokens: 'frx',
+    tokens: 'FRX',
+    explorers:{
+        FRX:'https://watchfornax.com/transaction/',
+        ETH:'https://rinkeby.etherscan.io/tx/',
+        BNB:'https://testnet.bscscan.com/tx/',
+    }
 } as WalletState;
 
 const walletSlice = createSlice({
@@ -40,6 +46,9 @@ const walletSlice = createSlice({
     reducers: {
         setPayTxn(state, action) {
             state.payTxn = action.payload;
+        },
+        setExplorers(state, action) {
+            state.explorers = action.payload;
         },
         setMnemonic(state, action) {
             state.mnemonic = action.payload;
@@ -96,5 +105,6 @@ export const {
     setSendTxnStatus,
     setPayTxn,
     setTokens,
+    setExplorers,
 } = walletSlice.actions;
 export default walletSlice.reducer;

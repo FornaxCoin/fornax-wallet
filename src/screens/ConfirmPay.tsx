@@ -148,11 +148,12 @@ const ConfirmPay = (props: any) => {
     });
     const [loader, setLoader] = useState(false);
 
-    const {web3, accounts, payTxn} = useSelector(({wallet}: any) => {
+    const {web3, accounts, payTxn, tokens} = useSelector(({wallet}: any) => {
         return {
             web3: wallet?.web3,
             accounts: wallet?.accounts,
             payTxn: wallet?.payTxn,
+            tokens: wallet?.tokens,
         };
     });
 
@@ -322,7 +323,7 @@ const ConfirmPay = (props: any) => {
             <View style={styles.fornaxBox}>
                 <Text style={[styles.textStyle, styles.text]}>To: {payTxnData?.data?.to || '0x00000...000'}</Text>
                 <Text
-                    style={[styles.textStyle, styles.text]}>Amount: {web3.utils.fromWei(payTxnData?.data?.value.toString() || '0', 'ether') || '0.00'} FRX</Text>
+                    style={[styles.textStyle, styles.text]}>Amount: {web3.utils.fromWei(payTxnData?.data?.value.toString() || '0', 'ether') || '0.00'} {tokens}</Text>
                 <View style={styles.inputBox}>
                     <RNPickerSelect
                         onValueChange={value => handleValue(value, 'from')}

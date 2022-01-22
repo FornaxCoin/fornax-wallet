@@ -164,10 +164,12 @@ const ConfirmTransaction = (props: any) => {
   const [timeStamp, setTimeStamp] = useState<any>(null);
   const [total, setTotal] = useState<any>(null);
 
-  const { web3, txnResponse } = useSelector(({ wallet }: any) => {
+  const { web3, txnResponse , tokens, explorers} = useSelector(({ wallet }: any) => {
     return {
       web3: wallet?.web3,
       txnResponse: wallet?.txnResponse,
+      tokens: wallet?.tokens,
+      explorers: wallet?.explorers,
     };
   });
 
@@ -192,7 +194,8 @@ const ConfirmTransaction = (props: any) => {
   const handleClipboard = async (hash: string) => {
     // Clipboard.setString(txnResponse);
     // console.log('txnResponse:',txnResponse);
-    let url=`https://watchfornax.com/transaction/${txnResponse?.transactionHash}`
+    let url=`${explorers[tokens]}${txnResponse?.transactionHash}`
+    console.log(url)
     const supported = await Linking.canOpenURL(url);
 
     if (supported) {
@@ -242,7 +245,7 @@ const ConfirmTransaction = (props: any) => {
           <View style={styles.txnDetailBox}>
             <View>
               <Text style={styles.amountText}>
-                FRX {parseFloat(txnResponse?.finalAmount).toFixed(4) || '0.0000'}
+                {tokens} {parseFloat(txnResponse?.finalAmount).toFixed(4) || '0.0000'}
               </Text>
               <Text style={styles.sentText}>Success sent to</Text>
               <Text style={[styles.sentText, { marginTop: 2}]} ellipsizeMode="middle" numberOfLines={1}>
@@ -272,7 +275,7 @@ const ConfirmTransaction = (props: any) => {
               <View style={styles.detailrow}>
                 <Text style={styles.detailText}>Total</Text>
                 <Text style={[styles.detailText, styles.valueText]}>
-                  FRX {web3.utils.fromWei(((parseInt(txnResponse?.gasUsed) * parseInt(txnResponse?.gasPrice)) + parseInt(web3.utils.toWei(txnResponse?.finalAmount,'ether'))).toString(),'ether') || '0'}
+                  {tokens} {web3.utils.fromWei(((parseInt(txnResponse?.gasUsed) * parseInt(txnResponse?.gasPrice)) + parseInt(web3.utils.toWei(txnResponse?.finalAmount,'ether'))).toString(),'ether') || '0'}
                 </Text>
               </View>
             </View>

@@ -193,12 +193,13 @@ const SetAmount = (props: any) => {
         dispatch(setTxnsInfo({...txnData, amount}));
     };
 
-    const {web3, accounts, txnData, sendTxnStatus} = useSelector(({wallet}: any) => {
+    const {web3, accounts, txnData, sendTxnStatus, tokens} = useSelector(({wallet}: any) => {
         return {
             web3: wallet?.web3,
             accounts: wallet?.accounts,
             txnData: wallet?.txnInfo,
             sendTxnStatus: wallet?.sendTxnStatus,
+            tokens: wallet?.tokens,
         };
     });
 
@@ -419,7 +420,7 @@ const SetAmount = (props: any) => {
             <View style={styles.fornaxInnerBox}>
                 <Image style={styles.fornaxIcon} source={require(CocoPinImage)}/>
                 <Text style={[styles.textStyle, {marginBottom: 20}]}>Wallet {accIndex + 1}</Text>
-                <Text style={styles.textStyle}>FRX {accIndex && accounts[accIndex]?.balance || 0}</Text>
+                <Text style={styles.textStyle}>{tokens} {accIndex && accounts[accIndex]?.balance || 0}</Text>
             </View>
             <View style={styles.fornaxBox}>
                 <View style={styles.pinInput}>

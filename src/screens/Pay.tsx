@@ -6,8 +6,10 @@ import {
 } from 'react-native-responsive-screen';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {useDispatch, useSelector} from 'react-redux';
-import {setPayTxn, setTxnsInfo} from "../redux/reducers/Wallet";
+import {setPayTxn, setTokens, setTxnsInfo, setWeb3} from "../redux/reducers/Wallet";
 import {showMessage} from "react-native-flash-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {getWeb3} from "../utils/common";
 
 const PayImage = '../../assets/images/pay.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
@@ -30,12 +32,12 @@ const styles = StyleSheet.create({
         marginLeft: wp(6.3),
         marginTop: hp(3.7),
         // resizeMode:'contain',
-        height:hp(3),
-        width:hp(3),
+        height: hp(3),
+        width: hp(3),
     },
     fornaxIcon: {
         resizeMode: 'contain',
-        width:  hp(10.3),
+        width: hp(10.3),
         height: hp(10.3),
         marginBottom: hp(5.5),
     },
@@ -131,32 +133,47 @@ const Pay = (props: any) => {
     const navigate = props.navigation.navigate;
     let scanner = useRef(null);
 
-    const {web3, accounts, defaultAdress} = useSelector(({wallet}: any) => {
+    const {web3, accounts, defaultAdress, tokens} = useSelector(({wallet}: any) => {
         return {
             web3: wallet?.web3,
             accounts: wallet?.accounts,
             defaultAdress: wallet?.defaultAdress,
+            tokens: wallet?.tokens,
         };
     });
 
-    const onSuccess = (e: any) => {
+    const onSuccess = async (e: any) => {
         // Linking.openURL(e.data).catch(err =>
         //   console.error('An error occured', err)
         // );
         console.log(e.data);
         const found = accounts.find((acc: any) => acc.address === defaultAdress);
         let data = e.data.split('?');
-        if(data[0].split(':')[0]==='fornax'){
+        if (data[0].split(':')[0] === 'fornax' || data[0].split(':')[0] === 'ethereum' || data[0].split(':')[0] === 'binance') {
             let value = data[1].split('=')[1];
-            console.log('value:', value,parseFloat(value), typeof value)
+            console.log('value:', value, parseFloat(value), typeof value)
             let payTxnData = {
                 to: data[0].split(':')[1],
                 value: parseFloat(value),
             }
             console.log('payTxnData:', payTxnData);
+            let mnemonicPhrase = await AsyncStorage.getItem('mnemonicPhrase');
+            let web3Frx = web3;
+            if (data[0].split(':')[0] === 'fornax' && tokens !== "FRX") {
+                dispatch(setTokens('FRX'));
+                web3Frx = mnemonicPhrase && await getWeb3(mnemonicPhrase, 'FRX');
+            } else if (data[0].split(':')[0] === 'ethereum' && tokens !== "ETH") {
+                dispatch(setTokens('ETH'));
+                web3Frx = mnemonicPhrase && await getWeb3(mnemonicPhrase, 'ETH');
+            } else if (data[0].split(':')[0] === 'binance' && tokens !== "BNB") {
+                dispatch(setTokens('FRX'));
+                web3Frx = mnemonicPhrase && await getWeb3(mnemonicPhrase, 'FRX');
+            } else {
+            }
+            dispatch(setWeb3(web3Frx));
             dispatch(setPayTxn({from: {...found}, data: payTxnData}));
             navigate('ConfirmPay');
-        }else{
+        } else {
             showMessage({
                 message: "Invalid Pay! Not Fornax network",
                 description: "Must use fornax network pay address",
