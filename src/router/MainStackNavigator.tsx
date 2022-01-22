@@ -52,6 +52,7 @@ const MainStackNavigator = ({ initRoute }: any) => {
         <Stack.Screen name="Intro" component={Intro} />
         <Stack.Screen name="WalletSetup" component={WalletSetup} />
         <Stack.Screen name="Import" component={ImportWallet} />
+        <Stack.Screen name="Tokens" component={Tokens} />
         <Stack.Screen name="SetPin" component={SetPin} />
         <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="Wallet" component={Wallet} />

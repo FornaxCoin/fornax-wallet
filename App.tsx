@@ -15,7 +15,6 @@ import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from "react-native-flash-message";
 import _ from 'lodash';
 import TouchID from 'react-native-touch-id';
-
 const BgImage = './assets/images/Layer.png';
 
 const styles = StyleSheet.create({
@@ -128,7 +127,7 @@ const App = () => {
             return;
         }
         if (loginPin) {
-            setInitRoute('Tokens');
+            setInitRoute('LoginPin');
             return;
         }
         if (accountList === null) {

@@ -98,6 +98,7 @@ const CardCarousel = (props: any) => {
     }
 
     useEffect(() => {
+
         dispatch(setDefaultAddress(accounts[0]?.address || ''));
     }, [accounts]);
 

@@ -175,7 +175,7 @@ const LoginPin = (props: any) => {
           return;
         }
         setPin('');
-        navigate('Dashboard')
+        navigate('tokens')
       } else {
         showMessage({
           message: "Login Pin Failed!",
@@ -246,7 +246,7 @@ const LoginPin = (props: any) => {
             return;
           }
           if (registerUser && loginUser && accountList && (loginPin)) {
-            navigate('Dashboard');
+            navigate('Tokens');
             return;
           }
           console.log(success, "success");

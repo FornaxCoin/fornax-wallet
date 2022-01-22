@@ -159,7 +159,7 @@ const Login = (props: any) => {
                     await AsyncStorage.setItem('loginUser', JSON.stringify(user));
                     const value = await AsyncStorage.getItem('accountList');
                     if (value) {
-                        navigate('Dashboard');
+                        navigate('Tokens');
                         return;
                     }
                     navigate('WalletSetup');

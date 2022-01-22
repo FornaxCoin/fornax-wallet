@@ -5,6 +5,9 @@ interface WalletState {
     privateKey: string;
     ethAddress: string;
     web3: any;
+    web3Frx: any;
+    web3Eth: any;
+    web3Bnb: any;
     accounts: any;
     txnInfo: any;
     txnResponse: any;
@@ -12,7 +15,6 @@ interface WalletState {
     sendTxnStatus: string;
     payTxn: any,
     tokens: any,
-    tokensWeb3: any;
 }
 
 const initialState = {
@@ -21,13 +23,15 @@ const initialState = {
     ethAddress: '',
     payTxn: null,
     web3: null,
+    web3Frx: null,
+    web3Eth: null,
+    web3Bnb: null,
     accounts: [],
     txnInfo: null,
     defaultAddress: '',
     txnResponse: null,
     sendTxnStatus: '',
-    tokens: null,
-    tokensWeb3: [{}, {}, {}]
+    tokens: 'frx',
 } as WalletState;
 
 const walletSlice = createSlice({
@@ -47,6 +51,15 @@ const walletSlice = createSlice({
         setWeb3(state, action) {
             state.web3 = action.payload;
         },
+        setWeb3Frx(state, action) {
+            state.web3Frx = action.payload;
+        },
+        setWeb3Eth(state, action) {
+            state.web3Eth = action.payload;
+        },
+        setWeb3Bnb(state, action) {
+            state.web3Bnb = action.payload;
+        },
         setAccounts(state, action) {
             state.accounts = action.payload;
         },
@@ -65,9 +78,6 @@ const walletSlice = createSlice({
         setTokens(state, action) {
             state.tokens = action.payload
         },
-        setTokensWeb3(state, action) {
-            state.tokens = action.payload
-        }
 
     },
 });
@@ -76,6 +86,9 @@ export const {
     setMnemonic,
     initWallet,
     setWeb3,
+    setWeb3Frx,
+    setWeb3Eth,
+    setWeb3Bnb,
     setAccounts,
     setTxnsInfo,
     setTxnsResponse,
@@ -83,6 +96,5 @@ export const {
     setSendTxnStatus,
     setPayTxn,
     setTokens,
-    setTokensWeb3,
 } = walletSlice.actions;
 export default walletSlice.reducer;

@@ -184,7 +184,7 @@ const VerifyMnemonic = (props: any) => {
       } else {
         hideMessage();
         await AsyncStorage.setItem('accountList', JSON.stringify([accounts]));
-        navigate('Dashboard');
+        navigate('Tokens');
       }
     } else {
       setVerifyBox(true);

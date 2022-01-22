@@ -138,7 +138,7 @@ const ImportWallet = (props: any) => {
         ['accountList', JSON.stringify([account])],
         ['mnemonicPhrase', mnemonicPhrase],
       ]);
-      navigate('Dashboard');
+      navigate('Tokens');
     } catch (error) {
       // Error saving data
     }
