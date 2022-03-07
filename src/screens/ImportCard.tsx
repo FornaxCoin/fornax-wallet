@@ -1,231 +1,247 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  Image,
-  Pressable, ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
+    Image,
+    Pressable, ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
-import { useDispatch, useSelector } from 'react-redux';
-import { setAccounts } from '../redux/reducers/Wallet';
-import { showMessage, hideMessage } from "react-native-flash-message";
+import {useDispatch, useSelector} from 'react-redux';
+import {setAccounts} from '../redux/reducers/Wallet';
+import {showMessage, hideMessage} from "react-native-flash-message";
 import Wallet from 'ethereumjs-wallet'
+import { backgroundColor } from 'html2canvas/dist/types/css/property-descriptors/background-color';
 
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const backLines = '../../assets/images/Group_37background.png';
 const backCard = '../../assets/images/Group_36card.png';
 
 const styles = StyleSheet.create({
-  fornaxBox: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  txnText: {
-    fontSize: 16,
-    color: '#ffffff',
-    textAlign: 'center',
-    fontFamily: 'Quicksand-Medium',
-    marginTop: -5,
-  },
-  buttonClose: {
-    backgroundColor: '#b27f29',
-    width: wp(49.3),
-    height:hp(6.6),
-    alignSelf: 'center',
-    justifyContent:'center',
-  },
-  button: {
-    borderRadius: hp(2.4),
-    marginTop: hp('5'),
-    // marginBottom: hp('10'),
-  },
-  textStyle: {
-    fontSize: 20,
-    color: '#ffffff',
-    lineHeight: 23,
-    fontFamily: 'Quicksand-Bold',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  backIcon: {
-    marginLeft: wp(6.3),
-    marginTop: hp(3.7),
-    // resizeMode:'contain',
-    height:hp(3),
-    width:hp(3),
-  },
-  fornaxIcon: {
-    marginBottom: 30,
-  },
-  fornaxInnerBox: {
-    flex: 0,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    marginTop: hp('12'),
-    marginBottom: hp('4'),
-  },
-  inputBox: {
-    width: wp(75),
-    marginVertical: 0,
-    marginTop: hp(20),
-  },
-  inputLabel: {
-    fontSize: 16,
-    color: '#b27f29',
-    marginTop: 8,
-    marginBottom: 10,
-    fontFamily: 'Quicksand-Medium',
-  },
-  input: {
-    height: 40,
-    borderBottomWidth: 2,
-    borderBottomColor: '#ffffff',
-    fontFamily: 'Quicksand-Medium',
-    color: '#ffffff',
-    fontSize: 16,
-  },
-  center: {
-    top: hp(-5),
-    zIndex: -99,
-    position: 'absolute',
-    alignSelf: 'center',
-  },
-  card:{
-    height:hp(39.5),
-    resizeMode: 'contain',
-  },
+    fornaxBox: {
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    txnText: {
+        fontSize: 16,
+        color: '#ffffff',
+        textAlign: 'center',
+        fontFamily: 'Quicksand-Medium',
+        marginTop: -5,
+    },
+    buttonClose: {
+        backgroundColor: '#b27f29',
+        width: wp(49.3),
+        height: hp(6.6),
+        alignSelf: 'center',
+        justifyContent: 'center',
+    },
+    button: {
+        borderRadius: hp(2.4),
+        marginTop: hp('5'),
+        // marginBottom: hp('10'),
+    },
+    textStyle: {
+        fontSize: 20,
+        color: '#ffffff',
+        lineHeight: 23,
+        fontFamily: 'Quicksand-Bold',
+        textAlign: 'center',
+        marginBottom: 10,
+    },
+    backIcon: {
+        marginLeft: wp(6.3),
+        marginTop: hp(3.7),
+        // resizeMode:'contain',
+        height: hp(3),
+        width: hp(3),
+    },
+    fornaxIcon: {
+        marginBottom: 30,
+    },
+    fornaxInnerBox: {
+        flex: 0,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        marginTop: hp('12'),
+        marginBottom: hp('4'),
+    },
+    inputBox: {
+        width: wp(75),
+        marginVertical: 0,
+        marginTop: hp(20),
+    },
+    inputLabel: {
+        fontSize: 16,
+        color: '#b27f29',
+        marginTop: 8,
+        marginBottom: 10,
+        fontFamily: 'Quicksand-Medium',
+    },
+    input: {
+        height: 40,
+        borderBottomWidth: 2,
+        borderBottomColor: '#ffffff',
+        fontFamily: 'Quicksand-Medium',
+        color: '#ffffff',
+        fontSize: 16,
+    },
+    center: {
+        top: hp(-5),
+        zIndex: -99,
+        position: 'absolute',
+        alignSelf: 'center',
+    },
+    card: {
+        height: hp(39.5),
+        resizeMode: 'contain',
+    },
+    pressed: {
+        shadowColor: "#fff",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 10.00,
+    },
 });
 
 const ImportCard = (props: any) => {
-  const dispatch = useDispatch();
-  const navigate = props.navigation.navigate;
-  const [privateKey, setPrivateKey] = useState('');
+    const dispatch = useDispatch();
+    const navigate = props.navigation.navigate;
+    const [privateKey, setPrivateKey] = useState('');
 
-  const { web3, accounts } = useSelector(({ wallet }: any) => {
-    return {
-      web3: wallet?.web3,
-      accounts: wallet?.accounts,
-    };
-  });
+    const {web3, accounts} = useSelector(({wallet}: any) => {
+        return {
+            web3: wallet?.web3,
+            accounts: wallet?.accounts,
+        };
+    });
 
-  const storeDataAsync = async (account: any) => {
-    try {
-      const accounts: any = [];
-      const accountList = await AsyncStorage.getItem('accountList');
-      if (accountList !== null) {
-        accounts.push(...JSON.parse(accountList));
-        accounts.push(account);
-      }
-      await AsyncStorage.setItem('accountList', JSON.stringify(accounts));
-      dispatch(setAccounts(accounts));
-      navigate('Dashboard');
-    } catch (error) {
-      // Error saving data 0xde863f561914f42e185fa0dff531c5bb5ae35423bd3fea130493545df324e533
-    }
-  };
-
-  const getBalance = async (account: any) => {
-    web3.eth.getBalance(account?.address).then(
-      async (bal: any) => {
-        if (bal >= 0) {
-          const balance = await web3.utils.fromWei(bal, 'ether');
-          storeDataAsync({ ...account, balance });
+    const storeDataAsync = async (account: any) => {
+        try {
+            const accounts: any = [];
+            const accountList = await AsyncStorage.getItem('accountList');
+            if (accountList !== null) {
+                accounts.push(...JSON.parse(accountList));
+                accounts.push(account);
+            }
+            await AsyncStorage.setItem('accountList', JSON.stringify(accounts));
+            dispatch(setAccounts(accounts));
+            navigate('Dashboard');
+        } catch (error) {
+            // Error saving data 0xde863f561914f42e185fa0dff531c5bb5ae35423bd3fea130493545df324e533
         }
-      },
-      (error: any) => {
-        console.log(error, 'getBalance');
-      },
-    );
-  };
+    };
 
-  const ignoreLength: any = true;
+    const getBalance = async (account: any) => {
+        web3.eth.getBalance(account?.address).then(
+            async (bal: any) => {
+                if (bal >= 0) {
+                    const balance = await web3.utils.fromWei(bal, 'ether');
+                    storeDataAsync({...account, balance});
+                }
+            },
+            (error: any) => {
+                console.log(error, 'getBalance');
+            },
+        );
+    };
 
-  const handleImport = async () => {
-    try {
-      if (web3) {
-        const found = accounts.length > 0 && accounts.find((acc: any) => acc.privateKey === privateKey)
-        if(found) {
-          await getBalance(found);
-          showMessage({
-            message: "Adress already Exist!",
-            description: "This address is already exist",
-            type: "info",
-          });
-        } else {
-          if(privateKey.toString().trim().length === 0){
+    const ignoreLength: any = true;
+
+    const handleImport = async () => {
+        try {
+            if (web3) {
+                const found = accounts.length > 0 && accounts.find((acc: any) => acc.privateKey === privateKey)
+                if (found) {
+                    await getBalance(found);
+                    showMessage({
+                        message: "Adress already Exist!",
+                        description: "This address is already exist",
+                        type: "info",
+                    });
+                } else {
+                    if (privateKey.toString().trim().length === 0) {
+                        showMessage({
+                            message: "Insert Private Key!",
+                            description: "Please enter Private key!",
+                            type: "info",
+                        });
+                    } else {
+                        if (privateKey.toString().trim().length === 64 || (privateKey.includes('0x') && privateKey.toString().trim().length === 66)) {
+                            const account = await web3.eth.accounts.privateKeyToAccount(
+                                privateKey.trim(),
+                                [ignoreLength],
+                            );
+                            await getBalance(account);
+                        } else {
+                            showMessage({
+                                message: "Private Key Invalid!",
+                                description: "Please enter valid Private key!",
+                                type: "info",
+                            });
+                        }
+                    }
+                }
+            }
+        } catch (err) {
             showMessage({
-              message: "Insert Private Key!",
-              description: "Please enter Private key!",
-              type: "info",
-            });
-          }else{
-            if (privateKey.toString().trim().length === 64 || (privateKey.includes('0x') && privateKey.toString().trim().length === 66)) {
-              const account = await web3.eth.accounts.privateKeyToAccount(
-                  privateKey.trim(),
-                  [ignoreLength],
-              );
-              await getBalance(account);
-            } else {
-              showMessage({
                 message: "Private Key Invalid!",
                 description: "Please enter valid Private key!",
                 type: "info",
-              });
-            }
-          }
+            });
+            console.log(err);
         }
-      }
-    } catch (err) {
-      showMessage({
-        message: "Private Key Invalid!",
-        description: "Please enter valid Private key!",
-        type: "info",
-      });
-      console.log(err);
-    }
-  };
+    };
 
-  return (
-    <>
-      <View>
-        <Pressable onPress={() => navigate('AddCard')}>
-          <Image style={styles.backIcon} source={require(BackIcon)} />
-        </Pressable>
-      </View>
-      {/*<ScrollView>*/}
-        <View style={styles.fornaxInnerBox}>
-          <View>
-            <Image style={styles.center} source={require(backLines)} />
-            <Image style={[styles.center,styles.card]} source={require(backCard)} />
-          </View>
-          <Text style={styles.textStyle}>Import Card</Text>
-        </View>
-        <View style={styles.fornaxBox}>
-          <View style={styles.inputBox}>
-            <Text style={styles.inputLabel}>Private Key</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Private Key"
-                placeholderTextColor="#bdbdbd"
-                onChangeText={e => setPrivateKey(e)}
-                value={privateKey}
-            />
-          </View>
-          <Pressable
-              onPress={handleImport}
-              style={[styles.button, styles.buttonClose]}>
-            <Text style={styles.txnText}>Continue</Text>
-          </Pressable>
-        </View>
-      {/*</ScrollView>*/}
-    </>
-  );
+    return (
+        <>
+            <View>
+                <View style={{overflow: 'hidden'}}>
+                    <Pressable
+                        android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => navigate('AddCard')}>
+                        <Image style={styles.backIcon} source={require(BackIcon)}/>
+                    </Pressable>
+                </View>
+            </View>
+            {/*<ScrollView>*/}
+            <View style={styles.fornaxInnerBox}>
+                <View>
+                    <Image style={styles.center} source={require(backLines)}/>
+                    <Image style={[styles.center, styles.card]} source={require(backCard)}/>
+                </View>
+                <Text style={styles.textStyle}>Import Card</Text>
+            </View>
+            <View style={styles.fornaxBox}>
+                <View style={styles.inputBox}>
+                    <Text style={styles.inputLabel}>Private Key</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Private Key"
+                        placeholderTextColor="#bdbdbd"
+                        onChangeText={e => setPrivateKey(e)}
+                        value={privateKey}
+                    />
+                </View>
+                <View style={{overflow: 'hidden',borderRadius: hp(2.4)}}>
+                    <Pressable
+                        android_ripple={{color: '#00000030', borderless: false}}
+                        onPress={handleImport}
+                        style={(state) => [state.pressed && styles.pressed, styles.button, styles.buttonClose]}>
+                        <Text style={styles.txnText}>Continue</Text>
+                    </Pressable>
+                </View>
+            </View>
+            {/*</ScrollView>*/}
+        </>
+    );
 };
 
 export default ImportCard;

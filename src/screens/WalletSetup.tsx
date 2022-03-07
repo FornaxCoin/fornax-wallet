@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {generateMnemonic} from 'bip39';
@@ -10,7 +10,7 @@ import Spinner from 'react-native-spinkit';
 
 const SettingImage = '../../assets/images/Settingmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-
+let disable:boolean;
 const styles = StyleSheet.create({
     fornaxBox: {
         flex: 1,
@@ -89,6 +89,15 @@ const styles = StyleSheet.create({
         bottom: 0,
         top: 0
     },
+    pressed: {
+        shadowColor: "#fff",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 10.00,
+    },
 });
 
 const WalletSetup = (props: any) => {
@@ -131,6 +140,7 @@ const WalletSetup = (props: any) => {
     };
 
     const handleCreateWallet = async () => {
+        disable=true;
         await setLoader(true);
         try {
             const mnemonicPhrase = await generateMnemonic();
@@ -146,10 +156,13 @@ const WalletSetup = (props: any) => {
             }
         } catch (err) {
             setLoader(false);
+            disable = false;
             console.log(err);
         }
     };
-
+    useEffect(() => {
+        disable = false;
+    })
     return (
         <>
             {loader && (
@@ -158,7 +171,7 @@ const WalletSetup = (props: any) => {
                 </View>
             )}
             <View style={{zIndex: 0}}>
-                <Pressable onPress={() => navigate('Dashboard')}>
+                <Pressable onPress={() => navigate('Login')}>
                     {/*<Image style={styles.backIcon} source={require(BackIcon)} />*/}
                 </Pressable>
             </View>
@@ -171,8 +184,9 @@ const WalletSetup = (props: any) => {
                     </Text>
                 </View>
                 <Pressable
+                    android_ripple={{color: '#00000030', borderless: false}}
                     onPress={() => navigate('Import')}
-                    style={[styles.button, styles.buttonClose, styles.secondaryButton]}>
+                    style={(state)=>[state.pressed && styles.pressed,styles.button, styles.buttonClose, styles.secondaryButton]}>
                     <Text style={[styles.txnText, styles.secondaryTxnText]}>
                         Import using Secret
                     </Text>
@@ -181,11 +195,15 @@ const WalletSetup = (props: any) => {
                         Recovery Phrase
                     </Text>
                 </Pressable>
-                <Pressable
-                    onPress={handleCreateWallet}
-                    style={[styles.button, styles.buttonClose, {marginBottom: hp('10')}]}>
-                    <Text style={styles.txnText}>Create a new Wallet</Text>
-                </Pressable>
+                {!disable &&
+                    <Pressable
+                        android_ripple={{color: '#00000030', borderless: false}}
+                        disabled={disable}
+                        onPress={async ()=>{disable = true; await setLoader(true); handleCreateWallet()}}
+                        style={(state)=>[state.pressed && styles.pressed, styles.button, styles.buttonClose, {marginBottom: hp('10')}]}>
+                        <Text style={styles.txnText}>Create a new Wallet</Text>
+                    </Pressable>
+                }
             </View>
         </>
     );

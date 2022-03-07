@@ -112,7 +112,8 @@ const Notifications = (props: any) => {
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('Dashboard')}>
+        <Pressable
+            android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => navigate('Dashboard')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>
@@ -126,88 +127,88 @@ const Notifications = (props: any) => {
             />
           </View>
           <Text style={styles.textStyle}>Notifications</Text>
-          <Text style={styles.fornaxMiniText}>You have a new notification</Text>
+          <Text style={styles.fornaxMiniText}>You have 0 notification</Text>
         </View>
         <View style={styles.scrollCards}>
-          <ScrollView>
-            <Text style={styles.newText}>New</Text>
-            <View style={styles.bankBox}>
-              <View style={styles.badge} />
-              <View>
-                <Text style={styles.dateTxt}>
-                  29 June 2021, 9.02 AM
-                </Text>
-                <Text style={styles.msgTxt}>
-                  You spent FRX 32.000 for Coffee Shop Dubai
-                </Text>
-                <Text style={styles.dateTxt}>
-                  ‘Buy drink’
-                </Text>
-              </View>
-              <Image style={styles.sideIcon} source={require(GreenTopMini)} />
-            </View>
-            <View style={styles.bankBox}>
-              <View style={styles.badge} />
-              <View>
-                <Text style={styles.dateTxt}>
-                  29 June 2021, 9.02 AM
-                </Text>
-                <Text style={styles.msgTxt}>
-                  You spent FRX 32.000 for Coffee Shop Dubai
-                </Text>
-                <Text style={styles.dateTxt}>
-                  ‘Buy drink’
-                </Text>
-              </View>
-              <Image style={styles.sideIcon} source={require(RedBottommini)} />
-            </View>
-            <Text style={[styles.newText, { marginTop: 30 }]}>Recent</Text>
-            <View style={styles.bankBox}>
-              <View style={styles.badge} />
-              <View>
-                <Text style={styles.dateTxt}>
-                  28 June 2021, 8.32 PM
-                </Text>
-                <Text style={styles.msgTxt}>
-                  You spent FRX 210.000 for pay Junaid Kazmi
-                </Text>
-                <Text style={styles.dateTxt}>
-                  ‘Buy items’
-                </Text>
-              </View>
-              <Image style={styles.sideIcon} source={require(RedBottommini)} />
-            </View>
-            <View style={styles.bankBox}>
-              <View style={styles.badge} />
-              <View>
-                <Text style={styles.dateTxt}>
-                  28 June 2021, 8.32 PM
-                </Text>
-                <Text style={styles.msgTxt}>
-                  You spent FRX 210.000 for pay Junaid Kazmi
-                </Text>
-                <Text style={styles.dateTxt}>
-                  ‘Buy items’
-                </Text>
-              </View>
-              <Image style={styles.sideIcon} source={require(RedBottommini)} />
-            </View>
-            <View style={styles.bankBox}>
-              <View style={styles.badge} />
-              <View>
-                <Text style={styles.dateTxt}>
-                  28 June 2021, 8.32 PM
-                </Text>
-                <Text style={styles.msgTxt}>
-                  You spent FRX 210.000 for pay Junaid Kazmi
-                </Text>
-                <Text style={styles.dateTxt}>
-                  ‘Buy items’
-                </Text>
-              </View>
-              <Image style={styles.sideIcon} source={require(RedBottommini)} />
-            </View>
-          </ScrollView>
+          {/*<ScrollView>*/}
+          {/*  <Text style={styles.newText}>New</Text>*/}
+          {/*  <View style={styles.bankBox}>*/}
+          {/*    <View style={styles.badge} />*/}
+          {/*    <View>*/}
+          {/*      <Text style={styles.dateTxt}>*/}
+          {/*        29 June 2021, 9.02 AM*/}
+          {/*      </Text>*/}
+          {/*      <Text style={styles.msgTxt}>*/}
+          {/*        You spent FRX 32.000 for Coffee Shop Dubai*/}
+          {/*      </Text>*/}
+          {/*      <Text style={styles.dateTxt}>*/}
+          {/*        ‘Buy drink’*/}
+          {/*      </Text>*/}
+          {/*    </View>*/}
+          {/*    <Image style={styles.sideIcon} source={require(GreenTopMini)} />*/}
+          {/*  </View>*/}
+          {/*  <View style={styles.bankBox}>*/}
+          {/*    <View style={styles.badge} />*/}
+          {/*    <View>*/}
+          {/*      <Text style={styles.dateTxt}>*/}
+          {/*        29 June 2021, 9.02 AM*/}
+          {/*      </Text>*/}
+          {/*      <Text style={styles.msgTxt}>*/}
+          {/*        You spent FRX 32.000 for Coffee Shop Dubai*/}
+          {/*      </Text>*/}
+          {/*      <Text style={styles.dateTxt}>*/}
+          {/*        ‘Buy drink’*/}
+          {/*      </Text>*/}
+          {/*    </View>*/}
+          {/*    <Image style={styles.sideIcon} source={require(RedBottommini)} />*/}
+          {/*  </View>*/}
+          {/*  <Text style={[styles.newText, { marginTop: 30 }]}>Recent</Text>*/}
+          {/*  <View style={styles.bankBox}>*/}
+          {/*    <View style={styles.badge} />*/}
+          {/*    <View>*/}
+          {/*      <Text style={styles.dateTxt}>*/}
+          {/*        28 June 2021, 8.32 PM*/}
+          {/*      </Text>*/}
+          {/*      <Text style={styles.msgTxt}>*/}
+          {/*        You spent FRX 210.000 for pay Junaid Kazmi*/}
+          {/*      </Text>*/}
+          {/*      <Text style={styles.dateTxt}>*/}
+          {/*        ‘Buy items’*/}
+          {/*      </Text>*/}
+          {/*    </View>*/}
+          {/*    <Image style={styles.sideIcon} source={require(RedBottommini)} />*/}
+          {/*  </View>*/}
+          {/*  <View style={styles.bankBox}>*/}
+          {/*    <View style={styles.badge} />*/}
+          {/*    <View>*/}
+          {/*      <Text style={styles.dateTxt}>*/}
+          {/*        28 June 2021, 8.32 PM*/}
+          {/*      </Text>*/}
+          {/*      <Text style={styles.msgTxt}>*/}
+          {/*        You spent FRX 210.000 for pay Junaid Kazmi*/}
+          {/*      </Text>*/}
+          {/*      <Text style={styles.dateTxt}>*/}
+          {/*        ‘Buy items’*/}
+          {/*      </Text>*/}
+          {/*    </View>*/}
+          {/*    <Image style={styles.sideIcon} source={require(RedBottommini)} />*/}
+          {/*  </View>*/}
+          {/*  <View style={styles.bankBox}>*/}
+          {/*    <View style={styles.badge} />*/}
+          {/*    <View>*/}
+          {/*      <Text style={styles.dateTxt}>*/}
+          {/*        28 June 2021, 8.32 PM*/}
+          {/*      </Text>*/}
+          {/*      <Text style={styles.msgTxt}>*/}
+          {/*        You spent FRX 210.000 for pay Junaid Kazmi*/}
+          {/*      </Text>*/}
+          {/*      <Text style={styles.dateTxt}>*/}
+          {/*        ‘Buy items’*/}
+          {/*      </Text>*/}
+          {/*    </View>*/}
+          {/*    <Image style={styles.sideIcon} source={require(RedBottommini)} />*/}
+          {/*  </View>*/}
+          {/*</ScrollView>*/}
         </View>
       </View>
     </>

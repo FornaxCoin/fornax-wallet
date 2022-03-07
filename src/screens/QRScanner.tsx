@@ -154,7 +154,8 @@ const QRScanner = (props: any) => {
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('Transfer')}>
+        <Pressable
+            android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => navigate('Transfer')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>

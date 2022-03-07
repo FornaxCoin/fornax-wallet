@@ -14,11 +14,14 @@ import RNPickerSelect from 'react-native-picker-select';
 import {showMessage, hideMessage} from "react-native-flash-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Spinner from "react-native-spinkit";
+import PhoneModal from "../components/Modal";
 
 const SendImage = '../../assets/images/transfer.png';
 const PayImage = '../../assets/images/pay.png';
 const QrcodeImage = '../../assets/images/COCO_Line_Menumini.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
+const sendImg = '../../assets/images/sendFail.png';
+
 // const DownArrow = '../../assets/images/Vector-arrow.png';
 
 const styles = StyleSheet.create({
@@ -43,12 +46,12 @@ const styles = StyleSheet.create({
         marginLeft: wp(6.3),
         marginTop: hp(3.7),
         // resizeMode:'contain',
-        height:hp(3),
-        width:hp(3),
+        height: hp(3),
+        width: hp(3),
     },
     fornaxIcon: {
         resizeMode: 'contain',
-        width:  hp(6.5),
+        width: hp(6.5),
         height: hp(6.5),
         marginBottom: hp(5.5),
     },
@@ -116,8 +119,74 @@ const styles = StyleSheet.create({
         left: 0,
         bottom: 0,
         top: 0
+    }, verifyModalBox: {
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        height: hp(45),
+        width: wp(75),
+        alignContent: 'center',
+        alignSelf: 'center',
+        textAlign: 'center',
+    },
+    topImg: {
+        height: hp(6.6),
+        width: wp(16.8),
+        alignSelf: 'center',
+        resizeMode: 'contain',
+    },
+    verifyText: {
+        fontSize: 16,
+        fontFamily: 'Quicksand-Medium',
+        textAlign: 'center',
+        color: '#000000',
+        lineHeight: 25,
+        paddingHorizontal: 30,
+    },
+    buttonCode: {
+        backgroundColor: '#363853',
+        justifyContent: 'center',
+        width: wp(44.7),
+        height: hp(6.7),
+        alignSelf: 'center',
+        borderRadius: 20,
+    },
+    codeText: {
+        fontSize: 20,
+        color: '#ffffff',
+        lineHeight: 23,
+        fontFamily: 'Quicksand-Bold',
+        textAlign: 'center',
+    },
+    pressed: {
+        shadowColor: "#fff",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 1,
     },
 });
+//
+const VerifyModal = ({isModalVisible, setModalVisible, navigate}: any) => {
+    return (
+        <>
+            <View style={styles.verifyModalBox}>
+                <Image source={require(sendImg)} style={styles.topImg}/>
+                <Text style={styles.verifyText}>
+                    Your transaction failed, the data you entered is incorrect, please check again
+                </Text>
+                <Pressable
+                    onPress={() => {
+                        setModalVisible(!isModalVisible);
+                        navigate('Dashboard');
+                    }}
+                    style={styles.buttonCode}>
+                    <Text style={styles.codeText}>Check Again</Text>
+                </Pressable>
+            </View>
+        </>
+    );
+};
 
 const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
@@ -138,6 +207,7 @@ const pickerSelectStyles = StyleSheet.create({
 
 const ConfirmPay = (props: any) => {
 
+    const [isModalVisible, setModalVisible] = useState(false);
     const dispatch = useDispatch();
     const navigate = props.navigation.navigate;
     const [accountOpt, setAccountOpt] = useState<any>([]);
@@ -178,9 +248,10 @@ const ConfirmPay = (props: any) => {
     const handleSend = async () => {
         console.log("inside handle")
         const isValid = await web3.utils.isAddress(payTxnData.data.to.toLowerCase().trim());
-        if (payTxnData.from?.address && isValid && payTxnData?.data?.value > 0) {
+        if (payTxnData.from?.address && isValid && payTxnData?.data?.value > 0 && payTxnData.from?.balance) {
             setLoader(true);
             await sendTxn(payTxnData.data.value.toString());
+            console.log("handle Pay Done")
         } else {
             showMessage({
                 message: "Address is Invalid!",
@@ -214,7 +285,7 @@ const ConfirmPay = (props: any) => {
             ]);
 
             let finalAmount = amt;
-            console.log('\nSENDING AMOUNT ==>>', finalAmount);
+            console.log('\nSENDING AMOUNT2 ==>>', finalAmount);
             if (finalAmount) {
                 web3.eth
                     .sendTransaction({
@@ -231,11 +302,17 @@ const ConfirmPay = (props: any) => {
                     .on('receipt', function (receipt: any) {
                         console.log(receipt, 'receipt');
                         let amount = web3.utils.fromWei(finalAmount.toString(), 'ether');
-                        dispatch(setTxnsResponse({...receipt, amount, ...txnData, gasPrice}))
+                        finalAmount = amount
+                        console.log('amount', amount)
+                        dispatch(setTxnsResponse({...receipt, finalAmount, amount, ...txnData, gasPrice}))
                         getBalance(payTxnData.from);
+                        console.log('getBalance')
                         const found = accounts.find((ac: any) => ac.address === payTxnData?.data?.to);
                         if (found) {
+                            console.log('found')
                             getBalance(found);
+                            console.log('found done')
+
                         }
                     })
                     // .on('confirmation', function (confirmationNumber: any, receipt: any) {
@@ -248,10 +325,15 @@ const ConfirmPay = (props: any) => {
                     //     //     getBalance(found);
                     //     // }
                     // })
-                    .on('error', (console.error));
+                    .on('error', (err: any) => {
+                        console.log("error: first error", err)
+                        setLoader(false);
+                        setModalVisible(!isModalVisible);
+                    });
             } else {
                 console.log("error");
                 setLoader(false);
+                setModalVisible(!isModalVisible);
                 return
             }
         } catch (err) {
@@ -292,9 +374,11 @@ const ConfirmPay = (props: any) => {
             const found = accounts.find((ac: any) => ac.address === txnData?.to);
             if (!found) {
                 setLoader(false);
+                console.log('navigation to ConfirmTransaction1')
                 navigate('ConfirmTransaction');
             } else if (found && account?.address === found?.address) {
                 setLoader(false);
+                console.log('navigation to ConfirmTransaction2')
                 navigate('ConfirmTransaction');
             }
         } catch (error) {
@@ -308,10 +392,20 @@ const ConfirmPay = (props: any) => {
                     <Spinner isVisible={true} size={50} type={'9CubeGrid'} color="#b27f29"/>
                 </View>
             )}
+            <PhoneModal isModalVisible={isModalVisible}>
+                <VerifyModal
+                    isModalVisible={isModalVisible}
+                    setModalVisible={setModalVisible}
+                    navigate={navigate}
+                />
+            </PhoneModal>
             <View>
-                <Pressable onPress={() => navigate('Dashboard')}>
+                <View style={{overflow: 'hidden'}}>
+                    <Pressable
+                        android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => navigate('Dashboard')}>
                     <Image style={styles.backIcon} source={require(BackIcon)}/>
                 </Pressable>
+                </View>
             </View>
             <View style={styles.fornaxInnerBox}>
                 <Image style={styles.fornaxIcon} source={require(PayImage)}/>
@@ -331,11 +425,14 @@ const ConfirmPay = (props: any) => {
                         items={accountOpt}
                     />
                 </View>
-                <Pressable
-                    onPress={handleSend}
-                    style={[styles.button, styles.buttonClose]}>
-                    <Text style={styles.textStyle}>Confirm</Text>
-                </Pressable>
+                <View style={{overflow: 'hidden'}}>
+                    <Pressable
+                        android_ripple={{color: '#00000030', borderless: false}}
+                        onPress={handleSend}
+                        style={(state) => [state.pressed && styles.pressed, styles.button, styles.buttonClose]}>
+                        <Text style={styles.textStyle}>Confirm</Text>
+                    </Pressable>
+                </View>
             </View>
         </>
     );

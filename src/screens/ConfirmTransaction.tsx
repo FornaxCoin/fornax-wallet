@@ -64,7 +64,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
-    elevation: 10,
   },
   divider: {
     height: 2,
@@ -154,6 +153,15 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     alignSelf: 'center',
   },
+  pressed: {
+    shadowColor: "#fff",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 10.00,
+  },
 });
 
 const ConfirmTransaction = (props: any) => {
@@ -165,6 +173,10 @@ const ConfirmTransaction = (props: any) => {
   const [total, setTotal] = useState<any>(null);
 
   const { web3, txnResponse , tokens, explorers} = useSelector(({ wallet }: any) => {
+    console.log("web3Wallet", wallet?.web3)
+    console.log("wallet?.txnResponse", wallet?.txnResponse)
+    console.log("tokens:", wallet?.tokens)
+    console.log("explorers:", wallet?.explorers)
     return {
       web3: wallet?.web3,
       txnResponse: wallet?.txnResponse,
@@ -174,7 +186,7 @@ const ConfirmTransaction = (props: any) => {
   });
 
   const getTimeStamp = async () => {
-    // console.log("Response:", txnResponse);
+    console.log("Response23354345:", txnResponse);
     var _timeStamp = await web3?.eth?.getBlock(txnResponse.blockNumber)
       ?.timestamp;
     setTimeStamp({
@@ -184,7 +196,10 @@ const ConfirmTransaction = (props: any) => {
   };
 
   useEffect(() => {
+    console.log("Use Effect")
+    console.log("web3")
     if (web3 && txnResponse) {
+      console.log("web3 && txnResponse")
       getTimeStamp();
       console.log("All Values: ",parseInt(txnResponse?.gasUsed), parseInt(txnResponse?.gasPrice), 'amount:',parseInt(txnResponse?.amount), 'final Amount:',parseInt(web3.utils.toWei(txnResponse?.finalAmount,'ether')))
     }
@@ -224,15 +239,22 @@ const ConfirmTransaction = (props: any) => {
     //   })
   };
 
-  console.log(txnResponse,"txnRes");
+  console.log("txnRes123456", txnResponse);
+  console.log("finalAmount234", txnResponse?.finalAmount);
+  console.log("gasUsed456789", txnResponse?.gasUsed);
+  console.log("gasUsed456789", txnResponse?.gasPrice);
+  console.log("All Values: ",parseInt(txnResponse?.gasUsed), parseInt(txnResponse?.gasPrice), 'amount:',parseInt(txnResponse?.amount), 'final Amount:',parseInt(web3.utils.toWei(txnResponse?.finalAmount,'ether')))
 
   return (
     <>
       <ViewShot ref={viewShotRef} style={{flex:1}} options={{format: 'jpg', quality:1.0}}>
         <View>
-          <Pressable onPress={() => navigate('Dashboard')}>
+          <View style={{overflow: 'hidden'}}>
+            <Pressable
+                android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => navigate('Dashboard')}>
             <Image style={styles.backIcon} source={require(BackIcon)} />
           </Pressable>
+          </View>
         </View>
         <View style={styles.fornaxBox}>
           <View style={styles.fornaxInnerBox}>
@@ -281,14 +303,26 @@ const ConfirmTransaction = (props: any) => {
             </View>
             <View style={styles.footerBox}>
               <View style={styles.copyBox}>
-                <Pressable onPress={e=>handleClipboard(txnResponse?.transactionHash)}>
+                <View style={{overflow: 'hidden'}}>
+                  <Pressable
+                      android_ripple={{color: '#ffffff20', borderless: false}}
+                    onPress={e=>handleClipboard(txnResponse?.transactionHash)}
+                    style={(state) => [state.pressed && styles.pressed]}
+                >
                   <Image style={styles.bookmarkIcon} source={require(Bookmark)} />
                 </Pressable>
+                </View>
               </View>
               <View style={styles.sendBox}>
-                <Pressable onPress={sendTxnResponse}>
+                <View style={{overflow: 'hidden'}}>
+                  <Pressable
+                      android_ripple={{color: '#00000030', borderless: false}}
+                    onPress={sendTxnResponse}
+                    style={(state) => [state.pressed && styles.pressed]}
+                >
                   <Image style={styles.boxIcon} source={require(SendImage)} />
                 </Pressable>
+                </View>
               </View>
             </View>
           </View>

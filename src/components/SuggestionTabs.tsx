@@ -153,6 +153,14 @@ const styles = StyleSheet.create({
         fontFamily: 'Quicksand-Bold',
         textAlign: 'center',
     },
+    pressed: {
+        shadowColor: "#fff",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 1,
+    },
 });
 
 const FirstRoute = () => {
@@ -180,11 +188,12 @@ const FirstRoute = () => {
                 numberOfLines={4}
                 onChangeText={(text) => setCritics(text)}
                 value={critics}/>
-            <Pressable
-                onPress={() => handleSuggestion('mailto:info@fornaxcoin.com')}
-                style={[styles.button, styles.buttonClose]}>
-                <Text style={styles.textStyle}>Send</Text>
-            </Pressable>
+                <Pressable
+                    android_ripple={{color: '#00000030', borderless: false}}
+                    onPress={() => handleSuggestion('mailto:info@fornaxcoin.com')}
+                    style={(state) => [state.pressed && styles.pressed, styles.button, styles.buttonClose]}>
+                    <Text style={styles.textStyle}>Send</Text>
+                </Pressable>
         </View>
     )
 }
@@ -201,11 +210,11 @@ const SecondRoute = () => {
             if (supported) {
                 // Opening the link with some app, if the URL scheme is "http" the web link should be opened
                 // by some browser in the mobile
-                try{
+                try {
                     let response = await Linking.openURL(URL);
                     // console.log('response:',e);
-                }catch (e) {
-                    console.log('response:',e);
+                } catch (e) {
+                    console.log('response:', e);
                 }
 
             } else {
@@ -223,8 +232,9 @@ const SecondRoute = () => {
                 onChangeText={(text) => setSuggestion(text)}
                 value={suggestion}/>
             <Pressable
+                android_ripple={{color: '#00000030', borderless: false}}
                 onPress={() => handleSuggestion('mailto:info@fornaxcoin.com')}
-                style={[styles.button, styles.buttonClose]}>
+                style={(state) => [state.pressed && styles.pressed, styles.button, styles.buttonClose]}>
                 <Text style={styles.textStyle}>Send</Text>
             </Pressable>
         </View>

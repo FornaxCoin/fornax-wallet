@@ -131,6 +131,15 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         // marginLeft: -10,
     },
+    pressed: {
+        shadowColor: "#fff",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 10.00,
+    },
 });
 
 const Login = (props: any) => {
@@ -223,21 +232,29 @@ const Login = (props: any) => {
                         onChangeText={e => setUser({...user, password: e})}
                         value={user.password}
                     />
-                    <Pressable onPress={() => setShowPass(!showPass)} style={{position: 'absolute', right: 0}}>
+                    <Pressable
+                        android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => setShowPass(!showPass)}
+                        style={{position: 'absolute', right: 0}}>
                         <Image source={require(EyeSlashImg)} style={styles.pinEye}/>
                     </Pressable>
                 </View>
-                <Pressable
-                    onPress={handleLogin}
-                    style={[styles.button, styles.buttonClose]}>
-                    <Text style={styles.textStyle}>Login</Text>
-                </Pressable>
+                <View style={{overflow: 'hidden'}}>
+                    <Pressable
+                        android_ripple={{color: '#00000030', borderless: false}}
+                        onPress={handleLogin}
+                        style={(state) => [state.pressed && styles.pressed, styles.button, styles.buttonClose]}>
+                        <Text style={styles.textStyle}>Login</Text>
+                    </Pressable>
+                </View>
                 <Text style={styles.loginTextbox}>
                     You don't have account?
-                    <Pressable
-                        onPress={() => navigate('Signup')}>
-                        <Text style={[styles.loginText, {marginLeft: 3,}]}>SignUp</Text>
-                    </Pressable>
+                    <View style={{overflow: 'hidden'}}>
+                        <Pressable
+                            android_ripple={{color: '#ffffff20', borderless: false}}
+                            onPress={() => navigate('Signup')}>
+                            <Text style={[styles.loginText, {marginLeft: 3}]}>SignUp</Text>
+                        </Pressable>
+                    </View>
                 </Text>
             </View>
         </>

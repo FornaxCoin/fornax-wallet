@@ -17,7 +17,7 @@ import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-nativ
 import { position } from 'html2canvas/dist/types/css/property-descriptors/position';
 
 const BgImage = '../../assets/images/Mask.png';
-const plusImg = '../../assets/images/Plusmini.png';
+const plusImg = '../../assets/images/Iconly_Curved_Plusmini.png';
 const copyImg = '../../assets/images/copy.png';
 const keyImg = '../../assets/images/key.png';
 
@@ -53,6 +53,15 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         resizeMode: 'contain',
 
+    },
+    pressed: {
+        shadowColor: "#fff",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 10.00,
     },
 });
 
@@ -124,15 +133,21 @@ const CardCarousel = (props: any) => {
                         ellipsizeMode="middle">
                         {item?.address || '0x123...3213'}
                     </Text>
-                    <Pressable onPress={() => handleClipboard(item?.address)} style={{position:"absolute",right:0}}>
+                    <Pressable
+                        android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => handleClipboard(item?.address)} style={(state)=>[state.pressed && styles.pressed,{position:"absolute",right:0}]}>
                         <Image source={require(copyImg)} style={styles.copyIcon} />
                     </Pressable>
-                    <Pressable onPress={() => handleClipboard(item?.privateKey)} style={{position:"absolute",right:40}}>
+                    <Pressable
+                        android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => handleClipboard(item?.privateKey)} style={(state)=>[state.pressed && styles.pressed,,{position:"absolute",right:40}]}>
                         <Image source={require(keyImg)} style={styles.copyIcon} />
                     </Pressable>
                 </View>
                 <View style={styles.addBtn}>
-                    <Pressable onPress={() => navigate('AddCard')}>
+                    <Pressable
+                        android_ripple={{color: '#ffffff20', borderless: false}}
+                        onPress={() => navigate('AddCard')}
+                        style={(state)=>[state.pressed && styles.pressed]}
+                    >
                         <Image
                             source={require(plusImg)}
                             style={{ width: hp(3.5), height: hp(3.5) }}

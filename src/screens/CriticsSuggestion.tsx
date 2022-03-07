@@ -47,6 +47,14 @@ const styles = StyleSheet.create({
     // width: wp(89.4),
     // marginBottom: 30,
   },
+  pressed: {
+    shadowColor: "#fff",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 1,
+  },
 });
 
 const CriticsSuggestion = (props: any) => {
@@ -55,9 +63,12 @@ const CriticsSuggestion = (props: any) => {
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('ServiceCenter')}>
+        <View style={{overflow: 'hidden'}}>
+          <Pressable
+              android_ripple={{color: '#ffffff10', borderless: false}} onPress={() => navigate('ServiceCenter')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
+        </View>
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image

@@ -126,6 +126,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
+  pressed: {
+    shadowColor: "#fff",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 10.00,
+  },
 });
 
 const LoginPin = (props: any) => {
@@ -163,6 +172,7 @@ const LoginPin = (props: any) => {
             description: "Please enter 4 digit valid Pin",
             type: "danger",
           });
+          setPin('');
         }
         return ;
       }
@@ -175,13 +185,14 @@ const LoginPin = (props: any) => {
           return;
         }
         setPin('');
-        navigate('tokens')
+        navigate('Tokens')
       } else {
         showMessage({
           message: "Login Pin Failed!",
           description: "Please enter 4 digit valid Pin",
           type: "danger",
         });
+        setPin('');
       }
     } else {
       if (sendTxnStatus && sendTxnStatus?.include('pin')) {
@@ -297,82 +308,96 @@ const LoginPin = (props: any) => {
         </View>
         <View style={styles.NumPad}>
           <View style={styles.NumRow}>
-            <Pressable
+              <Pressable
+                  android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(1)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>1</Text>
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(2)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>2</Text>
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(3)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>3</Text>
             </Pressable>
           </View>
           <View style={styles.NumRow}>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(4)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>4</Text>
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(5)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>5</Text>
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(6)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>6</Text>
             </Pressable>
           </View>
           <View style={styles.NumRow}>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(7)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>7</Text>
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(8)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>8</Text>
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(9)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>9</Text>
             </Pressable>
           </View>
           <View style={styles.NumRow}>
-            <Pressable style={[styles.num, styles.numClose]}>
+            <Pressable
+                android_ripple={{color: 'white', borderless: false}} style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle} />
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(0)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>0</Text>
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={handleRemove}
-              style={[styles.num, styles.numClose, styles.crossIcon]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose, styles.crossIcon]}>
               <Image style={styles.crossIcon} source={require(CloseIcon)} />
             </Pressable>
           </View>
         </View>
         <Pressable
+            android_ripple={{color: '#00000030', borderless: false}}
           onPress={handleSetPin}
-          style={[styles.button, styles.buttonClose]}>
+          style={(state)=>[state.pressed && styles.pressed, styles.button, styles.buttonClose]}>
           <Text style={styles.textStyle}>Verify PIN</Text>
         </Pressable>
         <Text style={styles.loginTextbox}>
           PIN forgot?
           <Pressable
+              android_ripple={{color: 'white', borderless: false}}
               onPress={() => navigate('Login')}
-              style={{ paddingTop: 6 }}>
+              style={(state)=>[state.pressed && styles.pressed,{ paddingTop: 6 }]}>
             <Text style={styles.loginText}> Login</Text>
           </Pressable>
         </Text>

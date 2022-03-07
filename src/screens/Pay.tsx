@@ -158,21 +158,36 @@ const Pay = (props: any) => {
             }
             console.log('payTxnData:', payTxnData);
             let mnemonicPhrase = await AsyncStorage.getItem('mnemonicPhrase');
-            let web3Frx = web3;
-            if (data[0].split(':')[0] === 'fornax' && tokens !== "FRX") {
+            // let web3Frx = web3;
+            if (data[0].split(':')[0] === 'fornax') {
+                console.log("inside fornax pay")
                 dispatch(setTokens('FRX'));
-                web3Frx = mnemonicPhrase && await getWeb3(mnemonicPhrase, 'FRX');
-            } else if (data[0].split(':')[0] === 'ethereum' && tokens !== "ETH") {
-                dispatch(setTokens('ETH'));
-                web3Frx = mnemonicPhrase && await getWeb3(mnemonicPhrase, 'ETH');
-            } else if (data[0].split(':')[0] === 'binance' && tokens !== "BNB") {
-                dispatch(setTokens('FRX'));
-                web3Frx = mnemonicPhrase && await getWeb3(mnemonicPhrase, 'FRX');
+                // web3Frx = mnemonicPhrase && await getWeb3(mnemonicPhrase, 'FRX');
+
+                //? remove these 3 lines to enable other networks
+                // dispatch(setWeb3(web3Frx));
+                dispatch(setPayTxn({from: {...found}, data: payTxnData}));
+                console.log("inside fornax pay2")
+                navigate('ConfirmPay');
             } else {
+                showMessage({
+                    message: "Invalid Pay! Not Fornax network",
+                    description: "Must use fornax network pay address",
+                    type: "danger",
+                });
             }
-            dispatch(setWeb3(web3Frx));
-            dispatch(setPayTxn({from: {...found}, data: payTxnData}));
-            navigate('ConfirmPay');
+            //? other networks code
+            // else if (data[0].split(':')[0] === 'ethereum' && tokens !== "ETH") {
+            //     dispatch(setTokens('ETH'));
+            //     web3Frx = mnemonicPhrase && await getWeb3(mnemonicPhrase, 'ETH');
+            // } else if (data[0].split(':')[0] === 'binance' && tokens !== "BNB") {
+            //     dispatch(setTokens('FRX'));
+            //     web3Frx = mnemonicPhrase && await getWeb3(mnemonicPhrase, 'FRX');
+            // } else {
+            // }
+            // dispatch(setWeb3(web3Frx));
+            // dispatch(setPayTxn({from: {...found}, data: payTxnData}));
+            // navigate('ConfirmPay');
         } else {
             showMessage({
                 message: "Invalid Pay! Not Fornax network",
@@ -186,7 +201,8 @@ const Pay = (props: any) => {
     return (
         <>
             <View>
-                <Pressable onPress={() => navigate('Dashboard')}>
+                <Pressable
+                    android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => navigate('Dashboard')}>
                     <Image style={styles.backIcon} source={require(BackIcon)}/>
                 </Pressable>
             </View>

@@ -122,7 +122,16 @@ const styles = StyleSheet.create({
     },
     extrahight: {
         height: hp(10),
-    }
+    },
+    pressed: {
+        shadowColor: "#fff",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 10.00,
+    },
 });
 
 const Dashboard = (props: any) => {
@@ -205,17 +214,33 @@ const Dashboard = (props: any) => {
             <View style={styles.fornaxBox}>
                 <View style={styles.navBar}>
                     <View>
-                        <Pressable onPress={() => navigate('Tokens')}>
-                            <Image style={styles.backIcon} source={require(BackIcon)}/>
+                        <Pressable
+                            android_ripple={{color: '#ffffff20', borderless: false}}
+                                onPress={() => navigate('Tokens')}
+                                style={(state) => [state.pressed && styles.pressed]}
+                            >
+                                <Image style={styles.backIcon} source={require(BackIcon)}/>
+                            </Pressable>
+                    </View>
+                    {/*<View style={styles.badge}/>*/}
+                    <View style={{overflow: 'hidden'}}>
+                        <Pressable
+                            android_ripple={{color: '#ffffff20', borderless: false}}
+                            onPress={() => navigate('Notifications')}
+                            style={(state) => [state.pressed && styles.pressed]}
+                        >
+                            <Image source={require(BellIcon)} style={styles.bellImg}/>
                         </Pressable>
                     </View>
-                    <View style={styles.badge}/>
-                    <Pressable onPress={() => navigate('Notifications')}>
-                        <Image source={require(BellIcon)} style={styles.bellImg}/>
-                    </Pressable>
-                    <Pressable onPress={() => navigate('Settings')}>
-                        <Image source={require(SettingIcon)} style={styles.settingImg}/>
-                    </Pressable>
+                    <View style={{overflow: 'hidden'}}>
+                        <Pressable
+                            android_ripple={{color: '#ffffff20', borderless: false}}
+                            onPress={() => navigate('Settings')}
+                            style={(state) => [state.pressed && styles.pressed]}
+                        >
+                            <Image source={require(SettingIcon)} style={styles.settingImg}/>
+                        </Pressable>
+                    </View>
                 </View>
                 <Text style={styles.fornaxText}>Dashboard</Text>
                 {!loader && (

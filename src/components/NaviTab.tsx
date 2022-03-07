@@ -70,11 +70,20 @@ const styles = StyleSheet.create({
   },
   scanIcon: {
   },
+  pressed: {
+    shadowColor: "#fff",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 10.00,
+  },
 });
 
 const NavTab = ({ navigate }: any) => {
   const routes = [
-    { key: 'home', title: 'Home', icon: HomeImg, navigate: 'Dashboard' },
+    { key: 'home', title: 'Home', icon: HomeImg, navigate: 'Tokens' },
     {
       key: 'transfer',
       title: 'Transfer',
@@ -93,7 +102,8 @@ const NavTab = ({ navigate }: any) => {
         {routes.length > 0 &&
           routes.map((route, index) => (
             <Animated.View key={index}>
-              <Pressable onPress={() => navigate(route.navigate)} style={[styles.item]}>
+              <Pressable
+                  android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => navigate(route.navigate)} style={(state)=>[state.pressed && styles.pressed,styles.item]}>
                 <View style={{position:"relative"}}>
                   <>{route.key === 'scan'&&(<View style={styles.scanTab} />)}</>
                   <Image

@@ -131,6 +131,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  pressed: {
+    shadowColor: "#fff",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 10.00,
+  },
 });
 
 let seedArray: any = ['', '', '', '', '', '', '', '', '', '', '', ''];
@@ -213,7 +222,8 @@ const VerifyMnemonic = (props: any) => {
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('WalletSetup')}>
+        <Pressable
+            android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => navigate('WalletSetup')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>
@@ -335,8 +345,9 @@ const VerifyMnemonic = (props: any) => {
             </View>
           )}
           <Pressable
+              android_ripple={{color: '#00000030', borderless: false}}
             onPress={handleImport}
-            style={[styles.button, styles.buttonClose]}>
+            style={(state)=>[state.pressed && styles.pressed,styles.button, styles.buttonClose]}>
             <Text style={styles.txnText}>{verifyBox ? 'Verify Mnemonic': 'Continue' }</Text>
           </Pressable>
         </View>

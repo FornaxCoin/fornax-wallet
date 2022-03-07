@@ -137,6 +137,15 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         // marginLeft: -10,
     },
+    pressed: {
+        shadowColor: "#fff",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 10.00,
+    },
 });
 
 const VerifyModal = ({isModalVisible, setModalVisible}: any) => {
@@ -150,7 +159,7 @@ const VerifyModal = ({isModalVisible, setModalVisible}: any) => {
                 </Text>
                 <Pressable
                     onPress={() => setModalVisible(!isModalVisible)}
-                    style={styles.buttonCode}>
+                    style={(state)=>[state.pressed && styles.pressed,styles.buttonCode]}>
                     <Text style={styles.codeText}>Send Code</Text>
                 </Pressable>
             </View>
@@ -286,21 +295,24 @@ const SignUp = (props: any) => {
                         onBlur={onBlurPassword}
                         value={user.password}
                     />
-                    <Pressable onPress={() => setShowPass(!showPass)}
+                    <Pressable
+                        android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => setShowPass(!showPass)}
                                style={{position: 'absolute', right: 0, marginBottom: 0, marginRight: 0}}>
                         <Image source={require(EyeSlashImg)} style={styles.pinEye}/>
                     </Pressable>
                 </View>
                 <Pressable
+                    android_ripple={{color: '#00000030', borderless: false}}
                     onPress={handleSignup}
-                    style={[styles.button, styles.buttonClose]}>
+                    style={(state)=>[state.pressed && styles.pressed,styles.button, styles.buttonClose]}>
                     <Text style={styles.textStyle}>Register</Text>
                 </Pressable>
                 <Text style={styles.loginTextbox}>
                     You have account?
                     <Pressable
+                        android_ripple={{color: '#ffffff20', borderless: false}}
                         onPress={() => navigate('Login')}
-                        style={{paddingTop: 6}}>
+                        style={(state)=>[state.pressed && styles.pressed,{paddingTop: 6}]}>
                         <Text style={styles.loginText}> Login</Text>
                     </Pressable>
                 </Text>

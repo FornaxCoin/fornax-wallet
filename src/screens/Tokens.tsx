@@ -114,7 +114,16 @@ const styles = StyleSheet.create({
         left: 0,
         bottom: 0,
         top: 0
-    }
+    },
+    pressed: {
+        shadowColor: "#fff",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 10.00,
+    },
 });
 
 const Tokens = (props: any) => {
@@ -245,7 +254,8 @@ const Tokens = (props: any) => {
                 </View>
             )}
             <View>
-                <Pressable onPress={() => navigate('Settings')}>
+                <Pressable
+                    android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => navigate('Dashboard')}>
                     <Image style={styles.backIcon} source={require(BackIcon)}/>
                 </Pressable>
             </View>
@@ -257,7 +267,8 @@ const Tokens = (props: any) => {
                 </View>
                 <View style={styles.tabBox}>
                     <View style={{marginTop: 10, justifyContent: 'center', alignItems: 'center',}}>
-                        <Pressable style={styles.bankBox} onPress={() => handleNetwork('FRX')}>
+                        <Pressable
+                            android_ripple={{color: '#00000030', borderless: false}} style={(state)=>[state.pressed && styles.pressed, styles.bankBox]} onPress={() => handleNetwork('FRX')}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <View style={[styles.roundBox, {backgroundColor: '#4368c7'}]}/>
                                 <Text style={styles.bankText}>Fornax (FRX)</Text>
@@ -266,24 +277,25 @@ const Tokens = (props: any) => {
                                 <Image source={require(DownArrowImg)} style={styles.downIcon}/>
                             </View>
                         </Pressable>
-                        <Pressable style={styles.bankBox} onPress={() => handleNetwork('ETH')}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <View style={[styles.roundBox, {backgroundColor: '#936ee3'}]}/>
-                                <Text style={styles.bankText}>Ethereum (ETH)</Text>
-                            </View>
-                            <View style={styles.downIconBorder}>
-                                <Image source={require(DownArrowImg)} style={styles.downIcon}/>
-                            </View>
-                        </Pressable>
-                        <Pressable style={styles.bankBox} onPress={() => handleNetwork('BNB')}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <View style={[styles.roundBox, {backgroundColor: '#fa8315'}]}/>
-                                <Text style={styles.bankText}>Binance Coin (BNB)</Text>
-                            </View>
-                            <View style={styles.downIconBorder}>
-                                <Image source={require(DownArrowImg)} style={styles.downIcon}/>
-                            </View>
-                        </Pressable>
+                        {/*Other networks Codes*/}
+                        {/*<Pressable style={styles.bankBox} onPress={() => handleNetwork('ETH')}>*/}
+                        {/*    <View style={{flexDirection: 'row', alignItems: 'center'}}>*/}
+                        {/*        <View style={[styles.roundBox, {backgroundColor: '#936ee3'}]}/>*/}
+                        {/*        <Text style={styles.bankText}>Ethereum (ETH)</Text>*/}
+                        {/*    </View>*/}
+                        {/*    <View style={styles.downIconBorder}>*/}
+                        {/*        <Image source={require(DownArrowImg)} style={styles.downIcon}/>*/}
+                        {/*    </View>*/}
+                        {/*</Pressable>*/}
+                        {/*<Pressable style={styles.bankBox} onPress={() => handleNetwork('BNB')}>*/}
+                        {/*    <View style={{flexDirection: 'row', alignItems: 'center'}}>*/}
+                        {/*        <View style={[styles.roundBox, {backgroundColor: '#fa8315'}]}/>*/}
+                        {/*        <Text style={styles.bankText}>Binance Coin (BNB)</Text>*/}
+                        {/*    </View>*/}
+                        {/*    <View style={styles.downIconBorder}>*/}
+                        {/*        <Image source={require(DownArrowImg)} style={styles.downIcon}/>*/}
+                        {/*    </View>*/}
+                        {/*</Pressable>*/}
                         <View style={styles.extrahight}/>
                     </View>
                 </View>

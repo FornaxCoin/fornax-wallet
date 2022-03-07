@@ -6,6 +6,7 @@ import {
 } from 'react-native-responsive-screen';
 import QRCode from 'react-native-qrcode-svg';
 import { useSelector } from 'react-redux';
+import {fontSize} from "html2canvas/dist/types/css/property-descriptors/font-size";
 
 const ScanImage = '../../assets/images/Scan.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
@@ -124,7 +125,8 @@ const Scan = (props: any) => {
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('Dashboard')}>
+        <Pressable
+            android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => navigate('Dashboard')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>
@@ -149,6 +151,7 @@ const Scan = (props: any) => {
           {/*<View style={styles.bottomLine} />*/}
         </View>
         <View>
+          <Text style={[styles.fornaxMiniText, {fontSize:12,marginBottom:5}]}>{defaultAddress}</Text>
           <Text style={styles.fornaxMiniText}>Scan this to pay</Text>
           <Text style={styles.fornaxMiniText}>debt to you more easily</Text>
           <Text

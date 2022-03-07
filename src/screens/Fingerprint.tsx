@@ -57,6 +57,15 @@ const styles = StyleSheet.create({
     marginTop: hp('12'),
     marginBottom: hp('4'),
   },
+  pressed: {
+    shadowColor: "#fff",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 10.00,
+  },
 });
 
 const Fingerprint = (props: any) => {

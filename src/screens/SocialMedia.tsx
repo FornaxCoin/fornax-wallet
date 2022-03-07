@@ -78,7 +78,16 @@ const styles = StyleSheet.create({
   arrowIcon:{
     height:hp(1),
     resizeMode: 'contain',
-  }
+  },
+  pressed: {
+    shadowColor: "#fff",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 10.00,
+  },
 });
 
 
@@ -99,42 +108,54 @@ const SocialMedia = (props: any) => {
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('ServiceCenter')}>
+        <View style={{ overflow: 'hidden' }}>
+          <Pressable
+              android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => navigate('ServiceCenter')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
+        </View>
       </View>
       <View style={styles.fornaxInnerBox}>
         <Image style={styles.fornaxIcon} source={require(CocoLineInstaImage)} />
         <Text style={styles.textStyle}>Our Social Media</Text>
       </View>
       <View style={styles.fornaxBox}>
-        <Pressable
+        <View style={{ overflow: 'hidden' }}>
+          <Pressable
+              android_ripple={{color: '#ffffff20', borderless: false}}
             onPress={() => handlePress('https://www.facebook.com/fornaxcoin')}
-          style={[styles.button, styles.buttonClose]}>
+          style={(state)=>[state.pressed && styles.pressed, styles.button, styles.buttonClose]}>
           <Image source={require(FacebookImage)} style={styles.innerIcons}/>
           <Text style={styles.txnText}>Facebook</Text>
           <View style={styles.arrowRightIcon}>
             <Image source={require(ArrowRightIcon)} style={styles.arrowIcon}/>
           </View>
         </Pressable>
-        <Pressable
+        </View>
+        <View style={{ overflow: 'hidden' }}>
+          <Pressable
+              android_ripple={{color: '#ffffff20', borderless: false}}
             onPress={() => handlePress('https://twitter.com/FornaxCoin')}
-          style={[styles.button, styles.buttonClose]}>
+          style={(state)=>[state.pressed && styles.pressed, styles.button, styles.buttonClose]}>
           <Image source={require(TwitterImage)} style={styles.innerIcons}/>
           <Text style={styles.txnText}>Twitter</Text>
           <View style={styles.arrowRightIcon}>
             <Image source={require(ArrowRightIcon)} style={styles.arrowIcon}/>
           </View>
         </Pressable>
-        <Pressable
+        </View>
+        <View style={{ overflow: 'hidden' }}>
+          <Pressable
+              android_ripple={{color: '#ffffff20', borderless: false}}
             onPress={() => handlePress('https://www.instagram.com/fornaxcoin/')}
-          style={[styles.button, styles.buttonClose]}>
+          style={(state)=>[state.pressed && styles.pressed,styles.button, styles.buttonClose]}>
           <Image source={require(InstagramImage)} style={styles.innerIcons}/>
           <Text style={styles.txnText}>Instagram</Text>
           <View style={styles.arrowRightIcon}>
             <Image source={require(ArrowRightIcon)} style={styles.arrowIcon}/>
           </View>
         </Pressable>
+        </View>
         {/*<OpenURLButton url={supportedURL}>Open Supported URL</OpenURLButton>*/}
       </View>
     </>

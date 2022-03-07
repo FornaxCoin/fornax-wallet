@@ -14,11 +14,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setAccounts, setSendTxnStatus, setTxnsInfo, setTxnsResponse} from '../redux/reducers/Wallet';
 import Spinner from 'react-native-spinkit';
 import TouchID from 'react-native-touch-id';
+
 const sendImg = '../../assets/images/sendFail.png';
 
 const CocoPinImage = '../../assets/images/Iconly_Curved_Passwordmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
 const CloseIcon = '../../assets/images/Closemini.png';
+let transferBtnDisabled = true;
 const styles = StyleSheet.create({
     fornaxBox: {
         flex: 1,
@@ -30,9 +32,9 @@ const styles = StyleSheet.create({
     buttonClose: {
         backgroundColor: '#b27f29',
         width: wp(49.3),
-        height:hp(6.6),
+        height: hp(6.6),
         alignSelf: 'center',
-        justifyContent:'center',
+        justifyContent: 'center',
     },
     button: {
         borderRadius: hp(2.4),
@@ -48,12 +50,12 @@ const styles = StyleSheet.create({
         marginLeft: wp(6.3),
         marginTop: hp(3.7),
         // resizeMode:'contain',
-        height:hp(3),
-        width:hp(3),
+        height: hp(3),
+        width: hp(3),
     },
     fornaxIcon: {
         resizeMode: 'contain',
-        width:  hp(6.5),
+        width: hp(6.5),
         height: hp(6.5),
         marginBottom: hp(5.5),
     },
@@ -117,10 +119,10 @@ const styles = StyleSheet.create({
         top: 0
     },
     verifyModalBox: {
-        flexDirection:'column',
+        flexDirection: 'column',
         justifyContent: 'space-around',
-        height:hp(45),
-        width:wp(75),
+        height: hp(45),
+        width: wp(75),
         alignContent: 'center',
         alignSelf: 'center',
         textAlign: 'center',
@@ -137,13 +139,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#000000',
         lineHeight: 25,
-        paddingHorizontal:30,
+        paddingHorizontal: 30,
     },
     buttonCode: {
         backgroundColor: '#363853',
         justifyContent: 'center',
         width: wp(44.7),
-        height:hp(6.7),
+        height: hp(6.7),
         alignSelf: 'center',
         borderRadius: 20,
     },
@@ -154,20 +156,34 @@ const styles = StyleSheet.create({
         fontFamily: 'Quicksand-Bold',
         textAlign: 'center',
     },
+    pressed: {
+        shadowColor: "#fff",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 10.00,
+    },
 });
 
 //
-const VerifyModal = ({ isModalVisible, setModalVisible, navigate }: any) => {
+const VerifyModal = ({isModalVisible, setModalVisible, navigate}: any) => {
     return (
         <>
             <View style={styles.verifyModalBox}>
-                <Image source={require(sendImg)} style={styles.topImg} />
+                <Image source={require(sendImg)} style={styles.topImg}/>
                 <Text style={styles.verifyText}>
                     Your transaction failed, the data you entered is incorrect, please check again
                 </Text>
+
                 <Pressable
-                    onPress={()=>{setModalVisible(!isModalVisible);navigate('Dashboard');}}
-                    style={styles.buttonCode}>
+                    android_ripple={{color: '#ffffff20', borderless: false}}
+                    onPress={() => {
+                        setModalVisible(!isModalVisible);
+                        navigate('Dashboard');
+                    }}
+                    style={(state) => [state.pressed && styles.pressed, styles.buttonCode]}>
                     <Text style={styles.codeText}>Check Again</Text>
                 </Pressable>
             </View>
@@ -184,13 +200,14 @@ const SetAmount = (props: any) => {
     const [accIndex, setAccIndex] = useState(-1);
 
     const handleAmonut = (val: any) => {
-        if(val==='.'&&!amount.includes('.')&&amount.length>0){
+        if (val === '.' && !amount.includes('.') && amount.length > 0) {
             setAmount(amount + val);
         }
-        if(val!=='.'){
+        if (val !== '.') {
             setAmount(amount + val);
         }
         dispatch(setTxnsInfo({...txnData, amount}));
+        transferBtnDisabled = false;
     };
 
     const {web3, accounts, txnData, sendTxnStatus, tokens} = useSelector(({wallet}: any) => {
@@ -212,6 +229,7 @@ const SetAmount = (props: any) => {
     }
 
     useEffect(() => {
+        transferBtnDisabled = true;
         const amt2 = sendTxnStatus.split('=')[1]
         if (sendTxnStatus.split('=')[0] === 'done') {
             afterPinSend(amt2);
@@ -261,7 +279,7 @@ const SetAmount = (props: any) => {
         );
     };
 
-    const sendTxn = async (amt:string) => {
+    const sendTxn = async (amt: string) => {
         console.log('Sending Transaction ..... :', amount, " to =>", txnData)
         try {
             const gasPrice = await web3.eth
@@ -282,10 +300,10 @@ const SetAmount = (props: any) => {
                 ignoreLength,
             ]);
 
-            let finalAmount=amount||amt;
+            let finalAmount = amount || amt;
             setAmount('')
             console.log('\nSENDING AMOUNT ==>>', finalAmount);
-            if(finalAmount) {
+            if (finalAmount) {
                 await web3.eth
                     .sendTransaction({
                         from: txnData.from?.address,
@@ -317,19 +335,19 @@ const SetAmount = (props: any) => {
                     //     //     getBalance(found);
                     //     // }
                     // })
-                    .on('error', (err:any)=>{
-                        console.log("error: first error",err)
-                            setLoader(false);
-                            setModalVisible(!isModalVisible);
+                    .on('error', (err: any) => {
+                        console.log("error: first error", err)
+                        setLoader(false);
+                        setModalVisible(!isModalVisible);
                     });
-            }else{
+            } else {
                 setLoader(false);
                 setModalVisible(!isModalVisible);
                 console.log("error last");
                 return
             }
         } catch (err) {
-            console.log("error: last last",err);
+            console.log("error: last last", err);
             setLoader(false);
         }
     };
@@ -365,7 +383,7 @@ const SetAmount = (props: any) => {
                 }
             } catch (e) {
                 console.log('error in response')
-                response=null;
+                response = null;
                 // setLoader(false);
                 // dispatch(setSendTxnStatus('pin=' + amount))
                 // let data = await navigate('LoginPin');
@@ -375,14 +393,14 @@ const SetAmount = (props: any) => {
                 // console.log(e);
             }
         }
-        if (isloginPin&&response===null) {
+        if (isloginPin && response === null) {
             dispatch(setSendTxnStatus('pin=' + amount))
             navigate('LoginPin')
-        }else{
-            if(response!==null){
+        } else {
+            if (response !== null) {
 
-            }else{
-                console.log('Error: ==> isloginPin:',isloginPin)
+            } else {
+                console.log('Error: ==> isloginPin:', isloginPin)
                 await sendTxn('');
                 console.log("success");
             }
@@ -390,6 +408,7 @@ const SetAmount = (props: any) => {
     }
 
     const handleTransfer = async () => {
+        transferBtnDisabled = true;
         console.log('txnData.to:', txnData, parseFloat(amount), txnData.from?.address)
         if (txnData.from?.address && txnData.to && parseFloat(amount) > 0) {
             console.log("Inside transaction")
@@ -413,21 +432,24 @@ const SetAmount = (props: any) => {
                 />
             </PhoneModal>
             <View style={{zIndex: 0}}>
-                <Pressable onPress={() => navigate('Transfer')}>
+                <Pressable
+                    android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => navigate('Transfer')}>
                     <Image style={styles.backIcon} source={require(BackIcon)}/>
                 </Pressable>
             </View>
             <View style={styles.fornaxInnerBox}>
                 <Image style={styles.fornaxIcon} source={require(CocoPinImage)}/>
-                <Text style={[styles.textStyle, {marginBottom: 20}]}>Wallet {accIndex + 1}</Text>
+                <Text style={[styles.textStyle, {marginBottom: 20}]}>From Wallet {accIndex + 1}</Text>
                 <Text style={styles.textStyle}>{tokens} {accIndex && accounts[accIndex]?.balance || 0}</Text>
+                <Text style={[styles.textStyle, {marginBottom: 20}, {fontSize: 12}]}>To {txnData?.to}</Text>
+
             </View>
             <View style={styles.fornaxBox}>
                 <View style={styles.pinInput}>
                     <TextInput
                         style={styles.input}
                         value={amount}
-                        editable = {false}
+                        editable={false}
                         placeholder="0"
                         placeholderTextColor="#bdbdbd"
                     />
@@ -435,78 +457,94 @@ const SetAmount = (props: any) => {
                 <View style={styles.NumPad}>
                     <View style={styles.NumRow}>
                         <Pressable
+                            android_ripple={{color: '#ffffff', borderless: false}}
                             onPress={() => handleAmonut(1)}
-                            style={[styles.num, styles.numClose]}>
+                            style={(state) => [state.pressed && styles.pressed, styles.num, styles.numClose]}>
                             <Text style={styles.textStyle}>1</Text>
                         </Pressable>
                         <Pressable
+                            android_ripple={{color: '#ffffff', borderless: false}}
                             onPress={() => handleAmonut(2)}
-                            style={[styles.num, styles.numClose]}>
+                            style={(state) => [state.pressed && styles.pressed, styles.num, styles.numClose]}>
                             <Text style={styles.textStyle}>2</Text>
                         </Pressable>
                         <Pressable
+                            android_ripple={{color: '#ffffff', borderless: false}}
                             onPress={() => handleAmonut(3)}
-                            style={[styles.num, styles.numClose]}>
+                            style={(state) => [state.pressed && styles.pressed, styles.num, styles.numClose]}>
                             <Text style={styles.textStyle}>3</Text>
                         </Pressable>
                     </View>
                     <View style={styles.NumRow}>
                         <Pressable
+                            android_ripple={{color: '#ffffff', borderless: false}}
                             onPress={() => handleAmonut(4)}
-                            style={[styles.num, styles.numClose]}>
+                            style={(state) => [state.pressed && styles.pressed, styles.num, styles.numClose]}>
                             <Text style={styles.textStyle}>4</Text>
                         </Pressable>
                         <Pressable
+                            android_ripple={{color: '#ffffff', borderless: false}}
                             onPress={() => handleAmonut(5)}
-                            style={[styles.num, styles.numClose]}>
+                            style={(state) => [state.pressed && styles.pressed, styles.num, styles.numClose]}>
                             <Text style={styles.textStyle}>5</Text>
                         </Pressable>
                         <Pressable
+                            android_ripple={{color: '#ffffff', borderless: false}}
                             onPress={() => handleAmonut(6)}
-                            style={[styles.num, styles.numClose]}>
+                            style={(state) => [state.pressed && styles.pressed, styles.num, styles.numClose]}>
                             <Text style={styles.textStyle}>6</Text>
                         </Pressable>
                     </View>
                     <View style={styles.NumRow}>
                         <Pressable
+                            android_ripple={{color: '#ffffff', borderless: false}}
                             onPress={() => handleAmonut(7)}
-                            style={[styles.num, styles.numClose]}>
+                            style={(state) => [state.pressed && styles.pressed, styles.num, styles.numClose]}>
                             <Text style={styles.textStyle}>7</Text>
                         </Pressable>
                         <Pressable
+                            android_ripple={{color: '#ffffff', borderless: false}}
                             onPress={() => handleAmonut(8)}
-                            style={[styles.num, styles.numClose]}>
+                            style={(state) => [state.pressed && styles.pressed, styles.num, styles.numClose]}>
                             <Text style={styles.textStyle}>8</Text>
                         </Pressable>
                         <Pressable
+                            android_ripple={{color: '#ffffff', borderless: false}}
                             onPress={() => handleAmonut(9)}
-                            style={[styles.num, styles.numClose]}>
+                            style={(state) => [state.pressed && styles.pressed, styles.num, styles.numClose]}>
                             <Text style={styles.textStyle}>9</Text>
                         </Pressable>
                     </View>
                     <View style={styles.NumRow}>
                         <Pressable
+                            android_ripple={{color: '#ffffff', borderless: false}}
                             onPress={() => handleAmonut('.')}
-                            style={[styles.num, styles.numClose]}>
+                            style={(state) => [state.pressed && styles.pressed, styles.num, styles.numClose]}>
                             <Text style={styles.textStyle}>.</Text>
                         </Pressable>
                         <Pressable
+                            android_ripple={{color: '#ffffff', borderless: false}}
                             onPress={() => handleAmonut(0)}
-                            style={[styles.num, styles.numClose]}>
+                            style={(state) => [state.pressed && styles.pressed, styles.num, styles.numClose]}>
                             <Text style={styles.textStyle}>0</Text>
                         </Pressable>
                         <Pressable
+                            android_ripple={{color: '#ffffff', borderless: false}}
                             onPress={() => setAmount('')}
-                            style={[styles.num, styles.numClose, styles.crossIcon]}>
+                            style={(state) => [state.pressed && styles.pressed, styles.num, styles.numClose, styles.crossIcon]}>
                             <Image style={styles.crossIcon} source={require(CloseIcon)}/>
                         </Pressable>
                     </View>
                 </View>
+
                 <Pressable
+                    android_ripple={{color: '#00000030', borderless: false}}
+                    disabled={transferBtnDisabled}
                     onPress={handleTransfer}
-                    style={[styles.button, styles.buttonClose]}>
+                    style={(state) => [state.pressed && styles.pressed, styles.button, styles.buttonClose]}>
                     <Text style={styles.textStyle}>Transfer</Text>
                 </Pressable>
+
             </View>
         </>
     );

@@ -87,6 +87,14 @@ const styles = StyleSheet.create({
     switch: {
         // transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }],
     },
+    pressed: {
+        shadowColor: "#fff",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 1,
+    },
 });
 
 const LoginSetting = (props: any) => {
@@ -176,30 +184,38 @@ const LoginSetting = (props: any) => {
     return (
         <>
             <View>
-                <Pressable onPress={() => navigate('Settings')}>
-                    <Image style={styles.backIcon} source={require(BackIcon)}/>
-                </Pressable>
+                <View style={{overflow: 'hidden'}}>
+                    <Pressable
+                        android_ripple={{color: '#ffffff10', borderless: false}} onPress={() => navigate('Settings')}>
+                        <Image style={styles.backIcon} source={require(BackIcon)}/>
+                    </Pressable>
+                </View>
             </View>
             <View style={styles.fornaxInnerBox}>
                 <Image style={styles.fornaxIcon} source={require(CocoLockImage)}/>
                 <Text style={styles.textStyle}>Login Settings</Text>
             </View>
             <View style={styles.fornaxBox}>
-                <Pressable
-                    onPress={() => navigate('SetPin')}
-                    style={[styles.button, styles.buttonClose]}>
-                    <Text style={styles.txnText}>PIN</Text>
-                    <View style={styles.arrowRight}>
-                        <Text style={styles.txnMiniText}>Set</Text>
-                        <Image
-                            style={styles.arrowRightIcon}
-                            source={require(ArrowRightIcon)}
-                        />
-                    </View>
-                </Pressable>
+                <View style={{overflow: 'hidden'}}>
+                    <Pressable
+                        android_ripple={{color: '#ffffff10', borderless: false}}
+                        onPress={() => navigate('SetPin')}
+                        style={(state) => [state.pressed && styles.pressed, styles.button, styles.buttonClose]}>
+                        <Text style={styles.txnText}>PIN</Text>
+                        <View style={styles.arrowRight}>
+                            <Text style={styles.txnMiniText}>Set</Text>
+                            <Image
+                                style={styles.arrowRightIcon}
+                                source={require(ArrowRightIcon)}
+                            />
+                        </View>
+                    </Pressable>
+                </View>
                 {
-                    support && support === 'FaceID' && <Pressable
-                        style={[styles.button, styles.buttonClose]}>
+                    support && support === 'FaceID' && <View style={{overflow: 'hidden'}}>
+                        <Pressable
+                            android_ripple={{color: '#ffffff10', borderless: false}}
+                        style={(state) => [state.pressed && styles.pressed, styles.button, styles.buttonClose]}>
                         <Text style={styles.txnText}>Face ID</Text>
                         <View style={styles.arrowRight}>
                             <Text style={styles.txnMiniText}>{isFaceId ? 'ON' : 'OFF'}</Text>
@@ -217,10 +233,13 @@ const LoginSetting = (props: any) => {
                             />
                         </View>
                     </Pressable>
+                    </View>
                 }
                 {
-                    support && (support === 'TouchID' || support === 'true') && <Pressable
-                        style={[styles.button, styles.buttonClose]}>
+                    support && (support === 'TouchID' || support === 'true') && <View style={{overflow: 'hidden'}}>
+                        <Pressable
+                            android_ripple={{color: '#ffffff10', borderless: false}}
+                        style={(state) => [state.pressed && styles.pressed, styles.button, styles.buttonClose]}>
                         <Text style={styles.txnText}>Fingerprint</Text>
                         <View style={styles.arrowRight}>
                             <Text style={styles.txnMiniText}>{isFingerId ? 'ON' : 'OFF'}</Text>
@@ -238,6 +257,7 @@ const LoginSetting = (props: any) => {
                             />
                         </View>
                     </Pressable>
+                    </View>
                 }
             </View>
         </>
