@@ -278,24 +278,24 @@ const Tokens = (props: any) => {
                             </View>
                         </Pressable>
                         {/*Other networks Codes*/}
-                        {/*<Pressable style={styles.bankBox} onPress={() => handleNetwork('ETH')}>*/}
-                        {/*    <View style={{flexDirection: 'row', alignItems: 'center'}}>*/}
-                        {/*        <View style={[styles.roundBox, {backgroundColor: '#936ee3'}]}/>*/}
-                        {/*        <Text style={styles.bankText}>Ethereum (ETH)</Text>*/}
-                        {/*    </View>*/}
-                        {/*    <View style={styles.downIconBorder}>*/}
-                        {/*        <Image source={require(DownArrowImg)} style={styles.downIcon}/>*/}
-                        {/*    </View>*/}
-                        {/*</Pressable>*/}
-                        {/*<Pressable style={styles.bankBox} onPress={() => handleNetwork('BNB')}>*/}
-                        {/*    <View style={{flexDirection: 'row', alignItems: 'center'}}>*/}
-                        {/*        <View style={[styles.roundBox, {backgroundColor: '#fa8315'}]}/>*/}
-                        {/*        <Text style={styles.bankText}>Binance Coin (BNB)</Text>*/}
-                        {/*    </View>*/}
-                        {/*    <View style={styles.downIconBorder}>*/}
-                        {/*        <Image source={require(DownArrowImg)} style={styles.downIcon}/>*/}
-                        {/*    </View>*/}
-                        {/*</Pressable>*/}
+                        <Pressable style={styles.bankBox} onPress={() => handleNetwork('ETH')}>
+                           <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                               <View style={[styles.roundBox, {backgroundColor: '#936ee3'}]}/>
+                               <Text style={styles.bankText}>Ethereum (ETH)</Text>
+                           </View>
+                           <View style={styles.downIconBorder}>
+                               <Image source={require(DownArrowImg)} style={styles.downIcon}/>
+                           </View>
+                        </Pressable>
+                        <Pressable style={styles.bankBox} onPress={() => handleNetwork('BNB')}>
+                           <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                               <View style={[styles.roundBox, {backgroundColor: '#fa8315'}]}/>
+                               <Text style={styles.bankText}>Binance Coin (BNB)</Text>
+                           </View>
+                           <View style={styles.downIconBorder}>
+                               <Image source={require(DownArrowImg)} style={styles.downIcon}/>
+                           </View>
+                        </Pressable>
                         <View style={styles.extrahight}/>
                     </View>
                 </View>
