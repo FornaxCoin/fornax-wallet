@@ -1,21 +1,23 @@
 {
-    "images" : [
-      {
-        "idiom" : "universal",
-        "scale" : "1x"
-      },
-      {
-        "idiom" : "universal",
-        "scale" : "2x"
-      },
-      {
-        "idiom" : "universal",
-        "filename" : "LaunchScreen1242x2688.png",
-        "scale" : "3x"
-      }
-    ],
-    "info" : {
-      "version" : 1,
-      "author" : "xcode"
+  "images" : [
+    {
+      "filename" : "launch_splash.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "launch_splash-1.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "LaunchScreen1242x2688.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
   }
+}

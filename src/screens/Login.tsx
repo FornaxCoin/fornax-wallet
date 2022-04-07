@@ -163,6 +163,14 @@ const Login = (props: any) => {
                 }
                 const registerUser: any = await AsyncStorage.getItem('registerUser');
                 const registerData = registerUser && JSON.parse(registerUser);
+                if(!registerData) {
+                    showMessage({
+                        message: "Login Failed!!!",
+                        description: "Invalid Email or Password",
+                        type: "danger",
+                    });
+                    return;
+                }
                 if (registerData.password === user.password) {
                     hideMessage();
                     await AsyncStorage.setItem('loginUser', JSON.stringify(user));
