@@ -15,7 +15,6 @@ import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from "react-native-flash-message";
 import _ from 'lodash';
 import TouchID from 'react-native-touch-id';
-
 const BgImage = './assets/images/Layer.png';
 
 const styles = StyleSheet.create({
@@ -155,7 +154,7 @@ const App = () => {
     useEffect(() => {
         const subscription = AppState.addEventListener("change", nextAppState => {
             console.log("Current state:", appState);
-            if(appState.current.match(/unknown/)){
+            if (appState.current.match(/unknown/)) {
                 console.log("App restarted")
                 removeAuthSet().then()
             }
@@ -178,7 +177,7 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-            handleRoute();
+        handleRoute();
     }, []);
 
     useEffect(() => {

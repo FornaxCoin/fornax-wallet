@@ -8,9 +8,9 @@ import {
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { 
-  heightPercentageToDP as hp, 
-  widthPercentageToDP as wp 
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
 } from 'react-native-responsive-screen';
 import _join from 'lodash/join';
 import _random from 'lodash/random';
@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   txnText: {
-    marginLeft: 17,
     fontSize: 16,
     color: '#ffffff',
     textAlign: 'center',
@@ -38,12 +37,13 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: '#b27f29',
-    width: 240,
+    width: wp(49.3),
+    height:hp(6.6),
     alignSelf: 'center',
+    justifyContent:'center',
   },
   button: {
-    borderRadius: 20,
-    paddingVertical: 18,
+    borderRadius: hp(2.4),
     marginTop: hp('1'),
     marginBottom: hp('6'),
   },
@@ -56,11 +56,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   backIcon: {
-    marginLeft: 26,
-    marginTop: 32,
+    marginLeft: wp(6.3),
+    marginTop: hp(3.7),
+    height:hp(3),
+    width:hp(3),
   },
   fornaxIcon: {
-    marginBottom: hp('3'),
+    resizeMode: 'contain',
+    width:  hp(6.5),
+    height: hp(6.5),
+    marginBottom: hp(5.5),
   },
   fornaxInnerBox: {
     flex: 0,
@@ -80,24 +85,24 @@ const styles = StyleSheet.create({
   seedBox: {
     borderWidth: 2,
     borderRadius: 20,
+    justifyContent:'center',
     borderStyle: 'dotted',
     borderColor: '#b27f29',
     marginVertical: hp(1),
     paddingHorizontal: 10,
     width: wp('30'),
-    height: wp('10'),
+    height: hp('5'),
   },
   seedBoxMiss: {
     borderRadius: 20,
     backgroundColor: '#b27f29',
-    marginVertical: hp(1),
-    paddingHorizontal: 10,
+    marginVertical: hp(0.5),
     alignSelf: 'center',
     alignContent: 'center',
     alignItems: 'center',
     width: wp('33'),
-    height: wp('10'),
-    paddingTop: 2,
+    height: hp('5'),
+    justifyContent:'center',
   },
   seedCountText: {
     color: '#b27f29',
@@ -105,11 +110,17 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   seedText: {
+    // flex:1,
     fontSize: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf:'center',
     includeFontPadding: true,
     color: '#ffffff',
     textAlign: 'center',
-    paddingTop: 8,
+    paddingTop: 0,
+    paddingBottom: 0
+    // paddingTop: 8,
   },
   seedList: {
     flexDirection: 'column',
@@ -119,6 +130,15 @@ const styles = StyleSheet.create({
     width: wp('75'),
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  pressed: {
+    shadowColor: "#fff",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 10.00,
   },
 });
 
@@ -173,7 +193,7 @@ const VerifyMnemonic = (props: any) => {
       } else {
         hideMessage();
         await AsyncStorage.setItem('accountList', JSON.stringify([accounts]));
-        navigate('Dashboard');
+        navigate('Tokens');
       }
     } else {
       setVerifyBox(true);
@@ -202,7 +222,8 @@ const VerifyMnemonic = (props: any) => {
   return (
     <>
       <View>
-        <Pressable onPress={() => navigate('WalletSetup')}>
+        <Pressable
+            android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => navigate('WalletSetup')}>
           <Image style={styles.backIcon} source={require(BackIcon)} />
         </Pressable>
       </View>
@@ -299,33 +320,34 @@ const VerifyMnemonic = (props: any) => {
                 </View>
               </View>
               <View style={{  width: wp('75'), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: 10, flexWrap: 'wrap' }}>
-                {seedMissData?.seed1 !== '' && ( 
+                {seedMissData?.seed1 !== '' && (
                   <Pressable onPress={() => handleMissData(seedMissData?.seed1, 1)}>
                     <View style={styles.seedBoxMiss}>
                       <Text style={styles.seedText}>{seedMissData?.seed1}</Text>
                     </View>
                   </Pressable>
                 )}
-                {seedMissData?.seed3 !== '' && ( 
+                {seedMissData?.seed3 !== '' && (
                   <Pressable onPress={() => handleMissData(seedMissData?.seed3, 3)}>
                     <View style={styles.seedBoxMiss}>
                       <Text style={styles.seedText}>{seedMissData?.seed3}</Text>
-                    </View>                 
+                    </View>
                   </Pressable>
                 )}
                 {seedMissData?.seed2 !== '' && (
                   <Pressable onPress={() => handleMissData(seedMissData?.seed2, 2)}>
                     <View style={styles.seedBoxMiss}>
                       <Text style={styles.seedText}>{seedMissData?.seed2}</Text>
-                    </View>                 
+                    </View>
                   </Pressable>
                 )}
               </View>
             </View>
           )}
           <Pressable
+              android_ripple={{color: '#00000030', borderless: false}}
             onPress={handleImport}
-            style={[styles.button, styles.buttonClose]}>
+            style={(state)=>[state.pressed && styles.pressed,styles.button, styles.buttonClose]}>
             <Text style={styles.txnText}>{verifyBox ? 'Verify Mnemonic': 'Continue' }</Text>
           </Pressable>
         </View>

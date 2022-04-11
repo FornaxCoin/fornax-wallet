@@ -8,6 +8,7 @@ import LoginSetting from '../screens/LoginSetting';
 import WalletSetup from '../screens/WalletSetup';
 import ImportWallet from '../screens/ImportWallet';
 import Wallet from '../screens/Wallet';
+import Tokens from '../screens/Tokens';
 import Dashboard from '../screens/Dashboard';
 import Scan from '../screens/Scan';
 import Pay from '../screens/Pay';
@@ -27,6 +28,7 @@ import Notifications from '../screens/Notifications';
 import LoginPin from '../screens/LoginPin';
 import QRScanner from '../screens/QRScanner';
 import VerifyMnemonic from '../screens/VerifyMnemonic';
+import ConfirmPay from '../screens/ConfirmPay';
 
 const Stack = createStackNavigator();
 
@@ -50,6 +52,7 @@ const MainStackNavigator = ({ initRoute }: any) => {
         <Stack.Screen name="Intro" component={Intro} />
         <Stack.Screen name="WalletSetup" component={WalletSetup} />
         <Stack.Screen name="Import" component={ImportWallet} />
+        <Stack.Screen name="Tokens" component={Tokens} />
         <Stack.Screen name="SetPin" component={SetPin} />
         <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="Wallet" component={Wallet} />
@@ -72,6 +75,7 @@ const MainStackNavigator = ({ initRoute }: any) => {
         <Stack.Screen name="LoginPin" component={LoginPin} />
         <Stack.Screen name="QRScanner" component={QRScanner} />
         <Stack.Screen name="VerifyMnemonic" component={VerifyMnemonic} />
+        <Stack.Screen name="ConfirmPay" component={ConfirmPay} />
         <Stack.Screen
           name="ConfirmTransaction"
           component={ConfirmTransaction}

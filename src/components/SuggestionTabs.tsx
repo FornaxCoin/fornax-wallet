@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         height: 100,
     },
     input: {
-        height: hp(30),
+        height: hp(40),
         // borderBottomWidth: 2,
         borderRadius: 30,
         borderBottomColor: '#ffffff',
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         fontSize: 16,
-        width: wp(80),
+        width: wp(89.4),
         backgroundColor: '#fff',
         marginTop: hp(1),
 
@@ -129,23 +129,22 @@ const styles = StyleSheet.create({
         // alignItems: 'center',
         justifyContent: 'center',
         // backgroundColor: '#fff',
-        borderBottomWidth: 2,
+        // borderBottomWidth: 2,
         borderRadius: 30,
         // borderBottomColor: '#ffffff',
         // paddingVertical:10,
     },
     buttonClose: {
         backgroundColor: '#b27f29',
-        width: 200,
+        width: wp(49.3),
+        height: hp(6.6),
+        justifyContent: 'center',
         alignSelf: 'center',
-        // marginTop: 50,
-        marginBottom: -40,
         position: 'absolute',
-        bottom: 0,
+        bottom: -hp(3.3),
     },
     button: {
-        borderRadius: 20,
-        paddingVertical: 20,
+        borderRadius: hp(2.4),
     },
     textStyle: {
         fontSize: 20,
@@ -153,6 +152,14 @@ const styles = StyleSheet.create({
         lineHeight: 23,
         fontFamily: 'Quicksand-Bold',
         textAlign: 'center',
+    },
+    pressed: {
+        shadowColor: "#fff",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 1,
     },
 });
 
@@ -181,11 +188,12 @@ const FirstRoute = () => {
                 numberOfLines={4}
                 onChangeText={(text) => setCritics(text)}
                 value={critics}/>
-            <Pressable
-                onPress={() => handleSuggestion('mailto:info@fornaxcoin.com')}
-                style={[styles.button, styles.buttonClose]}>
-                <Text style={styles.textStyle}>Send</Text>
-            </Pressable>
+                <Pressable
+                    android_ripple={{color: '#00000030', borderless: false}}
+                    onPress={() => handleSuggestion('mailto:info@fornaxcoin.com')}
+                    style={(state) => [state.pressed && styles.pressed, styles.button, styles.buttonClose]}>
+                    <Text style={styles.textStyle}>Send</Text>
+                </Pressable>
         </View>
     )
 }
@@ -202,11 +210,11 @@ const SecondRoute = () => {
             if (supported) {
                 // Opening the link with some app, if the URL scheme is "http" the web link should be opened
                 // by some browser in the mobile
-                try{
+                try {
                     let response = await Linking.openURL(URL);
                     // console.log('response:',e);
-                }catch (e) {
-                    console.log('response:',e);
+                } catch (e) {
+                    console.log('response:', e);
                 }
 
             } else {
@@ -224,8 +232,9 @@ const SecondRoute = () => {
                 onChangeText={(text) => setSuggestion(text)}
                 value={suggestion}/>
             <Pressable
+                android_ripple={{color: '#00000030', borderless: false}}
                 onPress={() => handleSuggestion('mailto:info@fornaxcoin.com')}
-                style={[styles.button, styles.buttonClose]}>
+                style={(state) => [state.pressed && styles.pressed, styles.button, styles.buttonClose]}>
                 <Text style={styles.textStyle}>Send</Text>
             </Pressable>
         </View>

@@ -1,15 +1,17 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   View,
   useWindowDimensions,
   Text,
   StyleSheet,
   FlatList,
+  Linking,
+  Pressable,
 } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import {
-  // heightPercentageToDP as hp,
+  heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import _ from 'lodash';
@@ -27,8 +29,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   roundIcon: {
-    height: 60,
-    width: 60,
+    height: hp(4.4),
+    width: hp(4.4),
     backgroundColor: '#936ee3',
     borderRadius: 30,
     marginLeft: 5,
@@ -72,8 +74,6 @@ const styles = StyleSheet.create({
   footerBox: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 10,
-    marginBottom: 5
   },
   incomeText: {
     fontSize: 14,
@@ -104,6 +104,17 @@ const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any
     }
   }
 
+  const handlePress = async (hash: any) => {
+    const url = `https://watchfornax.com/transaction/${hash}`
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      console.log(`Don't know how to open this URL: ${url}`);
+    }
+  };
+
   return (
     <View
       style={{
@@ -111,25 +122,31 @@ const renderItem = ({ item }: any, web3: any, defaultAddress: any, accounts: any
         justifyContent: 'space-between',
         marginBottom: 20,
       }}>
-      <View style={{ flexDirection: 'row' }}>
-        <View style={[styles.roundIcon, { backgroundColor: '#4368c7' }]} />
-        <View>
-          <Text 
-            style={styles.symbolText}
-            numberOfLines={1}
-            ellipsizeMode="middle"
-          >{getAccountName()}</Text>
-          <Text style={styles.descriptionText}>Income</Text>
+      <Pressable style={{ flexDirection: 'row' }} onPress={() => handlePress(item?.transactionHash)}>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={[styles.roundIcon, { backgroundColor: '#4368c7' }]} />
+          <View>
+            <Text
+              style={styles.symbolText}
+              numberOfLines={1}
+              ellipsizeMode="middle"
+            >{getAccountName()}</Text>
+            {defaultAddress && defaultAddress.toLowerCase().trim() === item?.from.toLowerCase().trim() ? (
+              <Text style={styles.descriptionText}>Outcome</Text>
+            ):(
+              <Text style={styles.descriptionText}>Income</Text>
+            )}
+          </View>
         </View>
-      </View>
-      <View style={{ flexDirection: 'row', alignSelf: 'center', width: 120 }}>
-        {defaultAddress && defaultAddress === item?.from ? (
-          <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
-        ):(
-          <Text style={[styles.minusIcon, { color: '#52e34f' }]}>+</Text>
-        )}
-        <Text style={styles.amountText}> $ {web3 && parseFloat(web3?.utils?.fromWei(item.value)).toFixed(2)}</Text>
-      </View>
+        <View style={{ flexDirection: 'row', alignSelf: 'center', width: 120 }}>
+          {defaultAddress && defaultAddress.toLowerCase().trim() === item?.from.toLowerCase().trim() ? (
+            <Text style={[styles.minusIcon, { color: '#ff3333' }]}>-</Text>
+          ):(
+            <Text style={[styles.minusIcon, { color: '#52e34f' }]}>+</Text>
+          )}
+          <Text style={styles.amountText}> $ {web3 && parseFloat(web3?.utils?.fromWei(item.value)).toFixed(2)}</Text>
+        </View>
+      </Pressable>
     </View>
   );
 };
@@ -171,7 +188,7 @@ const TransactionList = () => {
     }
     if (data) {
       setLoader(false);
-      data?.transactionsByAddressWithPagination?.transactions?.length > 0 && 
+      data?.transactionsByAddressWithPagination?.transactions?.length > 0 &&
       setTxnList([..._.uniqBy(data?.transactionsByAddressWithPagination?.transactions, 'id')]);
     }
   }, [data, loading]);
@@ -249,7 +266,7 @@ const SavingTxnList = () => {
         }, {
           value: parseInt(web3.utils.fromWei(txn.toTotal, 'ether'), 10),
           frontColor: '#936ee3',
-        })      
+        })
         return newtxn;
       }, []);
       setLoader(false);
@@ -258,14 +275,15 @@ const SavingTxnList = () => {
   }, [data, loading]);
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent', marginTop: 5, marginBottom: 20, marginLeft: -20 }}>
+    <View style={{ flex: 0, justifyContent: 'flex-end', alignItems: 'center', backgroundColor: 'transparent', marginTop: 0, marginBottom: 0, marginLeft: -20 }}>
       <Spinner isVisible={loader} size={50} type={'9CubeGrid'} color="#b27f29"/>
-      <View style={{ marginBottom: 15 }}>
-        {!loader && txnList.length > 0 && 
+      <View style={{ marginBottom: 15,}}>
+        {!loader && txnList.length > 0 &&
           <BarChart
             data={txnList}
             barWidth={10}
             spacing={24}
+            height={hp(16)+hp(8)}
             roundedTop
             roundedBottom
             hideRules

@@ -7,7 +7,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp , widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,12 +29,13 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: '#b27f29',
-    width: 240,
+    width: wp(49.3),
+    height:hp(6.6),
     alignSelf: 'center',
+    justifyContent:'center',
   },
   button: {
-    borderRadius: 20,
-    paddingVertical: 18,
+    borderRadius: hp(2.4),
   },
   textStyle: {
     fontSize: 20,
@@ -44,9 +45,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   backIcon: {
-    marginLeft: 26,
+    marginLeft: wp(6.3),
+    marginTop: hp(3.7),
+    // resizeMode:'contain',
+    height:hp(3),
+    width:hp(3),
     visibility: 'visible',
-    marginTop: 32,
   },
   loginTextbox: {
     fontSize: 14,
@@ -60,11 +64,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   fornaxIcon: {
-    // width:80,
-    // height:80,
-    // width:  hp(9),
-    // height: hp(9),
-    marginBottom: 30,
+    resizeMode: 'contain',
+    width:  hp(6.5),
+    height: hp(6.5),
+    marginBottom: hp(5.5),
   },
   fornaxInnerBox: {
     flex: 0,
@@ -82,7 +85,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     paddingHorizontal: 10,
     fontSize: 16,
-    width: 240,
+    width: wp(58),
   },
   loginText: {
     fontSize: 14,
@@ -96,13 +99,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   pinEye: {
-    width: 20,
+    height:hp(2),
+    width: hp(2),
+    resizeMode: 'contain',
     marginLeft: -20,
   },
   NumPad: {
-    width: 240,
+    width: wp(58),
     marginTop: 20,
-    marginBottom: 30,
+    marginBottom: hp(3),
   },
   NumRow: {
     flexDirection: 'row',
@@ -114,12 +119,21 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   num: {
-    paddingVertical: 20,
+    paddingVertical: hp(1.8),
   },
   crossIcon: {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
+  },
+  pressed: {
+    shadowColor: "#fff",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 10.00,
   },
 });
 
@@ -146,35 +160,39 @@ const LoginPin = (props: any) => {
     if (pin && pin.length === 4) {
       const _pin = await AsyncStorage.getItem('loginPin')
       const accountList = await AsyncStorage.getItem('accountList');
+
       if (sendTxnStatus && sendTxnStatus?.includes('pin')) {
         if (_pin === pin) {
           dispatch(setSendTxnStatus(sendTxnStatus.replace('pin', 'done')));
+          setPin('');
           navigate('SetAmount')
         } else {
-          setPin('');
           showMessage({
             message: "Pin Failed!",
             description: "Please enter 4 digit valid Pin",
             type: "danger",
           });
+          setPin('');
         }
         return ;
       }
       if (_pin === pin) {
         hideMessage();
-        setPin('');
         await AsyncStorage.setItem('isLoginPinSet', pin);
         if (accountList === null) {
+          setPin('');
           navigate('WalletSetup');
           return;
         }
-        navigate('Dashboard')
+        setPin('');
+        navigate('Tokens')
       } else {
         showMessage({
           message: "Login Pin Failed!",
           description: "Please enter 4 digit valid Pin",
           type: "danger",
         });
+        setPin('');
       }
     } else {
       if (sendTxnStatus && sendTxnStatus?.include('pin')) {
@@ -210,15 +228,15 @@ const LoginPin = (props: any) => {
   }
   useEffect(() => {
     TouchID.isSupported(optionalConfigObject)
-        .then(biometryType => {
-          setBiometryType(biometryType)
-          console.log("biometryType:", biometryType);
-        })
-        .catch(error => {
-          // Failure code
-          console.log(error);
-          setBiometryType('notfound')
-        });
+      .then(biometryType => {
+        setBiometryType(biometryType)
+        console.log("biometryType:", biometryType);
+      })
+      .catch(error => {
+        // Failure code
+        console.log(error);
+        setBiometryType('notfound')
+      });
   }, [])
   const handleNextScreen= async () => {
     const registerUser = await AsyncStorage.getItem('registerUser');
@@ -233,27 +251,27 @@ const LoginPin = (props: any) => {
 
     if (loginPin !== null && biometryType && (faceId&&faceId==='true' || fingerId&&fingerId==='true')) {
       TouchID.authenticate('Open your FornaxWallet', optionalConfigObject)
-          .then((success: any) => {
-            if (accountList === null) {
-              navigate('WalletSetup');
-              return;
-            }
-            if (registerUser && loginUser && accountList && (loginPin)) {
-              navigate('Dashboard');
-              return;
-            }
-            console.log(success, "success");
-          })
-          .catch((error: any) => {
-            console.log(error, "error");
-            if (loginPin) {
-              navigate('LoginPin');
-              return;
-            }else{
-              navigate('Login');
-              return;
-            }
-          });
+        .then((success: any) => {
+          if (accountList === null) {
+            navigate('WalletSetup');
+            return;
+          }
+          if (registerUser && loginUser && accountList && (loginPin)) {
+            navigate('Tokens');
+            return;
+          }
+          console.log(success, "success");
+        })
+        .catch((error: any) => {
+          console.log(error, "error");
+          if (loginPin) {
+            navigate('LoginPin');
+            return;
+          }else{
+            navigate('Login');
+            return;
+          }
+        });
     }
   }
   useEffect(() => {
@@ -278,93 +296,108 @@ const LoginPin = (props: any) => {
           <TextInput
             style={styles.input}
             value={pin}
+            editable = {false}
             onChange={handlePin}
             placeholder="xxxx"
             secureTextEntry={showPass}
             placeholderTextColor="#bdbdbd"
           />
-          <Pressable onPress={() => setShowPass(!showPass)} style={styles.pinEye}>
-            <Image source={require(EyeSlashIcon)} />
+          <Pressable onPress={() => setShowPass(!showPass)} >
+            <Image source={require(EyeSlashIcon)} style={styles.pinEye}/>
           </Pressable>
         </View>
         <View style={styles.NumPad}>
           <View style={styles.NumRow}>
-            <Pressable
+              <Pressable
+                  android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(1)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>1</Text>
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(2)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>2</Text>
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(3)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>3</Text>
             </Pressable>
           </View>
           <View style={styles.NumRow}>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(4)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>4</Text>
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(5)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>5</Text>
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(6)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>6</Text>
             </Pressable>
           </View>
           <View style={styles.NumRow}>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(7)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>7</Text>
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(8)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>8</Text>
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(9)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>9</Text>
             </Pressable>
           </View>
           <View style={styles.NumRow}>
-            <Pressable style={[styles.num, styles.numClose]}>
+            <Pressable
+                android_ripple={{color: 'white', borderless: false}} style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle} />
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={() => handlePin(0)}
-              style={[styles.num, styles.numClose]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose]}>
               <Text style={styles.textStyle}>0</Text>
             </Pressable>
             <Pressable
+                android_ripple={{color: 'white', borderless: false}}
               onPress={handleRemove}
-              style={[styles.num, styles.numClose, styles.crossIcon]}>
+              style={(state)=>[state.pressed && styles.pressed,styles.num, styles.numClose, styles.crossIcon]}>
               <Image style={styles.crossIcon} source={require(CloseIcon)} />
             </Pressable>
           </View>
         </View>
         <Pressable
+            android_ripple={{color: '#00000030', borderless: false}}
           onPress={handleSetPin}
-          style={[styles.button, styles.buttonClose]}>
+          style={(state)=>[state.pressed && styles.pressed, styles.button, styles.buttonClose]}>
           <Text style={styles.textStyle}>Verify PIN</Text>
         </Pressable>
         <Text style={styles.loginTextbox}>
           PIN forgot?
           <Pressable
+              android_ripple={{color: 'white', borderless: false}}
               onPress={() => navigate('Login')}
-              style={{ paddingTop: 6 }}>
+              style={(state)=>[state.pressed && styles.pressed,{ paddingTop: 6 }]}>
             <Text style={styles.loginText}> Login</Text>
           </Pressable>
         </Text>

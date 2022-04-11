@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Alert, Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import TouchID from "react-native-touch-id";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {showMessage} from "react-native-flash-message";
@@ -30,20 +30,24 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     backIcon: {
-        marginLeft: 26,
-        marginTop: 32,
+        marginLeft: wp(6.3),
+        marginTop: hp(3.7),
+        // resizeMode:'contain',
+        height:hp(3),
+        width:hp(3),
     },
     fornaxIcon: {
-        // width:  hp(9),
-        // height: hp(9),
-        marginBottom: 30,
+        resizeMode: 'contain',
+        width:  hp(6.5),
+        height: hp(6.5),
+        marginBottom: hp(5.5),
     },
     fornaxInnerBox: {
         flex: 0,
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        marginTop: hp('5'),
+        marginTop: hp('12'),
         marginBottom: hp('4'),
     },
     fornaxMiniText: {
@@ -53,9 +57,9 @@ const styles = StyleSheet.create({
         fontFamily: 'Quicksand-Medium',
     },
     camera: {
-        height: 288,
-        width: 288,
-        borderRadius: 120,
+        height: hp(32),
+        width: hp(32),
+        borderRadius: hp(12),
         backgroundColor: '#afa2ff',
         marginBottom: 48,
     },
