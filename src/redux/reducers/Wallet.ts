@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface WalletState {
     mnemonic: string;
@@ -33,10 +33,10 @@ const initialState = {
     txnResponse: null,
     sendTxnStatus: '',
     tokens: 'FRX',
-    explorers:{
-        FRX:'https://watchfornax.com/transaction/',
-        ETH:'https://rinkeby.etherscan.io/tx/',
-        BNB:'https://testnet.bscscan.com/tx/',
+    explorers: {
+        FRX: 'https://watchfornax.com/transactions/',
+        ETH: 'https://etherscan.io/txs/',
+        BNB: 'https://bscscan.com/txs/',
     }
 } as WalletState;
 

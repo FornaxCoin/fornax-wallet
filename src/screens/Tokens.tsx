@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import React, { useEffect, useState } from 'react';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import WalletTabs from '../components/WalletTabs';
-import {setDefaultAddress, setWeb3, setTokens, setAccounts} from "../redux/reducers/Wallet";
-import {useSelector} from "react-redux";
-import {useDispatch} from 'react-redux';
-import {getWeb3} from '../utils/common';
+import { setDefaultAddress, setWeb3, setTokens, setAccounts } from "../redux/reducers/Wallet";
+import { useSelector } from "react-redux";
+import { useDispatch } from 'react-redux';
+import { getWeb3 } from '../utils/common';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Spinner from "react-native-spinkit";
 
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     extrahight: {
         height: 100,
     },
-    loaderBack:{
+    loaderBack: {
         flex: 1,
         backgroundColor: '#00000057',
         position: 'absolute',
@@ -131,7 +131,7 @@ const Tokens = (props: any) => {
     const dispatch = useDispatch();
     const navigate = props.navigation.navigate;
 
-    const {accounts, web3, web3Frx, web3Eth, web3Bnb, tokens} = useSelector(({wallet}: any) => {
+    const { accounts, web3, web3Frx, web3Eth, web3Bnb, tokens } = useSelector(({ wallet }: any) => {
         return {
             accounts: wallet?.accounts,
             web3: wallet?.web3,
@@ -163,7 +163,7 @@ const Tokens = (props: any) => {
                 let data: any = JSON.parse(accountList);
                 var newAccounts = data.map((acc: any) => {
                     return acc.address === account?.address
-                        ? {...acc, balance: account.balance}
+                        ? { ...acc, balance: account.balance }
                         : acc;
                 });
                 _accounts.push(...newAccounts);
@@ -178,15 +178,15 @@ const Tokens = (props: any) => {
         console.log("inside Balance");
         if (web3) {
             console.log("inside Balance2", account);
-            try{
+            try {
                 let bal = await web3.eth.getBalance(account?.address);
-                console.log("bal",bal);
+                console.log("bal", bal);
                 if (bal >= 0) {
                     const balance = web3.utils.fromWei(bal, 'ether');
                     console.log("balance:", balance)
-                    await storeDataAsync({...account, balance});
+                    await storeDataAsync({ ...account, balance });
                 }
-            }catch (e) {
+            } catch (e) {
                 console.log('Error:', e)
             }
         } else {
@@ -250,53 +250,53 @@ const Tokens = (props: any) => {
         <>
             {loader && (
                 <View style={styles.loaderBack}>
-                    <Spinner isVisible={true} size={50} type={'9CubeGrid'} color="#b27f29"/>
+                    <Spinner isVisible={true} size={50} type={'9CubeGrid'} color="#b27f29" />
                 </View>
             )}
             <View>
                 <Pressable
-                    android_ripple={{color: '#ffffff20', borderless: false}} onPress={() => navigate('Dashboard')}>
-                    <Image style={styles.backIcon} source={require(BackIcon)}/>
+                    android_ripple={{ color: '#ffffff20', borderless: false }} onPress={() => navigate('Dashboard')}>
+                    <Image style={styles.backIcon} source={require(BackIcon)} />
                 </Pressable>
             </View>
             <View style={styles.fornaxBox}>
                 <View style={styles.fornaxInnerBox}>
-                    <Image style={styles.fornaxIcon} source={require(WalletImage)}/>
+                    <Image style={styles.fornaxIcon} source={require(WalletImage)} />
                     <Text style={styles.textStyle}>Your Tokens</Text>
                     {/*<Text style={styles.fornaxMiniText}> {(accountsCount)} Accounts Connected</Text>*/}
                 </View>
                 <View style={styles.tabBox}>
-                    <View style={{marginTop: 10, justifyContent: 'center', alignItems: 'center',}}>
+                    <View style={{ marginTop: 10, justifyContent: 'center', alignItems: 'center', }}>
                         <Pressable
-                            android_ripple={{color: '#00000030', borderless: false}} style={(state)=>[state.pressed && styles.pressed, styles.bankBox]} onPress={() => handleNetwork('FRX')}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <View style={[styles.roundBox, {backgroundColor: '#4368c7'}]}/>
+                            android_ripple={{ color: '#00000030', borderless: false }} style={(state) => [state.pressed && styles.pressed, styles.bankBox]} onPress={() => handleNetwork('FRX')}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={[styles.roundBox, { backgroundColor: '#4368c7' }]} />
                                 <Text style={styles.bankText}>Fornax (FRX)</Text>
                             </View>
                             <View style={styles.downIconBorder}>
-                                <Image source={require(DownArrowImg)} style={styles.downIcon}/>
+                                <Image source={require(DownArrowImg)} style={styles.downIcon} />
                             </View>
                         </Pressable>
                         {/*Other networks Codes*/}
                         <Pressable style={styles.bankBox} onPress={() => handleNetwork('ETH')}>
-                           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                               <View style={[styles.roundBox, {backgroundColor: '#936ee3'}]}/>
-                               <Text style={styles.bankText}>Ethereum (ETH)</Text>
-                           </View>
-                           <View style={styles.downIconBorder}>
-                               <Image source={require(DownArrowImg)} style={styles.downIcon}/>
-                           </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={[styles.roundBox, { backgroundColor: '#936ee3' }]} />
+                                <Text style={styles.bankText}>Ethereum (ETH)</Text>
+                            </View>
+                            <View style={styles.downIconBorder}>
+                                <Image source={require(DownArrowImg)} style={styles.downIcon} />
+                            </View>
                         </Pressable>
                         <Pressable style={styles.bankBox} onPress={() => handleNetwork('BNB')}>
-                           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                               <View style={[styles.roundBox, {backgroundColor: '#fa8315'}]}/>
-                               <Text style={styles.bankText}>Binance Coin (BNB)</Text>
-                           </View>
-                           <View style={styles.downIconBorder}>
-                               <Image source={require(DownArrowImg)} style={styles.downIcon}/>
-                           </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={[styles.roundBox, { backgroundColor: '#fa8315' }]} />
+                                <Text style={styles.bankText}>Binance Coin (BNB)</Text>
+                            </View>
+                            <View style={styles.downIconBorder}>
+                                <Image source={require(DownArrowImg)} style={styles.downIcon} />
+                            </View>
                         </Pressable>
-                        <View style={styles.extrahight}/>
+                        <View style={styles.extrahight} />
                     </View>
                 </View>
             </View>

@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
-import {generateMnemonic} from 'bip39';
+import React, { useEffect, useState } from 'react';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { generateMnemonic } from 'bip39';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {setAccounts, setWeb3, setWeb3Frx, setWeb3Eth, setWeb3Bnb} from '../redux/reducers/Wallet';
-import {useDispatch, useSelector} from 'react-redux';
-import {getWeb3} from '../utils/common';
+import { setAccounts, setWeb3, setWeb3Frx, setWeb3Eth, setWeb3Bnb } from '../redux/reducers/Wallet';
+import { useDispatch, useSelector } from 'react-redux';
+import { getWeb3 } from '../utils/common';
 import Spinner from 'react-native-spinkit';
 
 const SettingImage = '../../assets/images/Settingmaga.png';
 const BackIcon = '../../assets/images/Iconly_Curved_Arrow.png';
-let disable:boolean;
+let disable: boolean;
 const styles = StyleSheet.create({
     fornaxBox: {
         flex: 1,
@@ -104,7 +104,7 @@ const WalletSetup = (props: any) => {
     const [loader, setLoader] = useState(false)
     const dispatch = useDispatch();
     const navigate = props.navigation.navigate;
-    const {tokens} = useSelector(({wallet}: any) => {
+    const { tokens } = useSelector(({ wallet }: any) => {
         return {
             tokens: wallet?.tokens,
         };
@@ -129,7 +129,7 @@ const WalletSetup = (props: any) => {
                 if (bal >= 0) {
                     const balance = await web3.utils.fromWei(bal, 'ether');
                     console.log(balance, "balance");
-                    storeDataAsync({...account, balance}, mnemonicPhrase);
+                    storeDataAsync({ ...account, balance }, mnemonicPhrase);
                 }
             },
             (error: any) => {
@@ -140,11 +140,11 @@ const WalletSetup = (props: any) => {
     };
 
     const handleCreateWallet = async () => {
-        disable=true;
+        disable = true;
         await setLoader(true);
         try {
             const mnemonicPhrase = await generateMnemonic();
-            const web3 = await getWeb3(mnemonicPhrase,tokens);
+            const web3 = await getWeb3(mnemonicPhrase, tokens);
 
             if (web3) {
                 dispatch(setWeb3(web3));
@@ -167,40 +167,40 @@ const WalletSetup = (props: any) => {
         <>
             {loader && (
                 <View style={styles.loaderBack}>
-                    <Spinner isVisible={true} size={50} type={'9CubeGrid'} color="#b27f29"/>
+                    <Spinner isVisible={true} size={50} type={'9CubeGrid'} color="#b27f29" />
                 </View>
             )}
-            <View style={{zIndex: 0}}>
+            <View style={{ zIndex: 0 }}>
                 <Pressable onPress={() => navigate('Login')}>
                     {/*<Image style={styles.backIcon} source={require(BackIcon)} />*/}
                 </Pressable>
             </View>
             <View style={styles.fornaxBox}>
                 <View style={styles.fornaxInnerBox}>
-                    <Image style={styles.fornaxIcon} source={require(SettingImage)}/>
+                    <Image style={styles.fornaxIcon} source={require(SettingImage)} />
                     <Text style={styles.textStyle}>Wallet Setup</Text>
                     <Text style={styles.fornaxMiniText}>
                         Import an existing wallet or create a new one
                     </Text>
                 </View>
                 <Pressable
-                    android_ripple={{color: '#00000030', borderless: false}}
+                    android_ripple={{ color: '#00000030', borderless: false }}
                     onPress={() => navigate('Import')}
-                    style={(state)=>[state.pressed && styles.pressed,styles.button, styles.buttonClose, styles.secondaryButton]}>
+                    style={(state) => [state.pressed && styles.pressed, styles.button, styles.buttonClose, styles.secondaryButton]}>
                     <Text style={[styles.txnText, styles.secondaryTxnText]}>
                         Import using Secret
                     </Text>
                     <Text
-                        style={[styles.txnText, styles.secondaryTxnText, {marginTop: 5}]}>
+                        style={[styles.txnText, styles.secondaryTxnText, { marginTop: 5 }]}>
                         Recovery Phrase
                     </Text>
                 </Pressable>
                 {!disable &&
                     <Pressable
-                        android_ripple={{color: '#00000030', borderless: false}}
+                        android_ripple={{ color: '#00000030', borderless: false }}
                         disabled={disable}
-                        onPress={async ()=>{disable = true; await setLoader(true); handleCreateWallet()}}
-                        style={(state)=>[state.pressed && styles.pressed, styles.button, styles.buttonClose, {marginBottom: hp('10')}]}>
+                        onPress={async () => { disable = true; await setLoader(true); handleCreateWallet() }}
+                        style={(state) => [state.pressed && styles.pressed, styles.button, styles.buttonClose, { marginBottom: hp('10') }]}>
                         <Text style={styles.txnText}>Create a new Wallet</Text>
                     </Pressable>
                 }
